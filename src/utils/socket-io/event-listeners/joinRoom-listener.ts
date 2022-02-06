@@ -4,10 +4,10 @@ export default function joinRoom_listener(
   socket: Socket,
   id: number | undefined
 ) {
-  socket.on("joinRoom", (roomName) => {
+  socket.on("joinRoom", (user_id) => {
     console.log(
-      `socket ${socket.id} has joined ${roomName}, using worker ${id}`
+      `socket ${socket.id} has joined ${user_id}, using worker ${id}`
     );
-    socket.join(roomName);
+    socket.join(`room_${user_id}`);
   });
 }

@@ -1,5 +1,6 @@
 import "dotenv/config";
 import pg from "pg";
+import { Database_Connection_Error } from "../middlewares/error-handler/db-connection-error";
 
 const connectionString = process.env.PG_URI;
 const config = {
@@ -17,5 +18,6 @@ export async function connectToDatabase() {
     console.log("> > > > >  Connected to Postgres  < < < < <");
   } catch (err) {
     console.log(err);
+    throw new Database_Connection_Error();
   }
 }

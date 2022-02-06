@@ -7,16 +7,16 @@ const pgSession = connectPgSimple(session);
 
 const createSession = session({
   store: new pgSession({
+    // Insert connect-pg-simple options here
     pool: db_pool, // Connection pool
     tableName: "user_sessions", // Use another table-name than the default "session" one
-    // Insert connect-pg-simple options here
     createTableIfMissing: true,
   }),
+  // Insert express-session options here
   secret: "my-secret",
   resave: false,
-  cookie: { maxAge: 60 * 1000 * 5 }, // 5 mins
-  // Insert express-session options here
-  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 }, // 60 mins
+  saveUninitialized: false, // NOTE //
 });
 
 export default createSession;

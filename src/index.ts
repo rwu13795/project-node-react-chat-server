@@ -4,15 +4,9 @@ import http from "http";
 import { setupMaster } from "@socket.io/sticky";
 import { setupPrimary } from "@socket.io/cluster-adapter";
 
-import { connectToDatabase } from "./utils/db-connection";
 import { app } from "./app";
+import { connectToDatabase } from "./utils/db-connection";
 import connectSocketIO from "./utils/socket-io/socket-io-connection";
-
-declare module "express-session" {
-  interface SessionData {
-    currentUser: string;
-  }
-}
 
 const num_processes = os.cpus().length;
 
