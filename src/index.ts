@@ -6,7 +6,8 @@ import { setupPrimary } from "@socket.io/cluster-adapter";
 
 import { app } from "./app";
 import { connectToDatabase } from "./utils/db-connection";
-import connectSocketIO from "./utils/socket-io/socket-io-connection";
+import connectSocketIO from "./socket-io/socket-io-connection";
+import { Server } from "socket.io";
 
 const num_processes = os.cpus().length;
 

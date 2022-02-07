@@ -1,5 +1,5 @@
 import { Socket, Server } from "socket.io";
-import { db_pool } from "../../db-connection";
+
 import privateChat_emitter from "../event-emitters/private-chat-emitter";
 
 export enum chatType {
@@ -18,11 +18,7 @@ export interface MessageObject {
   targetChatRoom_type: string;
 }
 
-export default function messageToServer_listener(
-  socket: Socket,
-  io: Server,
-  id: number | undefined
-) {
+export default function messageToServer_listener(socket: Socket, io: Server) {
   socket.on("messageToServer", async (messageObject: MessageObject) => {
     console.log(
       `server received msg from socket ${messageObject.sender_username} ----> ${messageObject.body}`
@@ -31,7 +27,7 @@ export default function messageToServer_listener(
     // pass message to emitter
     switch (messageObject.targetChatRoom_type) {
       case chatType.private: {
-        privateChat_emitter(messageObject, io);
+        privateChat_emitter(messageObject, io, socket);
         break;
       }
       case chatType.group: {

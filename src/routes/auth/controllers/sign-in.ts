@@ -51,13 +51,12 @@ export const signIn = asyncWrapper(
       email,
       user_id,
       isLoggedIn: true,
+      targetRoomIdentifier: "",
     };
 
-    res
-      .status(201)
-      .send({
-        friendsList: friends.rows,
-        currentUser: req.session.currentUser,
-      });
+    res.status(201).send({
+      friendsList: friends.rows,
+      currentUser: req.session.currentUser,
+    });
   }
 );

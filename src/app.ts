@@ -15,6 +15,7 @@ declare module "express-session" {
       email: string;
       user_id: string;
       isLoggedIn: boolean;
+      targetRoomIdentifier: string;
     };
   }
 }

@@ -51,6 +51,7 @@ export const signUp = asyncWrapper(
       email,
       user_id,
       isLoggedIn: true,
+      targetRoomIdentifier: "",
     };
 
     res.status(201).send({

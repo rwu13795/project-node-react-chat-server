@@ -1,5 +1,5 @@
 import { Socket, Server } from "socket.io";
-import { db_pool } from "../../db-connection";
+import { db_pool } from "../../utils/db-connection";
 
 export default function groupChat_emitter(
   socket: Socket,

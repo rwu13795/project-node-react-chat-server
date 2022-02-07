@@ -12,6 +12,7 @@ export const getUserAuthStatus = asyncWrapper(
         email: "",
         user_id: "",
         isLoggedIn: false,
+        targetRoomIdentifier: "",
       };
     }
 
