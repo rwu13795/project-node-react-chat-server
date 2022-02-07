@@ -7,9 +7,15 @@ export const privateChatHitory = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const id_1 = req.query.id_1 as string;
     const id_2 = req.query.id_2 as string;
+    const page = parseInt(req.query.page as string) || 1;
+    const MSG_PER_PAGE = 10;
+
+    console.log("page", page);
+
+    const offset = (page - 1) * MSG_PER_PAGE;
 
     const private_chat_history_query = {
-      name: "private_chat_history_query",
+      // name: "private_chat_history_query",
       text: `SELECT 
                     users_private_messages.sender_id,
                     users_private_messages.recipient_id,
@@ -19,7 +25,9 @@ export const privateChatHitory = asyncWrapper(
                INNER JOIN users_private_messages
                   ON private_messages.msg_id = users_private_messages.msg_id
                WHERE (users_private_messages.sender_id = $1 and users_private_messages.recipient_id = $2)
-                      or (users_private_messages.sender_id = $2 and users_private_messages.recipient_id = $1)`,
+                      or (users_private_messages.sender_id = $2 and users_private_messages.recipient_id = $1)
+               ORDER BY 4 DESC      
+               Limit 10 OFFSET ${offset}`,
       values: [id_1, id_2],
     };
     const chat_history_result = await db_pool.query(private_chat_history_query);
