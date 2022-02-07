@@ -1,39 +1,47 @@
 import { Socket, Server } from "socket.io";
 import { db_pool } from "../../db-connection";
+import privateChat_emitter from "../event-emitters/private-chat-emitter";
+
+export enum chatType {
+  public = "public",
+  group = "group",
+  private = "private",
+}
+
+export interface MessageObject {
+  sender_id: string;
+  sender_username: string;
+  recipient_id: string;
+  recipient_username: string;
+  body: string;
+  created_at: string;
+  targetChatRoom_type: string;
+}
 
 export default function messageToServer_listener(
   socket: Socket,
   io: Server,
   id: number | undefined
 ) {
-  socket.on(
-    "messageToServer",
-    async ({ sender_id, receiver_id, body, created_at }) => {
-      console.log(`server received msg from socket ${socket.id} ----> ${body}`);
+  socket.on("messageToServer", async (messageObject: MessageObject) => {
+    console.log(
+      `server received msg from socket ${messageObject.sender_username} ----> ${messageObject.body}`
+    );
 
-      ///////// testing database insertion
-      try {
-        const text = "INSERT INTO testing(name) VALUES($1)";
-        const values = [body];
-        await db_pool.query(text, values);
-        console.log("insert into db");
-      } catch (err) {
-        console.log(err);
+    // pass message to emitter
+    switch (messageObject.targetChatRoom_type) {
+      case chatType.private: {
+        privateChat_emitter(messageObject, io);
+        break;
       }
-
-      console.log("sending message to room", sender_id);
-
-      // save the chat message to DB here //
-
-      // each user connects to a private room where only the user is inside
-      // the server will emit all direct messages which are for this user
-      // to the private room. So as long as the user is connected, he can listen
-      // to all direct messages sent to him.
-      io.to(`room_${receiver_id}`).emit(
-        // room name cannot be number characters only?
-        "messageToClients",
-        { sender_id, receiver_id, body, created_at }
-      );
+      case chatType.group: {
+        break;
+      }
+      case chatType.public: {
+        break;
+      }
+      default:
+        break;
     }
-  );
+  });
 }
