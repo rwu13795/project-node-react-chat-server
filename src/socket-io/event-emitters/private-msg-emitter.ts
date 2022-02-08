@@ -4,9 +4,8 @@ import { insert_new_msg, new_msg_users_ref } from "../../utils/db-queries";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
 export default async function privateMessage_toClient(
-  messageObject: MessageObject,
-  io: Server,
-  socket: Socket
+  socket: Socket,
+  messageObject: MessageObject
 ) {
   const { sender_id, recipient_id, targetChatRoom_type, body, created_at } =
     messageObject;
@@ -18,10 +17,9 @@ export default async function privateMessage_toClient(
   // the server will emit all direct messages which are for this user
   // to the private room. So as long as the user is connected, he can listen
   // to all direct messages sent to him.
-  io.to(targetRoomIdentifier_recipient).emit(
-    "privateMessage_toClient",
-    messageObject
-  );
+  socket
+    .to(targetRoomIdentifier_recipient)
+    .emit("privateMessage_toClient", messageObject);
 
   // save the chat message to DB
   try {

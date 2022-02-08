@@ -4,7 +4,7 @@ import { Server, Socket } from "socket.io";
 import { setupWorker } from "@socket.io/sticky";
 import { createAdapter } from "@socket.io/cluster-adapter";
 
-import joinRoom_listener from "./event-listeners/joinRoom-listener";
+import joinPrivateRoom_listener from "./event-listeners/joinPrivateRoom-listener";
 import messageToServer_listener from "./event-listeners/messageToServer-listener";
 import online_listener from "./event-listeners/online-listener";
 import onlineEcho_listener from "./event-listeners/online-echo-listener";
@@ -16,7 +16,6 @@ export interface FriendsOnlineStatus {
   status: { [friend_id: string]: boolean };
 }
 export interface Socket_currentUser {
-  username: string;
   user_id: string;
   friendsOnlineStatus: FriendsOnlineStatus;
 }
@@ -43,12 +42,12 @@ export default function connectSocketIO(
 
   io.on("connection", (socket) => {
     console.log(`client ${socket.id} is connected to worker: ${id}`);
-    joinRoom_listener(socket, id);
+    joinPrivateRoom_listener(socket, id);
 
     messageToServer_listener(socket, io);
 
     online_listener(socket);
-    //////////////////////////////////
+
     onlineEcho_listener(socket);
 
     offline_listener(socket);

@@ -3,6 +3,7 @@ import cluster from "cluster";
 import http from "http";
 import { setupMaster } from "@socket.io/sticky";
 import { setupPrimary } from "@socket.io/cluster-adapter";
+import "dotenv/config";
 
 import { app } from "./app";
 import { connectToDatabase } from "./utils/db-connection";
@@ -24,7 +25,8 @@ if (cluster.isPrimary) {
   // setup connections between the workers
   setupPrimary();
 
-  httpServer.listen(5000);
+  const port = process.env.PORT || 5000;
+  httpServer.listen(port);
 
   for (let i = 0; i < num_processes; i++) {
     cluster.fork();
@@ -39,7 +41,14 @@ if (cluster.isPrimary) {
 
   connectToDatabase();
 
-  const server = app.listen(0, "localhost");
+  /* NOTE from NodeJS
+  server.listen(0) Normally, this will cause servers to listen on a random port. 
+  However, in a cluster, each worker will receive the same "random" port each time 
+  they do listen(0). In essence, the port is random the first time, but predictable 
+  thereafter. To listen on a unique port, generate a port number based on the cluster
+  worker ID.
+   */
+  const server = app.listen(0);
 
   connectSocketIO(server, cluster.worker?.id);
 }

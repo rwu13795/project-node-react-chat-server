@@ -1,7 +1,6 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 import { get_friends_id } from "../../utils/db-queries";
-import offline_emitter from "../event-emitters/offline-emitter";
 
 import { chatType } from "./messageToServer-listener";
 
@@ -21,6 +20,11 @@ export default function offline_listener(socket: Socket) {
       return `${chatType.private}_${elem.friend_id}`;
     });
 
-    offline_emitter(socket, rooms_id, user_id);
+    // let all the friends know that this user is now offline
+    console.log(`let the friend ${rooms_id} this user${user_id} is offline`);
+
+    socket.to(rooms_id).emit("offline", user_id);
+
+    socket.disconnect();
   });
 }

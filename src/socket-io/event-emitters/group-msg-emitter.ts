@@ -1,11 +1,7 @@
-import { Socket, Server } from "socket.io";
+import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 
-export default function groupChat_emitter(
-  socket: Socket,
-  io: Server,
-  id: number | undefined
-) {
+export default function groupChat_emitter(socket: Socket) {
   socket.on(
     "messageToServer",
     async ({ sender_id, recipient_id, body, created_at }) => {
@@ -28,7 +24,7 @@ export default function groupChat_emitter(
       // the server will emit all direct messages which are for this user
       // to the private room. So as long as the user is connected, he can listen
       // to all direct messages sent to him.
-      io.to(`room_${recipient_id}`).emit(
+      socket.to(`room_${recipient_id}`).emit(
         // room name cannot be number characters only?
         "messageToClients",
         { sender_id, recipient_id, body, created_at }

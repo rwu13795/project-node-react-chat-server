@@ -27,7 +27,7 @@ export default function messageToServer_listener(socket: Socket, io: Server) {
     // pass message to emitter
     switch (messageObject.targetChatRoom_type) {
       case chatType.private: {
-        privateMessage_emitter(messageObject, io, socket);
+        privateMessage_emitter(socket, messageObject);
         break;
       }
       case chatType.group: {
