@@ -11,6 +11,10 @@ interface SignUpBody {
   req_password: string;
 }
 
+//////////////////////
+// need a body check in signUp for max 40 char for email and username
+//////////////////////
+
 export const signUp = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { req_email, req_username, req_password }: SignUpBody = req.body;

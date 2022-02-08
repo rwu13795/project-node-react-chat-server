@@ -6,6 +6,13 @@ import { Database_Connection_Error } from "../middlewares/error-handler/db-conne
 const connectionString = process.env.DATABASE_URL;
 const config = {
   connectionString,
+
+  // need to add the property below in order to connect to the postgres DB in Heroku
+  /* 
+  Note from Heroku
+  Alternatively, you can omit the ssl configuration object if you specify the 
+  PGSSLMODE config var: heroku config:set PGSSLMODE=no-verify.
+  */
   ssl: {
     rejectUnauthorized: false,
   },
