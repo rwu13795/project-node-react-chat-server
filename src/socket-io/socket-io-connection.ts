@@ -8,10 +8,11 @@ import joinRoom_listener from "./event-listeners/joinRoom-listener";
 import messageToServer_listener from "./event-listeners/messageToServer-listener";
 import online_listener from "./event-listeners/online-listener";
 import onlineEcho_listener from "./event-listeners/online-echo-listener";
+import offline_listener from "./event-listeners/offline-listener";
 
 export interface FriendsOnlineStatus {
   friends_id: string[];
-  room_id: string[];
+  rooms_id: string[];
   status: { [friend_id: string]: boolean };
 }
 export interface Socket_currentUser {
@@ -50,10 +51,7 @@ export default function connectSocketIO(
     //////////////////////////////////
     onlineEcho_listener(socket);
 
-    socket.on("disconnect", function (data) {
-      console.log("offline", socket.handshake.query);
-      // emit the "offline" message to all the friends of this socket
-    });
+    offline_listener(socket);
   });
 
   process.on("message", function (message, connection: any) {

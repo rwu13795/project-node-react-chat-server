@@ -2,6 +2,7 @@ import { NextFunction, query, Request, Response } from "express";
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
+import { get_friends_list } from "../../../utils/db-queries";
 import { Password } from "../../../utils/hash-password";
 import { Users_row } from "../../../utils/tables-rows-interfaces";
 
@@ -36,15 +37,7 @@ export const signIn = asyncWrapper(
     }
 
     // get the friends list
-    const get_friends_list = {
-      name: "get_friends_list",
-      text: `SELECT users.user_id as "friend_id", users.username as "friend_username", users.email as "friend_email" FROM users 
-             INNER JOIN friends_pair
-                ON friends_pair.friend_id = $1
-                    AND friends_pair.user_id = users.user_id`,
-      values: [user_id],
-    };
-    const friends = await db_pool.query(get_friends_list);
+    const friends = await db_pool.query(get_friends_list(user_id));
 
     req.session.currentUser = {
       username,

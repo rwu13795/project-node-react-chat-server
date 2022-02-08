@@ -1,5 +1,6 @@
 import { Socket, Server } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
+import { insert_new_msg, new_msg_users_ref } from "../../utils/db-queries";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
 export default async function privateMessage_toClient(
@@ -24,30 +25,13 @@ export default async function privateMessage_toClient(
 
   // save the chat message to DB
   try {
-    const new_msg = {
-      name: "new_msg",
-      text: "INSERT INTO private_messages(body) VALUES($1) RETURNING msg_id",
-      values: [body],
-    };
-    const msg_id_result = await db_pool.query(new_msg);
+    const msg_id_result = await db_pool.query(insert_new_msg(body));
+    const msg_id = msg_id_result.rows[0].msg_id as string;
 
-    const { msg_id } = msg_id_result.rows[0];
-    const new_msg_users = {
-      name: "new_msg_users",
-      text: `INSERT INTO users_private_messages(sender_id, recipient_id, msg_id)
-                  VALUES($1, $2, $3)`,
-      values: [sender_id, recipient_id, msg_id],
-    };
-    await db_pool.query(new_msg_users);
+    await db_pool.query(new_msg_users_ref([sender_id, recipient_id, msg_id]));
 
     // update the notification for the recipient in DB
-    // If user is online AND in the target room (chatting with the sender)
-    // then I don't need to update the nofification row
-    // if (socket.currentUser.currentTargetRoom !== targetRoomIdentifier_sender) {
-    //   console.log(
-    //     `user ${socket.currentUser.username}_${socket.currentUser.user_id} is not in ${targetRoomIdentifier_sender}`
-    //   );
-    // }
+    // use the socket.currentUser friendOnlineStatus to know
 
     console.log("insert new msg into table");
   } catch (err) {
