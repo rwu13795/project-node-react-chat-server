@@ -8,7 +8,6 @@ import "dotenv/config";
 import { app } from "./app";
 import { connectToDatabase } from "./utils/db-connection";
 import connectSocketIO from "./socket-io/socket-io-connection";
-import { Server } from "socket.io";
 
 const num_processes = os.cpus().length;
 

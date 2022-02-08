@@ -1,4 +1,4 @@
-import { Socket, Server } from "socket.io";
+import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 import { insert_new_msg, new_msg_users_ref } from "../../utils/db-queries";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
@@ -7,11 +7,9 @@ export default async function privateMessage_toClient(
   socket: Socket,
   messageObject: MessageObject
 ) {
-  const { sender_id, recipient_id, targetChatRoom_type, body, created_at } =
-    messageObject;
+  const { sender_id, recipient_id, targetChatRoom_type, body } = messageObject;
 
   const targetRoomIdentifier_recipient = `${targetChatRoom_type}_${recipient_id}`;
-  const targetRoomIdentifier_sender = `${targetChatRoom_type}_${sender_id}`;
 
   // each user connects to a private room where only the user is inside.
   // the server will emit all direct messages which are for this user
