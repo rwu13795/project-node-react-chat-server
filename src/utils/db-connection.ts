@@ -1,13 +1,14 @@
 import "dotenv/config";
 import pg from "pg";
+
 import { Database_Connection_Error } from "../middlewares/error-handler/db-connection-error";
 
 const connectionString = process.env.DATABASE_URL;
 const config = {
-  // user: "postgres",
-  // password: "13795",
-  // database: "sql_course",
   connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 
 export const db_pool = new pg.Pool(config);
