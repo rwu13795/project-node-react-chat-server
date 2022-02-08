@@ -2,7 +2,7 @@ import "dotenv/config";
 import pg from "pg";
 import { Database_Connection_Error } from "../middlewares/error-handler/db-connection-error";
 
-const connectionString = process.env.PG_URI;
+const connectionString = process.env.DATABASE_URL;
 const config = {
   // user: "postgres",
   // password: "13795",
