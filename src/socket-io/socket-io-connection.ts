@@ -6,15 +6,18 @@ import { createAdapter } from "@socket.io/cluster-adapter";
 
 import joinRoom_listener from "./event-listeners/joinRoom-listener";
 import messageToServer_listener from "./event-listeners/messageToServer-listener";
-import currentTargetRoom_listener from "./event-listeners/setCurrentUser_listener";
+import online_listener from "./event-listeners/online-listener";
+import onlineEcho_listener from "./event-listeners/online-echo-listener";
 
-// export interface ExSocket extends Socket {
-//   currentTargetRoom: string;
-// }
+export interface FriendsOnlineStatus {
+  friends_id: string[];
+  room_id: string[];
+  status: { [friend_id: string]: boolean };
+}
 export interface Socket_currentUser {
-  currentTargetRoom?: string;
-  user_id: string;
   username: string;
+  user_id: string;
+  friendsOnlineStatus: FriendsOnlineStatus;
 }
 
 declare module "socket.io" {
@@ -43,17 +46,9 @@ export default function connectSocketIO(
 
     messageToServer_listener(socket, io);
 
-    currentTargetRoom_listener(socket);
-
+    online_listener(socket);
     //////////////////////////////////
-    socket.on("online", function () {
-      // the query has current user's name, id, email and friendList
-      // emit the "online" message to all the friends to let their
-      // client update the online status.
-      console.log("online", socket.handshake.query);
-
-      // saving userId to object with socket ID
-    });
+    onlineEcho_listener(socket);
 
     socket.on("disconnect", function (data) {
       console.log("offline", socket.handshake.query);

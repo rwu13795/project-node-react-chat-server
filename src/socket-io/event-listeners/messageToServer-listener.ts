@@ -1,6 +1,6 @@
 import { Socket, Server } from "socket.io";
 
-import privateChat_emitter from "../event-emitters/private-chat-emitter";
+import privateMessage_emitter from "../event-emitters/private-msg-emitter";
 
 export enum chatType {
   public = "public",
@@ -27,7 +27,7 @@ export default function messageToServer_listener(socket: Socket, io: Server) {
     // pass message to emitter
     switch (messageObject.targetChatRoom_type) {
       case chatType.private: {
-        privateChat_emitter(messageObject, io, socket);
+        privateMessage_emitter(messageObject, io, socket);
         break;
       }
       case chatType.group: {

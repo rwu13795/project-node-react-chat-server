@@ -2,7 +2,7 @@ import { Socket, Server } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
-export default async function privateChat_emitter(
+export default async function privateMessage_toClient(
   messageObject: MessageObject,
   io: Server,
   socket: Socket
@@ -18,7 +18,7 @@ export default async function privateChat_emitter(
   // to the private room. So as long as the user is connected, he can listen
   // to all direct messages sent to him.
   io.to(targetRoomIdentifier_recipient).emit(
-    "privateChat_toClient",
+    "privateMessage_toClient",
     messageObject
   );
 
