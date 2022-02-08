@@ -1,4 +1,4 @@
-import { NextFunction, query, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
