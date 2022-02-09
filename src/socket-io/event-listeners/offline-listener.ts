@@ -1,18 +1,15 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
-import { get_friends_id } from "../../utils/db-queries";
+import {
+  clear_private_notification_count,
+  get_friends_id,
+} from "../../utils/db-queries";
 
 import { chatType } from "./messageToServer-listener";
 
 export default function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
-    // socket.currentUser will no longer be available when the socket is
-    // disconnected. But the query in the "handshake" still exist.
-    // I can use the user_id to find all this user's friends in DB again
-    // and let those friends know this user is offline now
-    const currentUser = socket.handshake.query;
-    // currentUser: { user_id: string, username: string }
-    const user_id = currentUser.user_id as string;
+    const { user_id, currentTargetRoom } = socket.currentUser;
 
     const friends = await db_pool.query(get_friends_id(user_id));
 
@@ -25,6 +22,13 @@ export default function offline_listener(socket: Socket) {
 
     socket.to(rooms_id).emit("offline", user_id);
 
-    socket.disconnect();
+    // clear the notification in the room where the user was in when disconnected
+    const [type, target_id] = currentTargetRoom.split("_");
+    if (type === chatType.private && currentTargetRoom !== "") {
+      await db_pool.query(clear_private_notification_count(target_id, user_id));
+    } else {
+    }
+
+    socket.disconnect(true);
   });
 }

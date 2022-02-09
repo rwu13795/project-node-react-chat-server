@@ -9,15 +9,13 @@ import messageToServer_listener from "./event-listeners/messageToServer-listener
 import online_listener from "./event-listeners/online-listener";
 import onlineEcho_listener from "./event-listeners/online-echo-listener";
 import offline_listener from "./event-listeners/offline-listener";
+import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
 
-export interface FriendsOnlineStatus {
-  friends_id: string[];
-  rooms_id: string[];
-  status: { [friend_id: string]: boolean };
-}
 export interface Socket_currentUser {
   user_id: string;
-  friendsOnlineStatus: FriendsOnlineStatus;
+  currentTargetRoom: string;
+  friends_id: string[];
+  rooms_id: string[];
 }
 
 declare module "socket.io" {
@@ -47,6 +45,8 @@ export default function connectSocketIO(
     messageToServer_listener(socket, io);
 
     online_listener(socket);
+
+    currentTargetRoom_listener(socket);
 
     onlineEcho_listener(socket);
 

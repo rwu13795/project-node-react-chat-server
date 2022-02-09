@@ -2,7 +2,6 @@ import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 import { get_friends_id } from "../../utils/db-queries";
 
-import { FriendsOnlineStatus } from "../socket-io-connection";
 import { chatType } from "./messageToServer-listener";
 
 export default function online_listener(socket: Socket) {
@@ -15,29 +14,21 @@ export default function online_listener(socket: Socket) {
     const friends = await db_pool.query(get_friends_id(user_id));
 
     // map the friends id into a normalized object
-    let friendsOnlineStatus: FriendsOnlineStatus = {
-      friends_id: [],
-      rooms_id: [],
-      status: {},
-    };
+    const friends_id: string[] = [];
+    const rooms_id: string[] = [];
     for (let friend of friends.rows) {
-      friendsOnlineStatus.friends_id.push(friend.friend_id);
-      friendsOnlineStatus.rooms_id.push(
-        `${chatType.private}_${friend.friend_id}`
-      );
-
-      //// pending ////
-      // do I need to track the online status in the server ?
-      friendsOnlineStatus.status[friend.friend_id] = false;
+      friends_id.push(friend.friend_id);
+      rooms_id.push(`${chatType.private}_${friend.friend_id}`);
     }
 
     socket.currentUser = {
       user_id,
-      friendsOnlineStatus,
+      friends_id,
+      rooms_id,
+      currentTargetRoom: "",
     };
 
     // let all the friends of this user know that this user is online
-    const rooms_id = socket.currentUser.friendsOnlineStatus.rooms_id;
     console.log(
       `online_emitter let user ${rooms_id} know ${user_id} is online`
     );

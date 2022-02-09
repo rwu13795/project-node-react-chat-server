@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
+import { get_private_chat_history } from "../../../utils/db-queries";
 
 export const privateChatHitory = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -14,23 +15,9 @@ export const privateChatHitory = asyncWrapper(
 
     const offset = (page - 1) * MSG_PER_PAGE;
 
-    const private_chat_history_query = {
-      // name: "private_chat_history_query",
-      text: `SELECT 
-                    users_private_messages.sender_id,
-                    users_private_messages.recipient_id,
-                    private_messages.body,
-                    private_messages.created_at
-               FROM private_messages     
-               INNER JOIN users_private_messages
-                  ON private_messages.msg_id = users_private_messages.msg_id
-               WHERE (users_private_messages.sender_id = $1 and users_private_messages.recipient_id = $2)
-                      or (users_private_messages.sender_id = $2 and users_private_messages.recipient_id = $1)
-               ORDER BY 4 DESC      
-               Limit 10 OFFSET ${offset}`,
-      values: [id_1, id_2],
-    };
-    const chat_history_result = await db_pool.query(private_chat_history_query);
+    const chat_history_result = await db_pool.query(
+      get_private_chat_history(id_1, id_2, MSG_PER_PAGE, offset)
+    );
 
     const chatHistory = chat_history_result.rows;
 

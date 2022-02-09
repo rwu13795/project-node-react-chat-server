@@ -1,6 +1,10 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
-import { insert_new_msg, new_msg_users_ref } from "../../utils/db-queries";
+import {
+  insert_new_msg,
+  insert_new_msg_users_ref,
+  update_private_notification_count,
+} from "../../utils/db-queries";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
 export default async function privateMessage_toClient(
@@ -19,15 +23,15 @@ export default async function privateMessage_toClient(
     .to(targetRoomIdentifier_recipient)
     .emit("privateMessage_toClient", messageObject);
 
-  // save the chat message to DB
+  // save the message to DB and update notification count
   try {
     const msg_id_result = await db_pool.query(insert_new_msg(body));
     const msg_id = msg_id_result.rows[0].msg_id as string;
 
-    await db_pool.query(new_msg_users_ref([sender_id, recipient_id, msg_id]));
-
-    // update the notification for the recipient in DB
-    // use the socket.currentUser friendOnlineStatus to know
+    await Promise.all([
+      db_pool.query(insert_new_msg_users_ref(sender_id, recipient_id, msg_id)),
+      db_pool.query(update_private_notification_count(sender_id, recipient_id)),
+    ]);
 
     console.log("insert new msg into table");
   } catch (err) {
