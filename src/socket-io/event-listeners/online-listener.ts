@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
-import { get_friends_id } from "../../utils/db-queries";
+import { get_friends_id } from "../../utils/queries/friends-pair";
 
 import { chatType } from "./messageToServer-listener";
 
@@ -12,6 +12,7 @@ export default function online_listener(socket: Socket) {
     // used when user accepted an add-friend request. Let the new friend know
     // that the user is online
     if (target_id) {
+      console.log("target_id", target_id);
       socket.to(`${chatType.private}_${target_id}`).emit("online", user_id);
     }
 
@@ -38,7 +39,11 @@ export default function online_listener(socket: Socket) {
         `online_emitter let user ${rooms_id} know ${user_id} is online`
       );
       // emit message to multiple rooms (the private room of each friends)
-      socket.to(rooms_id).emit("online", user_id);
+      if (rooms_id.length > 0) {
+        // only emit if the user has at least one friend, otherwise
+        // the socket will emit to every one globally if the array is emtpy
+        socket.to(rooms_id).emit("online", user_id);
+      }
     }
   });
 }

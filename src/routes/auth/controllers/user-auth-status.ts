@@ -2,14 +2,17 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
-import {
-  get_add_friend_request,
-  get_friends_list,
-} from "../../../utils/db-queries";
+import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
+import { get_friends_list } from "../../../utils/queries/friends-pair";
+
 import { Friends_row } from "../../../utils/tables-rows-interfaces";
 
 export const getUserAuthStatus = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
+    const initialize = req.query.initialize as string;
+
+    let require_initialize = initialize === "yes" ? true : false;
+
     if (!req.session.currentUser) {
       req.session.currentUser = {
         username: "guest",
@@ -36,6 +39,7 @@ export const getUserAuthStatus = asyncWrapper(
       currentUser: req.session.currentUser,
       friendsList,
       addFriendRequests,
+      require_initialize,
     });
   }
 );

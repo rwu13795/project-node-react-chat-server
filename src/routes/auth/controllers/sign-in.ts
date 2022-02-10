@@ -2,12 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
-import {
-  find_existing_user,
-  get_add_friend_request,
-  get_friends_list,
-} from "../../../utils/db-queries";
+
 import { Password } from "../../../utils/hash-password";
+import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
+import { get_friends_list } from "../../../utils/queries/friends-pair";
+import { find_existing_user } from "../../../utils/queries/users";
 import { Users_row } from "../../../utils/tables-rows-interfaces";
 
 interface SignInBody {

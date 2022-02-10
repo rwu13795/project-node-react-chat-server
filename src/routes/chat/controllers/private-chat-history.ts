@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
-import { get_private_chat_history } from "../../../utils/db-queries";
+import { get_private_chat_history } from "../../../utils/queries/private-messages";
 
 export const privateChatHitory = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

@@ -11,6 +11,7 @@ import onlineEcho_listener from "./event-listeners/online-echo-listener";
 import offline_listener from "./event-listeners/offline-listener";
 import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
 import addFriendRequest_listener from "./event-listeners/add-friend-request-listener";
+import addFriendResponse_listener from "./event-listeners/add-friend-response-listener";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -52,6 +53,7 @@ export default function connectSocketIO(
     onlineEcho_listener(socket);
 
     addFriendRequest_listener(socket, io);
+    addFriendResponse_listener(socket);
 
     offline_listener(socket);
   });

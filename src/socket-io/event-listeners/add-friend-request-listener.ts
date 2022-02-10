@@ -3,7 +3,7 @@ import { db_pool } from "../../utils/db-connection";
 import {
   check_add_friend_request,
   insert_add_friend_request,
-} from "../../utils/db-queries";
+} from "../../utils/queries/add-friend-request";
 
 import { chatType } from "./messageToServer-listener";
 
@@ -11,6 +11,7 @@ interface AddFriendRequest {
   sender_id: string;
   sender_username: string;
   sender_email: string;
+  message: string;
   target_id: string;
 }
 
@@ -21,6 +22,7 @@ export default function addFriendRequest_listener(socket: Socket, io: Server) {
       sender_id,
       sender_username,
       sender_email,
+      message,
       target_id,
     }: AddFriendRequest) => {
       console.log(
@@ -31,9 +33,6 @@ export default function addFriendRequest_listener(socket: Socket, io: Server) {
       const result = await db_pool.query(
         check_add_friend_request(target_id, sender_id)
       );
-
-      console.log("result", result.rowCount);
-
       if (result.rowCount > 0) {
         io.to(`${chatType.private}_${sender_id}`).emit(
           "check-add-friend-request",
@@ -42,13 +41,16 @@ export default function addFriendRequest_listener(socket: Socket, io: Server) {
         return;
       }
 
-      await db_pool.query(insert_add_friend_request(target_id, sender_id));
+      await db_pool.query(
+        insert_add_friend_request(target_id, sender_id, message)
+      );
 
       // send request to target private room
       socket.to(`${chatType.private}_${target_id}`).emit("add-friend-request", {
         sender_id,
         sender_username,
         sender_email,
+        message,
       });
       // tell the sender about the result. Since the current socket is the sender's
       // socket, and socket CANNOT receive message which is sent by the same

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { chatType } from "../../../socket-io/event-listeners/messageToServer-listener";
 import { db_pool } from "../../../utils/db-connection";
-import { get_private_notifications } from "../../../utils/db-queries";
+import { get_private_notifications } from "../../../utils/queries/notifications-private-chat";
 
 export const getNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

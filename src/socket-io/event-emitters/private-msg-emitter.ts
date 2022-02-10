@@ -1,10 +1,11 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
+import { update_private_notification_count } from "../../utils/queries/notifications-private-chat";
 import {
   insert_new_msg,
   insert_new_msg_users_ref,
-  update_private_notification_count,
-} from "../../utils/db-queries";
+} from "../../utils/queries/private-messages";
+
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
 export default async function privateMessage_toClient(

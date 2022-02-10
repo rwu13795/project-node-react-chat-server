@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
-import { search_user } from "../../../utils/db-queries";
+import { search_user } from "../../../utils/queries/users";
 
 export const searchUser = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
