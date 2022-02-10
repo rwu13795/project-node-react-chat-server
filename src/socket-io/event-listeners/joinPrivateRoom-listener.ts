@@ -4,7 +4,7 @@ export default function joinPrivateRoom_listener(
   socket: Socket,
   id: number | undefined
 ) {
-  socket.on("join-private-room", (room_id) => {
+  socket.on("join-private-room", (room_id: string) => {
     console.log(
       `socket ${socket.id} has joined ${room_id}, using worker ${id}`
     );

@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
-import { get_friends_list } from "../../../utils/db-queries";
+import {
+  find_existing_user,
+  get_add_friend_request,
+  get_friends_list,
+} from "../../../utils/db-queries";
 import { Password } from "../../../utils/hash-password";
 import { Users_row } from "../../../utils/tables-rows-interfaces";
 
@@ -17,13 +21,7 @@ export const signIn = asyncWrapper(
 
     console.log(req_email, req_password);
 
-    const find_existing_user = {
-      // give the query a unique name
-      name: "find_existing_user",
-      text: "SELECT * FROM users WHERE email = $1",
-      values: [req_email],
-    };
-    const existingUser = await db_pool.query(find_existing_user);
+    const existingUser = await db_pool.query(find_existing_user(req_email));
 
     if (existingUser.rowCount < 1) {
       return next(new Bad_Request_Error("This email does not exist", "email"));
@@ -36,8 +34,10 @@ export const signIn = asyncWrapper(
       return next(new Bad_Request_Error("Password is incorrect", "password"));
     }
 
-    // get the friends list
-    const friends = await db_pool.query(get_friends_list(user_id));
+    const [friends, addFriendRequests] = await Promise.all([
+      db_pool.query(get_friends_list(user_id)),
+      db_pool.query(get_add_friend_request(user_id)),
+    ]);
 
     req.session.currentUser = {
       username,
@@ -49,6 +49,7 @@ export const signIn = asyncWrapper(
 
     res.status(201).send({
       friendsList: friends.rows,
+      addFriendRequests: addFriendRequests.rows,
       currentUser: req.session.currentUser,
     });
   }

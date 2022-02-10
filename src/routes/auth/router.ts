@@ -7,8 +7,8 @@ router.get("/user-auth-status", getUserAuthStatus);
 
 router.post("/sign-in", signIn);
 
-// router.post("/sign-out", signOut);
-
 router.post("/sign-up", signUp);
+
+// router.post("/sign-out", signOut);
 
 export { router as authRouter };

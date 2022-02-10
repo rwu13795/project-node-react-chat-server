@@ -2,7 +2,10 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
-import { get_friends_list } from "../../../utils/db-queries";
+import {
+  get_add_friend_request,
+  get_friends_list,
+} from "../../../utils/db-queries";
 import { Friends_row } from "../../../utils/tables-rows-interfaces";
 
 export const getUserAuthStatus = asyncWrapper(
@@ -18,16 +21,21 @@ export const getUserAuthStatus = asyncWrapper(
     }
 
     let friendsList: Friends_row[] = [];
+    let addFriendRequests: any[] = [];
     if (req.session.currentUser.isLoggedIn) {
-      const friends = await db_pool.query(
-        get_friends_list(req.session.currentUser.user_id)
-      );
+      const user_id = req.session.currentUser.user_id;
+      const [friends, addFriendRequests_result] = await Promise.all([
+        db_pool.query(get_friends_list(user_id)),
+        db_pool.query(get_add_friend_request(user_id)),
+      ]);
       friendsList = friends.rows;
+      addFriendRequests = addFriendRequests_result.rows;
     }
 
     res.status(200).header("Access-Control-Allow-Credentials", "true").send({
       currentUser: req.session.currentUser,
       friendsList,
+      addFriendRequests,
     });
   }
 );
