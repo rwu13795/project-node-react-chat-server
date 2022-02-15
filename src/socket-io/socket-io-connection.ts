@@ -12,6 +12,7 @@ import offline_listener from "./event-listeners/offline-listener";
 import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
 import addFriendRequest_listener from "./event-listeners/add-friend-request-listener";
 import addFriendResponse_listener from "./event-listeners/add-friend-response-listener";
+import uploadImageTo_S3 from "../utils/aws-s3/upload-image";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -31,6 +32,10 @@ export default function connectSocketIO(
   id: number | undefined
 ) {
   const io = new Server(server, {
+    // the max buffer size that can be transmitted in a single message
+    // 5e6 = 5MB  if the size is above the maximun, the socket will be disconnected
+    // if the client is trying to send such file
+    maxHttpBufferSize: 5e6,
     cors: {
       origin: true,
       methods: ["GET", "POST"],
@@ -56,6 +61,14 @@ export default function connectSocketIO(
     addFriendResponse_listener(socket);
 
     offline_listener(socket);
+
+    //////////////////////////
+    socket.on("imageToServer", ({ body, messageType, fileName }) => {
+      console.log("messageType", messageType);
+
+      socket.emit("imageToClient");
+      // uploadImageTo_S3(fileName, body);
+    });
   });
 
   process.on("message", function (message, connection: any) {

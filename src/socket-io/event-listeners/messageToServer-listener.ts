@@ -13,9 +13,12 @@ export interface MessageObject {
   sender_username: string;
   recipient_id: string;
   recipient_username: string;
-  body: string;
+  msg_body: string;
+  msg_type: string;
   created_at: string;
   targetChatRoom_type: string;
+  file_body?: Buffer;
+  file_name?: string;
 }
 
 export default function messageToServer_listener(socket: Socket, io: Server) {
@@ -23,6 +26,8 @@ export default function messageToServer_listener(socket: Socket, io: Server) {
     console.log(
       `server received msg from socket ${messageObject.sender_username} ----> ${messageObject.body}`
     );
+
+    console.log(messageObject.msg_type);
 
     // pass message to emitter
     switch (messageObject.targetChatRoom_type) {
