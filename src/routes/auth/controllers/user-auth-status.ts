@@ -4,8 +4,22 @@ import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
 import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
 import { get_friends_list } from "../../../utils/queries/friends-pair";
+import { get_groups_list } from "../../../utils/queries/groups";
 
-import { Friends_row } from "../../../utils/tables-rows-interfaces";
+import {
+  AddFriendRequest_res,
+  CurrentUser_res,
+  Friend_res,
+  Group_res,
+} from "../../../utils/interfaces/response-interfaces";
+
+interface GetUserAuth_res {
+  currentUser: CurrentUser_res;
+  friendsList: Friend_res[];
+  addFriendRequests: AddFriendRequest_res[];
+  groupsList: Group_res[];
+  require_initialize: boolean;
+}
 
 export const getUserAuthStatus = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,23 +37,32 @@ export const getUserAuthStatus = asyncWrapper(
       };
     }
 
-    let friendsList: Friends_row[] = [];
-    let addFriendRequests: any[] = [];
+    let friendsList: Friend_res[] = [];
+    let groupsList: Group_res[] = [];
+    let addFriendRequests: AddFriendRequest_res[] = [];
     if (req.session.currentUser.isLoggedIn) {
       const user_id = req.session.currentUser.user_id;
-      const [friends, addFriendRequests_result] = await Promise.all([
+      const [friends, addFriendRequests_result, groups] = await Promise.all([
         db_pool.query(get_friends_list(user_id)),
         db_pool.query(get_add_friend_request(user_id)),
+        db_pool.query(get_groups_list(user_id)),
       ]);
       friendsList = friends.rows;
       addFriendRequests = addFriendRequests_result.rows;
+      groupsList = groups.rows;
     }
 
-    res.status(200).header("Access-Control-Allow-Credentials", "true").send({
+    let response: GetUserAuth_res = {
       currentUser: req.session.currentUser,
       friendsList,
       addFriendRequests,
       require_initialize,
-    });
+      groupsList,
+    };
+
+    res
+      .status(200)
+      .header("Access-Control-Allow-Credentials", "true")
+      .send(response);
   }
 );

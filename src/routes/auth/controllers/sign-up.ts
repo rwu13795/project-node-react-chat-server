@@ -4,11 +4,11 @@ import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-reques
 import { db_pool } from "../../../utils/db-connection";
 
 import { Password } from "../../../utils/hash-password";
+import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   find_existing_user_email,
   register_new_user,
 } from "../../../utils/queries/users";
-import { Users_row } from "../../../utils/tables-rows-interfaces";
 
 interface SignUpBody {
   req_email: string;
@@ -45,7 +45,7 @@ export const signUp = asyncWrapper(
       register_new_user(req_email, req_username, hashedPassword)
     );
 
-    const { username, email, user_id } = newUser.rows[0] as Users_row;
+    const { username, email, user_id } = newUser.rows[0] as Users;
 
     req.session.currentUser = {
       username,
@@ -55,8 +55,6 @@ export const signUp = asyncWrapper(
       targetRoomIdentifier: "",
     };
 
-    res.status(201).send({
-      currentUser: req.session.currentUser,
-    });
+    res.status(201).send(req.session.currentUser);
   }
 );

@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import { setupWorker } from "@socket.io/sticky";
 import { createAdapter } from "@socket.io/cluster-adapter";
 
-import joinPrivateRoom_listener from "./event-listeners/joinPrivateRoom-listener";
+import joinRoom_listener from "./event-listeners/join-room-listener";
 import messageToServer_listener from "./event-listeners/messageToServer-listener";
 import online_listener from "./event-listeners/online-listener";
 import onlineEcho_listener from "./event-listeners/online-echo-listener";
@@ -12,7 +12,6 @@ import offline_listener from "./event-listeners/offline-listener";
 import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
 import addFriendRequest_listener from "./event-listeners/add-friend-request-listener";
 import addFriendResponse_listener from "./event-listeners/add-friend-response-listener";
-import uploadImageTo_S3 from "../utils/aws-s3/upload-image";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -47,7 +46,7 @@ export default function connectSocketIO(
 
   io.on("connection", (socket) => {
     console.log(`client ${socket.id} is connected to worker: ${id}`);
-    joinPrivateRoom_listener(socket, id);
+    joinRoom_listener(socket, id);
 
     messageToServer_listener(socket, io);
 

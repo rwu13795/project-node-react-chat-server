@@ -1,4 +1,5 @@
 import { Socket, Server } from "socket.io";
+import groupMessage_emitter from "../event-emitters/group-msg-emitter";
 
 import privateMessage_emitter from "../event-emitters/private-msg-emitter";
 
@@ -38,6 +39,7 @@ export default function messageToServer_listener(socket: Socket, io: Server) {
         break;
       }
       case chatType.group: {
+        groupMessage_emitter(socket, messageObject);
         break;
       }
       case chatType.public: {

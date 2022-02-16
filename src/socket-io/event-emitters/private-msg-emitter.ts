@@ -6,8 +6,10 @@ import {
   insert_new_msg,
   insert_new_msg_users_ref,
 } from "../../utils/queries/private-messages";
+import crypto from "crypto";
 
 import { MessageObject } from "../event-listeners/messageToServer-listener";
+import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
 
 export default async function privateMessage_toClient(
   socket: Socket,
@@ -30,38 +32,45 @@ export default async function privateMessage_toClient(
   // the server will emit all direct messages which are for this user
   // to the private room. So as long as the user is connected, he can listen
   // to all direct messages sent to him.
-  const targetRoomIdentifier_recipient = `${targetChatRoom_type}_${recipient_id}`;
+  const targetRoom = `${targetChatRoom_type}_${recipient_id}`;
 
   // if there is a file in the message, upload it to S3
   let file_type = "none";
+  let file_url = "none";
   if (file_body && file_name) {
+    file_type = file_name.split(".")[1];
+    // generate a random key for the url
+    file_url = crypto.randomBytes(16).toString("hex") + `.${file_type}`;
+
     await uploadImageTo_S3(
       file_body,
-      file_name,
+      file_url,
       sender_id,
       recipient_id,
       targetChatRoom_type
     );
-    file_type = file_name.split(".")[1];
   }
 
-  socket.to(targetRoomIdentifier_recipient).emit("privateMessage_toClient", {
+  let messageObject_res: MessageObject_res = {
+    targetChatRoom_type,
     sender_id,
     sender_name,
     recipient_id,
     recipient_name,
     msg_body,
     msg_type,
+    created_at,
     file_type,
     file_name,
-    created_at,
-    targetChatRoom_type,
-  });
+    file_url,
+  };
+
+  socket.to(targetRoom).emit("message-to-client", messageObject_res);
 
   // save the message to DB and update notification count
   try {
     const msg_id_result = await db_pool.query(
-      insert_new_msg(msg_body, msg_type, file_name, file_type)
+      insert_new_msg(msg_body, msg_type, file_name, file_type, file_url)
     );
     const msg_id = msg_id_result.rows[0].msg_id as string;
 

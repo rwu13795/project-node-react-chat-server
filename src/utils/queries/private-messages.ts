@@ -13,6 +13,7 @@ export function get_private_chat_history(
                   private_messages.msg_type,
                   private_messages.created_at,
                   private_messages.file_type,
+                  private_messages.file_url,
                   private_messages.file_name
              FROM private_messages     
              INNER JOIN users_private_messages
@@ -29,14 +30,16 @@ export function insert_new_msg(
   msg_body: string,
   msg_type: string,
   file_name: string = "none",
-  file_type: string = "none"
+  file_type: string,
+  file_url: string
 ) {
   return {
     name: "new_msg",
-    text: `INSERT INTO private_messages(msg_body, msg_type, file_name, file_type) 
-           VALUES($1, $2, $3, $4)
+    text: `INSERT INTO private_messages
+                (msg_body, msg_type, file_name, file_type, file_url) 
+           VALUES($1, $2, $3, $4, $5)
            RETURNING msg_id`,
-    values: [msg_body, msg_type, file_name, file_type],
+    values: [msg_body, msg_type, file_name, file_type, file_url],
   };
 }
 

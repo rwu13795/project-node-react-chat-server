@@ -17,7 +17,10 @@ export function search_user(user_id: string, user_email: string) {
 
 export function find_existing_user(req_email: string) {
   return {
-    text: "SELECT user_id, username, password, email FROM users WHERE email = $1",
+    text: `SELECT user_id, 
+              username, password, 
+              email, avatar_url FROM users 
+           WHERE email = $1`,
     values: [req_email],
   };
 }

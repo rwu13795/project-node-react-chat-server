@@ -17,6 +17,7 @@ declare module "express-session" {
       user_id: string;
       isLoggedIn: boolean;
       targetRoomIdentifier: string;
+      avatar_url?: string;
     };
   }
 }
