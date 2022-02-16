@@ -61,14 +61,6 @@ export default function connectSocketIO(
     addFriendResponse_listener(socket);
 
     offline_listener(socket);
-
-    //////////////////////////
-    socket.on("imageToServer", ({ body, messageType, fileName }) => {
-      console.log("messageType", messageType);
-
-      socket.emit("imageToClient");
-      // uploadImageTo_S3(fileName, body);
-    });
   });
 
   process.on("message", function (message, connection: any) {

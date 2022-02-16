@@ -55,7 +55,7 @@ export default function addFriendResponse_listener(socket: Socket) {
         We can start chatting now!`;
 
         const [msg_id_result] = await Promise.all([
-          db_pool.query(insert_new_msg(body)),
+          db_pool.query(insert_new_msg(body, "text")),
           db_pool.query(insert_friends_pair(target_id, sender_id)),
         ]);
 

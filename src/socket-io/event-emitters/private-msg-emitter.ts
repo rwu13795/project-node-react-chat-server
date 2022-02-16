@@ -26,13 +26,13 @@ export default async function privateMessage_toClient(
     created_at,
   } = messageObject;
 
-  const targetRoomIdentifier_recipient = `${targetChatRoom_type}_${recipient_id}`;
-
   // each user connects to a private room where only the user is inside.
   // the server will emit all direct messages which are for this user
   // to the private room. So as long as the user is connected, he can listen
   // to all direct messages sent to him.
+  const targetRoomIdentifier_recipient = `${targetChatRoom_type}_${recipient_id}`;
 
+  // if there is a file in the message, upload it to S3
   let file_type = "none";
   if (file_body && file_name) {
     await uploadImageTo_S3(
