@@ -4,12 +4,12 @@ import { requireUserAuth } from "../../middlewares/require-auth";
 import {
   clearNotifications,
   getNotifications,
-  privateChatHitory,
+  chatHitory,
 } from "./controllers/_index";
 
 const router = express.Router();
 
-router.get("/private-chat-history", requireUserAuth, privateChatHitory);
+router.get("/chat-history", requireUserAuth, chatHitory);
 
 router.get("/get-notifications", requireUserAuth, getNotifications);
 
