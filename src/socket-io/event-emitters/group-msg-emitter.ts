@@ -1,10 +1,13 @@
 import { Socket } from "socket.io";
+import uploadImageTo_S3 from "../../utils/aws-s3/upload-image";
 
 import { db_pool } from "../../utils/db-connection";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
+import { insert_new_group_msg } from "../../utils/queries/group-messages";
+import { update_group_notification_count } from "../../utils/queries/notifications-group-chat";
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 
-export default function groupMessage_emitter(
+export default async function groupMessage_emitter(
   socket: Socket,
   messageObject: MessageObject
 ) {
@@ -27,19 +30,17 @@ export default function groupMessage_emitter(
   // // if there is a file in the message, upload it to S3
   let file_type = "none";
   let file_url = "none";
-  // if (file_body && file_name) {
-  //   file_type = file_name.split(".")[1];
-  //   // generate a random key for the url
-  //   file_url = crypto.randomBytes(16).toString("hex") + `.${file_type}`;
-
-  //   await uploadImageTo_S3(
-  //     file_body,
-  //     file_url,
-  //     sender_id,
-  //     recipient_id,
-  //     targetChatRoom_type
-  //   );
-  // }
+  if (file_body && file_name) {
+    const { type, url } = await uploadImageTo_S3(
+      file_body,
+      file_name,
+      sender_id,
+      recipient_id,
+      targetChatRoom_type
+    );
+    file_type = type;
+    file_url = url;
+  }
 
   let messageObject_res: MessageObject_res = {
     targetChatRoom_type,
@@ -59,15 +60,20 @@ export default function groupMessage_emitter(
 
   // save the message to DB and update notification count
   try {
-    // const msg_id_result = await db_pool.query(
-    //   insert_new_msg(msg_body, msg_type, file_name, file_type, file_url)
-    // );
-    // const msg_id = msg_id_result.rows[0].msg_id as string;
-
-    // await Promise.all([
-    //   db_pool.query(insert_new_msg_users_ref(sender_id, recipient_id, msg_id)),
-    //   db_pool.query(update_private_notification_count(sender_id, recipient_id)),
-    // ]);
+    await Promise.all([
+      db_pool.query(
+        insert_new_group_msg(
+          recipient_id,
+          sender_id,
+          msg_body,
+          msg_type,
+          file_name,
+          file_type,
+          file_url
+        )
+      ),
+      db_pool.query(update_group_notification_count(recipient_id, sender_id)),
+    ]);
 
     console.log("insert new msg into table");
   } catch (err) {

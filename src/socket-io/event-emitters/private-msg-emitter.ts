@@ -6,7 +6,6 @@ import {
   insert_new_msg,
   insert_new_msg_users_ref,
 } from "../../utils/queries/private-messages";
-import crypto from "crypto";
 
 import { MessageObject } from "../event-listeners/messageToServer-listener";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
@@ -38,17 +37,15 @@ export default async function privateMessage_toClient(
   let file_type = "none";
   let file_url = "none";
   if (file_body && file_name) {
-    file_type = file_name.split(".")[1];
-    // generate a random key for the url
-    file_url = crypto.randomBytes(16).toString("hex") + `.${file_type}`;
-
-    await uploadImageTo_S3(
+    const { type, url } = await uploadImageTo_S3(
       file_body,
-      file_url,
+      file_name,
       sender_id,
       recipient_id,
       targetChatRoom_type
     );
+    file_type = type;
+    file_url = url;
   }
 
   let messageObject_res: MessageObject_res = {

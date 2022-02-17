@@ -39,3 +39,27 @@ export interface MessageObject_res {
   file_type?: string;
   file_name?: string;
 }
+
+export interface ChatHistory_res {
+  msg_body: string;
+  msg_type: string;
+  created_at: string;
+  recipient_id: string;
+  sender_id: string;
+  file_type: string;
+  file_name: string;
+  file_url: string;
+}
+
+interface PrivateNotifications {
+  sender_id: string;
+  count: number;
+}
+interface GroupNotifications {
+  sender_id: string;
+  count: number;
+}
+export interface GetNotifications_res {
+  private: PrivateNotifications[];
+  group: GroupNotifications[];
+}

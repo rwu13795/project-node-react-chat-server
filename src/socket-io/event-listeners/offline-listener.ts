@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 import { db_pool } from "../../utils/db-connection";
 import { get_friends_id } from "../../utils/queries/friends-pair";
+import { clear_group_notification_count } from "../../utils/queries/notifications-group-chat";
 import { clear_private_notification_count } from "../../utils/queries/notifications-private-chat";
 
 import { chatType } from "./messageToServer-listener";
@@ -30,6 +31,7 @@ export default function offline_listener(socket: Socket) {
     if (type === chatType.private && currentTargetRoom !== "") {
       await db_pool.query(clear_private_notification_count(target_id, user_id));
     } else {
+      await db_pool.query(clear_group_notification_count(target_id, user_id));
     }
 
     socket.disconnect(true);
