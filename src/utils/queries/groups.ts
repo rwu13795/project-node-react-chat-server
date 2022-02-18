@@ -19,3 +19,12 @@ export function get_groups_list(user_id: string) {
     values: [user_id],
   };
 }
+
+export function group_counts_for_each_user(user_id: string) {
+  return {
+    text: `SELECT group_id
+           FROM groups
+           WHERE creator_user_id = $1`,
+    values: [user_id],
+  };
+}

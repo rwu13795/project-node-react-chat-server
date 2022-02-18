@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares/async-wrapper";
+import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
-import { create_new_group } from "../../../utils/queries/groups";
+import {
+  create_new_group,
+  group_counts_for_each_user,
+} from "../../../utils/queries/groups";
 import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
 import { insert_new_group_member } from "../../../utils/queries/users-in-groups";
 
@@ -18,8 +22,19 @@ export const createNewGroup = asyncWrapper(
     const group_name = req.body.group_name as string;
     const creator_user_id = req.body.creator_user_id as string;
 
-    // check how many groups this user has created. If more than 20,
+    // check how many groups this user has created. If more than 5 (for demo),
     // then throw error to the client
+    const groupCounts_result = await db_pool.query(
+      group_counts_for_each_user(creator_user_id)
+    );
+    if (groupCounts_result.rowCount >= 5) {
+      return next(
+        new Bad_Request_Error(
+          "Group limit reached, You cannot create more than 5 groups",
+          "group_counts"
+        )
+      );
+    }
 
     // create a new group
     const createNewGroup_result = await db_pool.query(
