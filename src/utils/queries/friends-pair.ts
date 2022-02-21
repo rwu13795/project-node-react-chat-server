@@ -14,7 +14,9 @@ export function get_friends_list(user_id: string) {
     text: `SELECT 
                   users.user_id as "friend_id", 
                   users.username as "friend_username", 
-                  users.email as "friend_email" 
+                  users.email as "friend_email",
+                  friends_pair.block_friend,
+                  friends_pair.is_blocked
              FROM users 
              INNER JOIN friends_pair
                     ON friends_pair.friend_id = $1

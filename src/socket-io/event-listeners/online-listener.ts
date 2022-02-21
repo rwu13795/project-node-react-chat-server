@@ -8,6 +8,7 @@ export default function online_listener(socket: Socket) {
   socket.on("online", async (target_id?: string) => {
     const query = socket.handshake.query;
     const user_id = query.user_id as string;
+    const username = query.username as string;
 
     // used when user accepted an add-friend request. Let the new friend know
     // that the user is online
@@ -29,6 +30,7 @@ export default function online_listener(socket: Socket) {
       }
       socket.currentUser = {
         user_id,
+        username,
         friends_id,
         rooms_id,
         currentTargetRoom: "",

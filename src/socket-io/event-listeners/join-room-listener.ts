@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { chatType } from "./messageToServer-listener";
 
-interface RoomIds {
+interface Props {
   private_id: string;
   group_ids: string[];
 }
@@ -10,7 +10,7 @@ export default function joinRoom_listener(
   socket: Socket,
   id: number | undefined
 ) {
-  socket.on("join-room", ({ private_id, group_ids }: RoomIds) => {
+  socket.on("join-room", ({ private_id, group_ids }: Props) => {
     console.log(
       `socket ${socket.id} has joined ${private_id}, using worker ${id}`
     );

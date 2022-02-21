@@ -12,9 +12,11 @@ import {
   AddFriendRequest_res,
   CurrentUser_res,
   Friend_res,
+  GroupInvitation_res,
   Group_res,
 } from "../../../utils/interfaces/response-interfaces";
 import { Users } from "../../../utils/interfaces/tables-columns";
+import { get_group_invitations } from "../../../utils/queries/group-invitation";
 
 interface SignInBody {
   req_email: string;
@@ -26,6 +28,7 @@ interface SignIn_res {
   friendsList: Friend_res[];
   addFriendRequests: AddFriendRequest_res[];
   groupsList: Group_res[];
+  groupInvitations: GroupInvitation_res[];
 }
 
 export const signIn = asyncWrapper(
@@ -47,10 +50,16 @@ export const signIn = asyncWrapper(
       return next(new Bad_Request_Error("Password is incorrect", "password"));
     }
 
-    const [friends_res, addFriendRequests_res, groups_res] = await Promise.all([
+    const [
+      friends_res,
+      addFriendRequests_res,
+      groups_res,
+      groupInvitaions_result,
+    ] = await Promise.all([
       db_pool.query(get_friends_list(user_id)),
       db_pool.query(get_add_friend_request(user_id)),
       db_pool.query(get_groups_list(user_id)),
+      db_pool.query(get_group_invitations(user_id)),
     ]);
 
     req.session.currentUser = {
@@ -67,6 +76,7 @@ export const signIn = asyncWrapper(
       addFriendRequests: addFriendRequests_res.rows,
       currentUser: req.session.currentUser,
       groupsList: groups_res.rows,
+      groupInvitations: groupInvitaions_result.rows,
     };
 
     res.status(201).send(response);

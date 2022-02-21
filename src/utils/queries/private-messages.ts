@@ -30,8 +30,8 @@ export function insert_new_msg(
   msg_body: string,
   msg_type: string,
   file_name: string = "none",
-  file_type: string,
-  file_url: string
+  file_type: string = "none",
+  file_url: string = "none"
 ) {
   return {
     name: "new_msg",

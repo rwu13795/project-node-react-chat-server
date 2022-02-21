@@ -17,7 +17,7 @@ import {
 
 import { chatType } from "./messageToServer-listener";
 
-interface AddFriendResponse {
+interface Props {
   sender_id: string;
   sender_username: string;
   target_id: string;
@@ -34,7 +34,7 @@ export default function addFriendResponse_listener(socket: Socket) {
       target_id,
       target_username,
       accept,
-    }: AddFriendResponse) => {
+    }: Props) => {
       // mark the add_friend_request as responded
       await db_pool.query(update_add_friend_request(target_id, sender_id));
 
@@ -55,7 +55,7 @@ export default function addFriendResponse_listener(socket: Socket) {
         We can start chatting now!`;
 
         const [msg_id_result] = await Promise.all([
-          db_pool.query(insert_new_msg(body, "text")),
+          db_pool.query(insert_new_msg(body, "admin")),
           db_pool.query(insert_friends_pair(target_id, sender_id)),
         ]);
 

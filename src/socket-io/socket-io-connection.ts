@@ -12,9 +12,15 @@ import offline_listener from "./event-listeners/offline-listener";
 import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
 import addFriendRequest_listener from "./event-listeners/add-friend-request-listener";
 import addFriendResponse_listener from "./event-listeners/add-friend-response-listener";
+import groupInvitationReqest_listener from "./event-listeners/group-invitation-request-listener";
+import groupInvitationResponse_listener from "./event-listeners/group-invitation-response-listener";
+import leaveGroup_listener from "./event-listeners/leave-group-listener";
+import kickMember_listener from "./event-listeners/kick-member-listener";
+import kickedOutOfGroup_listener from "./event-listeners/kicked-out-of-group-listener";
 
 export interface Socket_currentUser {
   user_id: string;
+  username: string;
   currentTargetRoom: string;
   friends_id: string[];
   rooms_id: string[];
@@ -58,6 +64,12 @@ export default function connectSocketIO(
 
     addFriendRequest_listener(socket, io);
     addFriendResponse_listener(socket);
+
+    groupInvitationReqest_listener(socket, io);
+    groupInvitationResponse_listener(socket, io);
+    leaveGroup_listener(socket, io);
+    kickMember_listener(socket, io);
+    kickedOutOfGroup_listener(socket);
 
     offline_listener(socket);
   });

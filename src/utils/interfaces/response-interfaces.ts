@@ -63,3 +63,9 @@ export interface GetNotifications_res {
   private: PrivateNotifications[];
   group: GroupNotifications[];
 }
+
+export interface GroupInvitation_res {
+  group_id: string;
+  group_name: string;
+  inviter_name: string;
+}

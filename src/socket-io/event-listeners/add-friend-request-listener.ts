@@ -7,7 +7,7 @@ import {
 
 import { chatType } from "./messageToServer-listener";
 
-interface AddFriendRequest {
+interface Props {
   sender_id: string;
   sender_username: string;
   sender_email: string;
@@ -24,16 +24,19 @@ export default function addFriendRequest_listener(socket: Socket, io: Server) {
       sender_email,
       message,
       target_id,
-    }: AddFriendRequest) => {
+    }: Props) => {
       console.log(
         `user ${sender_username} id-${sender_id} sends a request to ${target_id}`
       );
 
-      // check if the sender has sent a request before
-      const result = await db_pool.query(
-        check_add_friend_request(target_id, sender_id)
-      );
-      if (result.rowCount > 0) {
+      try {
+        // add a new add_friend_request, if user has already sent a request
+        // the DB will throw a duplication error since the id combination must
+        // be unique.
+        await db_pool.query(
+          insert_add_friend_request(target_id, sender_id, message)
+        );
+      } catch (err) {
         io.to(`${chatType.private}_${sender_id}`).emit(
           "check-add-friend-request",
           "You have already sent a request to this user before!"
@@ -41,11 +44,9 @@ export default function addFriendRequest_listener(socket: Socket, io: Server) {
         return;
       }
 
-      await db_pool.query(
-        insert_add_friend_request(target_id, sender_id, message)
-      );
-
-      // send request to target private room
+      // send request to target private room, if the target user is online
+      // he can respond to the request immediately. Otherwise, this request
+      // will be loaded from the DB the next time the target user signs in.
       socket.to(`${chatType.private}_${target_id}`).emit("add-friend-request", {
         sender_id,
         sender_username,
