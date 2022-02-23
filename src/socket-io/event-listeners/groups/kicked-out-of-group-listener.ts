@@ -1,6 +1,5 @@
 import { Server, Socket } from "socket.io";
-
-import { chatType } from "./messageToServer-listener";
+import { chatType } from "../user/messageToServer-listener";
 
 // force the user who got kicked out disconnect from the group room
 // so that he can no longer send message to that room

@@ -8,13 +8,16 @@ import {
   group_counts_for_each_user,
 } from "../../../utils/queries/groups";
 import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { insert_new_group_member } from "../../../utils/queries/users-in-groups";
+import { insert_new_group_member } from "../../../utils/queries/groups";
+import { insert_new_group_msg } from "../../../utils/queries/group-messages";
 
 export interface NewGroup {
   group_id: string;
   group_name: string;
   creator_user_id: string;
-  user_kicked: boolean;
+  was_kicked: boolean;
+  user_left_at: string | null;
+  user_left: boolean;
 }
 
 export const createNewGroup = asyncWrapper(
@@ -43,18 +46,22 @@ export const createNewGroup = asyncWrapper(
     const group_id = createNewGroup_result.rows[0].group_id;
 
     // add the creator as member and create a notification_group_chat row
-    const [newMember_result] = await Promise.all([
+    let msg_body = `${req.session.currentUser?.username} has created the a group "${group_name}"`;
+    await Promise.all([
       db_pool.query(insert_new_group_member(group_id, creator_user_id)),
       db_pool.query(insert_group_notifications(group_id, creator_user_id)),
+      db_pool.query(
+        insert_new_group_msg(group_id, creator_user_id, msg_body, "admin")
+      ),
     ]);
-
-    const user_kicked = newMember_result.rows[0].user_kicked;
 
     let newGroup: NewGroup = {
       group_id,
       group_name,
       creator_user_id,
-      user_kicked,
+      was_kicked: false,
+      user_left_at: "",
+      user_left: false,
     };
 
     res.status(201).send(newGroup);

@@ -4,19 +4,20 @@ import { Server } from "socket.io";
 import { setupWorker } from "@socket.io/sticky";
 import { createAdapter } from "@socket.io/cluster-adapter";
 
-import joinRoom_listener from "./event-listeners/join-room-listener";
-import messageToServer_listener from "./event-listeners/messageToServer-listener";
-import online_listener from "./event-listeners/online-listener";
-import onlineEcho_listener from "./event-listeners/online-echo-listener";
-import offline_listener from "./event-listeners/offline-listener";
-import currentTargetRoom_listener from "./event-listeners/current-target-room-listener";
-import addFriendRequest_listener from "./event-listeners/add-friend-request-listener";
-import addFriendResponse_listener from "./event-listeners/add-friend-response-listener";
-import groupInvitationReqest_listener from "./event-listeners/group-invitation-request-listener";
-import groupInvitationResponse_listener from "./event-listeners/group-invitation-response-listener";
-import leaveGroup_listener from "./event-listeners/leave-group-listener";
-import kickMember_listener from "./event-listeners/kick-member-listener";
-import kickedOutOfGroup_listener from "./event-listeners/kicked-out-of-group-listener";
+import currentTargetRoom_listener from "./event-listeners/user/current-target-room-listener";
+import addFriendRequest_listener from "./event-listeners/friends/add-friend-request-listener";
+import createNewGroup_listener from "./event-listeners/groups/create-new-group-listener";
+import joinRoom_listener from "./event-listeners/user/join-room-listener";
+import messageToServer_listener from "./event-listeners/user/messageToServer-listener";
+import online_listener from "./event-listeners/user/online-listener";
+import onlineEcho_listener from "./event-listeners/user/online-echo-listener";
+import addFriendResponse_listener from "./event-listeners/friends/add-friend-response-listener";
+import groupInvitationReqest_listener from "./event-listeners/groups/group-invitation-request-listener";
+import groupInvitationResponse_listener from "./event-listeners/groups/group-invitation-response-listener";
+import leaveGroup_listener from "./event-listeners/groups/leave-group-listener";
+import kickMember_listener from "./event-listeners/groups/kick-member-listener";
+import kickedOutOfGroup_listener from "./event-listeners/groups/kicked-out-of-group-listener";
+import offline_listener from "./event-listeners/user/offline-listener";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -65,6 +66,7 @@ export default function connectSocketIO(
     addFriendRequest_listener(socket, io);
     addFriendResponse_listener(socket);
 
+    createNewGroup_listener(socket);
     groupInvitationReqest_listener(socket, io);
     groupInvitationResponse_listener(socket, io);
     leaveGroup_listener(socket, io);

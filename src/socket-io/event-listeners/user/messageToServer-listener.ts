@@ -1,7 +1,7 @@
 import { Socket, Server } from "socket.io";
-import groupMessage_emitter from "../event-emitters/group-msg-emitter";
 
-import privateMessage_emitter from "../event-emitters/private-msg-emitter";
+import groupMessage_emitter from "../../event-emitters/group-msg-emitter";
+import privateMessage_emitter from "../../event-emitters/private-msg-emitter";
 
 export enum chatType {
   public = "public",

@@ -7,8 +7,8 @@ import {
   insert_new_msg_users_ref,
 } from "../../utils/queries/private-messages";
 
-import { MessageObject } from "../event-listeners/messageToServer-listener";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
+import { MessageObject } from "../event-listeners/user/messageToServer-listener";
 
 export default async function privateMessage_toClient(
   socket: Socket,

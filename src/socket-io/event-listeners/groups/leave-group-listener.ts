@@ -1,9 +1,9 @@
 import { Server, Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { insert_new_group_msg } from "../../utils/queries/group-messages";
-import { delete_group_member } from "../../utils/queries/groups";
-import { chatType } from "./messageToServer-listener";
+import { db_pool } from "../../../utils/db-connection";
+import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
+import { insert_new_group_msg } from "../../../utils/queries/group-messages";
+import { group_member_left } from "../../../utils/queries/groups";
+import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
   group_id: string;
@@ -17,9 +17,12 @@ export default function leaveGroup_listener(socket: Socket, io: Server) {
     socket.leave(`${chatType.group}_${group_id}`);
 
     let msg_body = `Member ${socket.currentUser.username} has left the group...`;
+    // add the "left" message before updating the group_member_left,
+    // this "left" message can be included in the limited history while
+    // using created_at <= "user_left_at" to fetch the messages
     await Promise.all([
-      db_pool.query(delete_group_member(group_id, user_id)),
       db_pool.query(insert_new_group_msg(group_id, user_id, msg_body, "admin")),
+      db_pool.query(group_member_left(group_id, user_id, false)),
     ]);
 
     // emit the leave-group message to the group, let the members
@@ -40,9 +43,7 @@ export default function leaveGroup_listener(socket: Socket, io: Server) {
     };
     io.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
       messageObject_res,
-      note_type: "left",
       group_id,
-      member_user_id: user_id,
     });
   });
 }

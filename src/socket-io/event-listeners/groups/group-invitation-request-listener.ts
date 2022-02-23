@@ -1,15 +1,10 @@
 import { Server, Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import {
-  check_add_friend_request,
-  insert_add_friend_request,
-} from "../../utils/queries/add-friend-request";
+import { db_pool } from "../../../utils/db-connection";
 import {
   check_group_member,
   insert_group_invitation,
-} from "../../utils/queries/group-invitation";
-
-import { chatType } from "./messageToServer-listener";
+} from "../../../utils/queries/group-invitation";
+import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
   friend_id: string;
@@ -35,14 +30,27 @@ export default function groupInvitationReqest_listener(
         check_group_member(friend_id, group_id)
       );
       if (result.rowCount > 0) {
-        let body = result.rows[0].user_kicked
-          ? "This user was kicked from the group, you cannot invite this user for at least a week from the time he/she was kicked."
-          : "Your friend is already in this group!";
-        io.to(`${chatType.private}_${inviter_id}`).emit(
-          "check-group-invitation",
-          body
-        );
-        return;
+        const { was_kicked, user_left } = result.rows[0];
+
+        if (user_left && was_kicked) {
+          let body = `This user was kicked from the group, you cannot invite this 
+                      user for at least a week from the time he/she was kicked.`;
+          io.to(`${chatType.private}_${inviter_id}`).emit(
+            "check-group-invitation",
+            { message: body }
+          );
+          return;
+        }
+        if (!user_left && !was_kicked) {
+          let body = "Your friend is already in this group!";
+          io.to(`${chatType.private}_${inviter_id}`).emit(
+            "check-group-invitation",
+            { message: body }
+          );
+          return;
+        }
+        // if the (user_left && !was_kicked)
+        // allow to invite back the user who left on his own
       }
 
       try {
@@ -54,7 +62,10 @@ export default function groupInvitationReqest_listener(
       } catch (err) {
         io.to(`${chatType.private}_${inviter_id}`).emit(
           "check-group-invitation",
-          "You or the other group members have already sent an invitaion to this friend before!"
+          {
+            message:
+              "You or the other group members have already sent an invitaion to this friend before!",
+          }
         );
         return;
       }
@@ -73,7 +84,7 @@ export default function groupInvitationReqest_listener(
       // the message just like the "group chat"
       io.to(`${chatType.private}_${inviter_id}`).emit(
         "check-group-invitation",
-        "The request has been sent!"
+        { message: "The request has been sent!" }
       );
     }
   );

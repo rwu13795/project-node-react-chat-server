@@ -1,9 +1,9 @@
 import { Server, Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { insert_new_group_msg } from "../../utils/queries/group-messages";
-import { delete_group_member } from "../../utils/queries/groups";
-import { chatType } from "./messageToServer-listener";
+import { db_pool } from "../../../utils/db-connection";
+import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
+import { insert_new_group_msg } from "../../../utils/queries/group-messages";
+import { group_member_left } from "../../../utils/queries/groups";
+import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
   group_id: string;
@@ -23,7 +23,7 @@ export default function kickMember_listener(socket: Socket, io: Server) {
       let msg_body = `Member ${member_username} was politely kicked out of the 
                     group by the administrator ${username}!`;
       await Promise.all([
-        db_pool.query(delete_group_member(group_id, member_user_id)),
+        db_pool.query(group_member_left(group_id, member_user_id, true)),
         db_pool.query(
           insert_new_group_msg(group_id, user_id, msg_body, "admin")
         ),
@@ -40,7 +40,7 @@ export default function kickMember_listener(socket: Socket, io: Server) {
         recipient_name: "",
         msg_body,
         msg_type: "admin",
-        created_at: new Date().toDateString(),
+        created_at: new Date().toString(),
         file_type: "none",
         file_name: "none",
         file_url: "none",
@@ -48,18 +48,13 @@ export default function kickMember_listener(socket: Socket, io: Server) {
 
       io.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
         messageObject_res,
-        note_type: "left",
         group_id,
-        member_user_id,
       });
 
       // let the client-socket of the kicked user leave the room of this group
       io.to(`${chatType.private}_${member_user_id}`).emit(
         "kicked-out-of-group",
-        {
-          group_id,
-          member_user_id,
-        }
+        { group_id }
       );
     }
   );

@@ -23,6 +23,7 @@ export interface Group_res {
   group_name: string;
   creator_user_id: string;
   user_kicked: boolean;
+  user_kicked_at: string;
 }
 export interface GroupMember_res extends Friend_res {}
 

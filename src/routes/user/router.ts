@@ -4,6 +4,7 @@ import { requireUserAuth } from "../../middlewares/require-auth";
 import {
   createNewGroup,
   getMembersList,
+  removeGroup,
   searchUser,
 } from "./controllers/_index";
 
@@ -14,5 +15,7 @@ router.post("/search-user", requireUserAuth, searchUser);
 router.post("/create-new-group", requireUserAuth, createNewGroup);
 
 router.get("/get-members-list", requireUserAuth, getMembersList);
+
+router.post("/remove-group", requireUserAuth, removeGroup);
 
 export { router as userRouter };

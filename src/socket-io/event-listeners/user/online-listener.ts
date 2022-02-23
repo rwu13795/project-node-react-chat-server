@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import { get_friends_id } from "../../utils/queries/friends-pair";
+import { db_pool } from "../../../utils/db-connection";
+import { get_friends_id } from "../../../utils/queries/friends-pair";
 
 import { chatType } from "./messageToServer-listener";
 

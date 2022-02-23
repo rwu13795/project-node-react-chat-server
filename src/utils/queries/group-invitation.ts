@@ -29,7 +29,7 @@ export function get_group_invitations(invitee_id: string) {
 
 export function check_group_member(user_id: string, group_id: string) {
   return {
-    text: `SELECT user_kicked
+    text: `SELECT user_left, was_kicked, group_removed
              FROM users_in_groups
              WHERE user_id = $1 AND group_id = $2`,
     values: [user_id, group_id],

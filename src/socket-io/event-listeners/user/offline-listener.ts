@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import { get_friends_id } from "../../utils/queries/friends-pair";
-import { clear_group_notification_count } from "../../utils/queries/notifications-group-chat";
-import { clear_private_notification_count } from "../../utils/queries/notifications-private-chat";
+import { db_pool } from "../../../utils/db-connection";
+import { get_friends_id } from "../../../utils/queries/friends-pair";
+import { clear_group_notification_count } from "../../../utils/queries/notifications-group-chat";
+import { clear_private_notification_count } from "../../../utils/queries/notifications-private-chat";
 
 import { chatType } from "./messageToServer-listener";
 

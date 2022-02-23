@@ -1,14 +1,13 @@
 import { Server, Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-
-import { delete_group_invitation } from "../../utils/queries/group-invitation";
-import { insert_new_group_msg } from "../../utils/queries/group-messages";
+import { db_pool } from "../../../utils/db-connection";
+import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
+import { delete_group_invitation } from "../../../utils/queries/group-invitation";
+import { insert_new_group_msg } from "../../../utils/queries/group-messages";
 import {
   get_groups_list,
   insert_new_group_member,
-} from "../../utils/queries/groups";
-import { chatType } from "./messageToServer-listener";
+} from "../../../utils/queries/groups";
+import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
   group_id: string;
@@ -38,12 +37,17 @@ export default function groupInvitationResponse_listener(
         console.log(`user  @${invitee_id} ACCEPTED to join group ${group_id}`);
 
         socket.join(`${chatType.group}_${group_id}`);
+        // after the user joined the new group
         // get the update groupsList, and send it back to the client socket
         // "check-group-invitation" listener, to let the client update the groupsList
         const result = await db_pool.query(get_groups_list(invitee_id));
         io.to(`${chatType.private}_${invitee_id}`).emit(
           "check-group-invitation",
-          { message: "User joined group", groupsList: result.rows }
+          {
+            message: "User joined group",
+            newGroupsList: result.rows,
+            newGroupId: group_id,
+          }
         );
 
         // emit the new-member-joined message to the group, let the members
@@ -62,15 +66,16 @@ export default function groupInvitationResponse_listener(
           file_name: "none",
           file_url: "none",
         };
-        io.to(`${chatType.group}_${group_id}`).emit(
-          "group-admin-notification",
-          {
+        // also let all the group members who are online in this group to
+        // update their membersList
+        socket
+          .to(`${chatType.group}_${group_id}`)
+          .emit("group-admin-notification", {
             messageObject_res,
-            note_type: "joined",
+            note: "joined",
             group_id,
             member_user_id: invitee_id,
-          }
-        );
+          });
       }
     }
   );

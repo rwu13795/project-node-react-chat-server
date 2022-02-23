@@ -1,21 +1,13 @@
 import { Server, Socket } from "socket.io";
-import { db_pool } from "../../utils/db-connection";
-import {
-  check_add_friend_request,
-  insert_add_friend_request,
-  update_add_friend_request,
-} from "../../utils/queries/add-friend-request";
-import { insert_friends_pair } from "../../utils/queries/friends-pair";
-import {
-  insert_private_notifications,
-  update_private_notification_count,
-} from "../../utils/queries/notifications-private-chat";
+import { db_pool } from "../../../utils/db-connection";
+import { update_add_friend_request } from "../../../utils/queries/add-friend-request";
+import { insert_friends_pair } from "../../../utils/queries/friends-pair";
+import { insert_private_notifications } from "../../../utils/queries/notifications-private-chat";
 import {
   insert_new_msg,
   insert_new_msg_users_ref,
-} from "../../utils/queries/private-messages";
-
-import { chatType } from "./messageToServer-listener";
+} from "../../../utils/queries/private-messages";
+import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
   sender_id: string;

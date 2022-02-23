@@ -5,7 +5,7 @@ import { db_pool } from "../../utils/db-connection";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
 import { insert_new_group_msg } from "../../utils/queries/group-messages";
 import { update_group_notification_count } from "../../utils/queries/notifications-group-chat";
-import { MessageObject } from "../event-listeners/messageToServer-listener";
+import { MessageObject } from "../event-listeners/user/messageToServer-listener";
 
 export default async function groupMessage_emitter(
   socket: Socket,
