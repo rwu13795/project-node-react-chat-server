@@ -10,6 +10,10 @@ export interface Friend_res {
   friend_username: string;
   friend_email: string;
   avatar_url?: string;
+  user_blocked_friend: boolean;
+  user_blocked_friend_at: string;
+  friend_blocked_user: boolean;
+  friend_blocked_user_at: string;
 }
 export interface AddFriendRequest_res {
   sender_id: string;

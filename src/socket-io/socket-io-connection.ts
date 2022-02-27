@@ -18,6 +18,7 @@ import leaveGroup_listener from "./event-listeners/groups/leave-group-listener";
 import kickMember_listener from "./event-listeners/groups/kick-member-listener";
 import kickedOutOfGroup_listener from "./event-listeners/groups/kicked-out-of-group-listener";
 import offline_listener from "./event-listeners/user/offline-listener";
+import blockFriend_listener from "./event-listeners/friends/block-friend-listener";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -65,6 +66,7 @@ export default function connectSocketIO(
 
     addFriendRequest_listener(socket, io);
     addFriendResponse_listener(socket);
+    blockFriend_listener(socket);
 
     createNewGroup_listener(socket);
     groupInvitationReqest_listener(socket, io);
