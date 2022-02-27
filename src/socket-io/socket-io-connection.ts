@@ -19,13 +19,21 @@ import kickMember_listener from "./event-listeners/groups/kick-member-listener";
 import kickedOutOfGroup_listener from "./event-listeners/groups/kicked-out-of-group-listener";
 import offline_listener from "./event-listeners/user/offline-listener";
 import blockFriend_listener from "./event-listeners/friends/block-friend-listener";
+import onlineStatusChange_listener from "./event-listeners/user/online-status-change-listener";
 
 export interface Socket_currentUser {
   user_id: string;
   username: string;
   currentTargetRoom: string;
   friends_id: string[];
-  rooms_id: string[];
+  friends_room_id: string[];
+  onlineStatus: string;
+}
+export enum onlineStatus_enum {
+  available = "Available",
+  away = "Away",
+  busy = "Busy",
+  offline = "Offline",
 }
 
 declare module "socket.io" {
@@ -67,6 +75,7 @@ export default function connectSocketIO(
     addFriendRequest_listener(socket, io);
     addFriendResponse_listener(socket);
     blockFriend_listener(socket);
+    onlineStatusChange_listener(socket);
 
     createNewGroup_listener(socket);
     groupInvitationReqest_listener(socket, io);

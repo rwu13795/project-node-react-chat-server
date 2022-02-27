@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+import { onlineStatus_enum } from "../../socket-io-connection";
 
 import { chatType } from "./messageToServer-listener";
 
@@ -12,6 +13,9 @@ export default function onlineEcho_listener(socket: Socket) {
     );
     socket
       .to(`${chatType.private}_${friend_id}`)
-      .emit("online-echo", currentUserId);
+      .emit("online-echo", {
+        friend_id: currentUserId,
+        status: socket.currentUser.onlineStatus,
+      });
   });
 }
