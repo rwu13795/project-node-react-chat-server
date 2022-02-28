@@ -32,7 +32,6 @@ export interface Group_res {
 export interface GroupMember_res extends Friend_res {}
 
 export interface MessageObject_res {
-  targetChatRoom_type: string;
   sender_id: string;
   sender_name: string;
   recipient_id: string;

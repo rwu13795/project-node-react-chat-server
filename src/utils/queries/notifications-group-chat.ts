@@ -38,3 +38,11 @@ export function insert_group_notifications(group_id: string, user_id: string) {
     values: [group_id, user_id],
   };
 }
+
+export function remove_group_notifications(group_id: string, user_id: string) {
+  return {
+    text: `DELETE FROM notifications_group_chat
+           WHERE group_id = $1 and user_id = $2`,
+    values: [group_id, user_id],
+  };
+}

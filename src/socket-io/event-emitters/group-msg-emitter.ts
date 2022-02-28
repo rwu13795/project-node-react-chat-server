@@ -9,14 +9,14 @@ import { MessageObject } from "../event-listeners/user/messageToServer-listener"
 
 export default async function groupMessage_emitter(
   socket: Socket,
-  messageObject: MessageObject
+  messageObject: MessageObject,
+  room_type: string
 ) {
   const {
     sender_id,
     sender_name,
     recipient_id, // group_id
     recipient_name, // group_name
-    targetChatRoom_type,
     msg_body,
     msg_type,
     file_body,
@@ -25,7 +25,7 @@ export default async function groupMessage_emitter(
   } = messageObject;
 
   // the recipient_id will always be the group_id
-  const targetRoom = `${targetChatRoom_type}_${recipient_id}`;
+  const targetRoom = `${room_type}_${recipient_id}`;
 
   // // if there is a file in the message, upload it to S3
   let file_type = "none";
@@ -36,14 +36,13 @@ export default async function groupMessage_emitter(
       file_name,
       sender_id,
       recipient_id,
-      targetChatRoom_type
+      room_type
     );
     file_type = type;
     file_url = url;
   }
 
   let messageObject_res: MessageObject_res = {
-    targetChatRoom_type,
     sender_id,
     sender_name,
     recipient_id,
@@ -56,7 +55,9 @@ export default async function groupMessage_emitter(
     file_url,
   };
 
-  socket.to(targetRoom).emit("message-to-client", messageObject_res);
+  socket
+    .to(targetRoom)
+    .emit("message-to-client", { messageObject: messageObject_res, room_type });
 
   // save the message to DB and update notification count
   try {

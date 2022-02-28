@@ -3,6 +3,7 @@ import { db_pool } from "../../../utils/db-connection";
 import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
 import { insert_new_group_msg } from "../../../utils/queries/group-messages";
 import { group_member_left } from "../../../utils/queries/groups";
+import { remove_group_notifications } from "../../../utils/queries/notifications-group-chat";
 import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
@@ -23,13 +24,13 @@ export default function leaveGroup_listener(socket: Socket, io: Server) {
     await Promise.all([
       db_pool.query(insert_new_group_msg(group_id, user_id, msg_body, "admin")),
       db_pool.query(group_member_left(group_id, user_id, false)),
+      db_pool.query(remove_group_notifications(group_id, user_id)),
     ]);
 
     // emit the leave-group message to the group, let the members
     // who are online know that a member has left
     // and update the members list in client
     let messageObject_res: MessageObject_res = {
-      targetChatRoom_type: chatType.group,
       sender_id: user_id,
       sender_name: socket.currentUser.username,
       recipient_id: group_id,
@@ -42,7 +43,8 @@ export default function leaveGroup_listener(socket: Socket, io: Server) {
       file_url: "none",
     };
     io.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
-      messageObject_res,
+      messageObject: messageObject_res,
+      room_type: chatType.group,
       group_id,
     });
   });

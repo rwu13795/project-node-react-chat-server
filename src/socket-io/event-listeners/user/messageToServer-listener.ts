@@ -17,29 +17,33 @@ export interface MessageObject {
   msg_body: string;
   msg_type: string;
   created_at: string;
-  targetChatRoom_type: string;
   file_body?: Buffer;
   file_type?: string;
   file_name?: string;
 }
 
-export default function messageToServer_listener(socket: Socket, io: Server) {
-  socket.on("messageToServer", async (messageObject: MessageObject) => {
-    console.log(
-      `server received msg from socket ${messageObject.sender_name} 
-      ----> ${messageObject.msg_body}`
-    );
+interface Props {
+  messageObject: MessageObject;
+  room_type: string;
+}
 
-    console.log(messageObject.msg_type);
+export default function messageToServer_listener(socket: Socket, io: Server) {
+  socket.on("messageToServer", async ({ messageObject, room_type }: Props) => {
+    // console.log(
+    //   `server received msg from socket ${messageObject.sender_name}
+    //   ----> ${messageObject.msg_body}`
+    // );
+
+    console.log(messageObject);
 
     // pass message to emitter
-    switch (messageObject.targetChatRoom_type) {
+    switch (room_type) {
       case chatType.private: {
-        privateMessage_emitter(socket, messageObject);
+        privateMessage_emitter(socket, messageObject, room_type);
         break;
       }
       case chatType.group: {
-        groupMessage_emitter(socket, messageObject);
+        groupMessage_emitter(socket, messageObject, room_type);
         break;
       }
       case chatType.public: {

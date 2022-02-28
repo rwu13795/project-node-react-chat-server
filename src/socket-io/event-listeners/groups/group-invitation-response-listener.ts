@@ -7,6 +7,7 @@ import {
   get_groups_list,
   insert_new_group_member,
 } from "../../../utils/queries/groups";
+import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
 import { chatType } from "../user/messageToServer-listener";
 
 interface Props {
@@ -29,6 +30,7 @@ export default function groupInvitationResponse_listener(
         let msg_body = `New member ${socket.currentUser.username} has joined the group!`;
         await Promise.all([
           db_pool.query(insert_new_group_member(group_id, invitee_id)),
+          db_pool.query(insert_group_notifications(group_id, invitee_id)),
           db_pool.query(
             insert_new_group_msg(group_id, invitee_id, msg_body, "admin")
           ),
@@ -54,7 +56,6 @@ export default function groupInvitationResponse_listener(
         // who are online know that there is new member immediately
         // and update the members list in client
         let messageObject_res: MessageObject_res = {
-          targetChatRoom_type: chatType.group,
           sender_id: invitee_id,
           sender_name: socket.currentUser.username,
           recipient_id: group_id,
@@ -71,10 +72,9 @@ export default function groupInvitationResponse_listener(
         socket
           .to(`${chatType.group}_${group_id}`)
           .emit("group-admin-notification", {
-            messageObject_res,
-            note: "joined",
+            messageObject: messageObject_res,
             group_id,
-            member_user_id: invitee_id,
+            room_type: chatType.group,
           });
       }
     }
