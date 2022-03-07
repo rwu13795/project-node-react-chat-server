@@ -3,9 +3,9 @@ import { db_pool } from "../../../utils/db-connection";
 import { get_friends_id } from "../../../utils/queries/friends-pair";
 import { onlineStatus_enum } from "../../socket-io-connection";
 
-import { chatType } from "./messageToServer-listener";
+import { chatType } from "./message-to-server-listener";
 
-export default function online_listener(socket: Socket) {
+export function online_listener(socket: Socket) {
   socket.on("online", async (target_id?: string) => {
     const query = socket.handshake.query;
     const user_id = query.user_id as string;

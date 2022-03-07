@@ -11,14 +11,14 @@ import {
   insert_new_msg,
   insert_new_msg_users_ref,
 } from "../../../utils/queries/private-messages";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   friend_id: string;
   block: boolean;
 }
 
-export default function blockFriend_listener(socket: Socket) {
+export function blockFriend_listener(socket: Socket) {
   socket.on("block-friend", async ({ friend_id, block }: Props) => {
     console.log("block-friend", friend_id, block);
 

@@ -6,7 +6,7 @@ import {
   getMembersList,
   removeGroup,
   searchUser,
-} from "./controllers/_index";
+} from "./controllers/__index";
 
 const router = express.Router();
 

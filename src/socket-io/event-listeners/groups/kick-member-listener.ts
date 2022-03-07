@@ -4,7 +4,7 @@ import { MessageObject_res } from "../../../utils/interfaces/response-interfaces
 import { insert_new_group_msg } from "../../../utils/queries/group-messages";
 import { group_member_left } from "../../../utils/queries/groups";
 import { remove_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   group_id: string;
@@ -12,7 +12,7 @@ interface Props {
   member_username: string;
 }
 
-export default function kickMember_listener(socket: Socket, io: Server) {
+export function kickMember_listener(socket: Socket, io: Server) {
   socket.on(
     "kick-member",
     async ({ group_id, member_user_id, member_username }: Props) => {

@@ -7,7 +7,7 @@ import {
   insert_new_msg,
   insert_new_msg_users_ref,
 } from "../../../utils/queries/private-messages";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   sender_id: string;
@@ -17,7 +17,7 @@ interface Props {
   accept: boolean;
 }
 
-export default function addFriendResponse_listener(socket: Socket) {
+export function addFriendResponse_listener(socket: Socket) {
   socket.on(
     "add-friend-response",
     async ({

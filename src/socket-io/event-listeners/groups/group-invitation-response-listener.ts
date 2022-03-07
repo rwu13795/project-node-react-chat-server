@@ -8,17 +8,14 @@ import {
   insert_new_group_member,
 } from "../../../utils/queries/groups";
 import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   group_id: string;
   accept: boolean;
 }
 
-export default function groupInvitationResponse_listener(
-  socket: Socket,
-  io: Server
-) {
+export function groupInvitationResponse_listener(socket: Socket, io: Server) {
   socket.on(
     "group-invitation-response",
     async ({ group_id, accept }: Props) => {

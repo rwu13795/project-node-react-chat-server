@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
 import { onlineStatus_enum } from "../../socket-io-connection";
 
-import { chatType } from "./messageToServer-listener";
+import { chatType } from "./message-to-server-listener";
 
-export default function onlineEcho_listener(socket: Socket) {
+export function onlineEcho_listener(socket: Socket) {
   socket.on("online-echo", (friend_id: string) => {
     const currentUserId = socket.currentUser.user_id;
 
@@ -11,11 +11,9 @@ export default function onlineEcho_listener(socket: Socket) {
     console.log(
       `let the friend ${friend_id} who is just logged in know that this socket ${currentUserId} is also online`
     );
-    socket
-      .to(`${chatType.private}_${friend_id}`)
-      .emit("online-echo", {
-        friend_id: currentUserId,
-        status: socket.currentUser.onlineStatus,
-      });
+    socket.to(`${chatType.private}_${friend_id}`).emit("online-echo", {
+      friend_id: currentUserId,
+      status: socket.currentUser.onlineStatus,
+    });
   });
 }

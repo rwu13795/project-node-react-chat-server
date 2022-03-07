@@ -4,7 +4,7 @@ import {
   check_add_friend_request,
   insert_add_friend_request,
 } from "../../../utils/queries/add-friend-request";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   sender_id: string;
@@ -14,7 +14,7 @@ interface Props {
   target_id: string;
 }
 
-export default function addFriendRequest_listener(socket: Socket, io: Server) {
+export function addFriendRequest_listener(socket: Socket, io: Server) {
   socket.on(
     "add-friend-request",
     async ({

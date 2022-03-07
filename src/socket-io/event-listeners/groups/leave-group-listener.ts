@@ -4,14 +4,14 @@ import { MessageObject_res } from "../../../utils/interfaces/response-interfaces
 import { insert_new_group_msg } from "../../../utils/queries/group-messages";
 import { group_member_left } from "../../../utils/queries/groups";
 import { remove_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   group_id: string;
   user_id: string;
 }
 
-export default function leaveGroup_listener(socket: Socket, io: Server) {
+export function leaveGroup_listener(socket: Socket, io: Server) {
   socket.on("leave-group", async ({ group_id, user_id }: Props) => {
     console.log(`user ${user_id} has left ${group_id}`);
 

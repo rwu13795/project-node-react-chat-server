@@ -4,7 +4,7 @@ import {
   check_group_member,
   insert_group_invitation,
 } from "../../../utils/queries/group-invitation";
-import { chatType } from "../user/messageToServer-listener";
+import { chatType } from "../user/message-to-server-listener";
 
 interface Props {
   friend_id: string;
@@ -13,10 +13,7 @@ interface Props {
   inviter_name: string;
 }
 
-export default function groupInvitationReqest_listener(
-  socket: Socket,
-  io: Server
-) {
+export function groupInvitationReqest_listener(socket: Socket, io: Server) {
   socket.on(
     "group-invitation-request",
     async ({ friend_id, group_id, group_name, inviter_name }: Props) => {

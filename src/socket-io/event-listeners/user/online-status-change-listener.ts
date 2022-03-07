@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
 import { onlineStatus_enum } from "../../socket-io-connection";
 
-import { chatType } from "./messageToServer-listener";
+import { chatType } from "./message-to-server-listener";
 
-export default function onlineStatusChange_listener(socket: Socket) {
+export function onlineStatusChange_listener(socket: Socket) {
   socket.on("online-status-change", (status: string) => {
     const { user_id, friends_room_id } = socket.currentUser;
 

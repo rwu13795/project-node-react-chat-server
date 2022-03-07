@@ -4,9 +4,9 @@ import { get_friends_id } from "../../../utils/queries/friends-pair";
 import { clear_group_notification_count } from "../../../utils/queries/notifications-group-chat";
 import { clear_private_notification_count } from "../../../utils/queries/notifications-private-chat";
 
-import { chatType } from "./messageToServer-listener";
+import { chatType } from "./message-to-server-listener";
 
-export default function offline_listener(socket: Socket) {
+export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
     const { user_id, currentTargetRoom } = socket.currentUser;
 

@@ -3,23 +3,24 @@ import { Server } from "socket.io";
 
 import { setupWorker } from "@socket.io/sticky";
 import { createAdapter } from "@socket.io/cluster-adapter";
-
-import currentTargetRoom_listener from "./event-listeners/user/current-target-room-listener";
-import addFriendRequest_listener from "./event-listeners/friends/add-friend-request-listener";
-import createNewGroup_listener from "./event-listeners/groups/create-new-group-listener";
-import joinRoom_listener from "./event-listeners/user/join-room-listener";
-import messageToServer_listener from "./event-listeners/user/messageToServer-listener";
-import online_listener from "./event-listeners/user/online-listener";
-import onlineEcho_listener from "./event-listeners/user/online-echo-listener";
-import addFriendResponse_listener from "./event-listeners/friends/add-friend-response-listener";
-import groupInvitationReqest_listener from "./event-listeners/groups/group-invitation-request-listener";
-import groupInvitationResponse_listener from "./event-listeners/groups/group-invitation-response-listener";
-import leaveGroup_listener from "./event-listeners/groups/leave-group-listener";
-import kickMember_listener from "./event-listeners/groups/kick-member-listener";
-import kickedOutOfGroup_listener from "./event-listeners/groups/kicked-out-of-group-listener";
-import offline_listener from "./event-listeners/user/offline-listener";
-import blockFriend_listener from "./event-listeners/friends/block-friend-listener";
-import onlineStatusChange_listener from "./event-listeners/user/online-status-change-listener";
+import {
+  addFriendRequest_listener,
+  addFriendResponse_listener,
+  blockFriend_listener,
+  createNewGroup_listener,
+  currentTargetRoom_listener,
+  groupInvitationReqest_listener,
+  groupInvitationResponse_listener,
+  joinRoom_listener,
+  kickedOutOfGroup_listener,
+  kickMember_listener,
+  leaveGroup_listener,
+  messageToServer_listener,
+  offline_listener,
+  onlineEcho_listener,
+  onlineStatusChange_listener,
+  online_listener,
+} from "./event-listeners/__index";
 
 export interface Socket_currentUser {
   user_id: string;

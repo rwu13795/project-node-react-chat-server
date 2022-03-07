@@ -5,7 +5,7 @@ import {
   clearNotifications,
   getNotifications,
   chatHitory,
-} from "./controllers/_index";
+} from "./controllers/__index";
 
 const router = express.Router();
 
