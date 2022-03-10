@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import uploadImageTo_S3 from "../../utils/aws-s3/upload-image";
+import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
 
 import { db_pool } from "../../utils/db-connection";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
@@ -31,7 +31,7 @@ export default async function groupMessage_emitter(
   let file_type = "none";
   let file_url = "none";
   if (file_body && file_name) {
-    const { type, url } = await uploadImageTo_S3(
+    const { type, url } = await uploadFileTo_S3(
       file_body,
       file_name,
       sender_id,

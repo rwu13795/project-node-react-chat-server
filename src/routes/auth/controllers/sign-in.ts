@@ -45,6 +45,8 @@ export const signIn = asyncWrapper(
     const { username, email, password, user_id, avatar_url } = existingUser
       .rows[0] as Users;
 
+    console.log("avatar_url", avatar_url);
+
     const checkPassword = await Password.compare(password, req_password);
     if (!checkPassword) {
       return next(new Bad_Request_Error("Password is incorrect", "password"));

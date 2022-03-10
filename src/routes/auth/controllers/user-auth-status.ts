@@ -14,6 +14,8 @@ import {
   Group_res,
 } from "../../../utils/interfaces/response-interfaces";
 import { get_group_invitations } from "../../../utils/queries/group-invitation";
+import { find_existing_user } from "../../../utils/queries/users";
+import { Users } from "../../../utils/interfaces/tables-columns";
 
 interface GetUserAuth_res {
   currentUser: CurrentUser_res;
@@ -38,32 +40,44 @@ export const getUserAuthStatus = asyncWrapper(
         isLoggedIn: false,
         targetRoomIdentifier: "",
       };
+
+      return res
+        .status(200)
+        .header("Access-Control-Allow-Credentials", "true")
+        .send({ currentUser: req.session.currentUser });
     }
 
-    let friendsList: Friend_res[] = [];
-    let groupsList: Group_res[] = [];
-    let addFriendRequests: AddFriendRequest_res[] = [];
-    let groupInvitations: GroupInvitation_res[] = [];
-    if (req.session.currentUser.isLoggedIn) {
-      const user_id = req.session.currentUser.user_id;
-      const [
-        friends,
-        addFriendRequests_result,
-        groups,
-        groupInvitations_result,
-      ] = await Promise.all([
-        db_pool.query(get_friends_list(user_id)),
-        db_pool.query(get_add_friend_request(user_id)),
-        db_pool.query(get_groups_list(user_id)),
-        db_pool.query(get_group_invitations(user_id)),
-      ]);
-      friendsList = friends.rows;
-      addFriendRequests = addFriendRequests_result.rows;
-      groupsList = groups.rows;
-      groupInvitations = groupInvitations_result.rows;
+    const user_id = req.session.currentUser.user_id;
+    const [
+      user,
+      friends,
+      addFriendRequests_result,
+      groups,
+      groupInvitations_result,
+    ] = await Promise.all([
+      db_pool.query(find_existing_user(req.session.currentUser.email)),
+      db_pool.query(get_friends_list(user_id)),
+      db_pool.query(get_add_friend_request(user_id)),
+      db_pool.query(get_groups_list(user_id)),
+      db_pool.query(get_group_invitations(user_id)),
+    ]);
+    let friendsList: Friend_res[] = friends.rows;
+    let addFriendRequests: AddFriendRequest_res[] =
+      addFriendRequests_result.rows;
+    let groupsList: Group_res[] = groups.rows;
+    let groupInvitations: GroupInvitation_res[] = groupInvitations_result.rows;
 
-      console.log(groupInvitations_result.rows);
-    }
+    // the user might have change username or avatar before a session has expired, update
+    // the user info with the latest values
+    const { username, email, avatar_url } = user.rows[0] as Users;
+    req.session.currentUser = {
+      username,
+      email,
+      user_id,
+      avatar_url,
+      isLoggedIn: true,
+      targetRoomIdentifier: "",
+    };
 
     let response: GetUserAuth_res = {
       currentUser: req.session.currentUser,
@@ -74,9 +88,6 @@ export const getUserAuthStatus = asyncWrapper(
       groupInvitations,
     };
 
-    res
-      .status(200)
-      .header("Access-Control-Allow-Credentials", "true")
-      .send(response);
+    return res.status(200).send(response);
   }
 );

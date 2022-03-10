@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import uploadImageTo_S3 from "../../utils/aws-s3/upload-image";
+import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
 import { db_pool } from "../../utils/db-connection";
 import { update_private_notification_count } from "../../utils/queries/notifications-private-chat";
 import {
@@ -34,10 +34,13 @@ export default async function privateMessage_toClient(
   const targetRoom = `${room_type}_${recipient_id}`;
 
   // if there is a file in the message, upload it to S3
+  // the "type" of a file is different from the extension. For txt file, the type is
+  // 'text/plain'. I have to split(".") the file_name to get the extension type in order to
+  // upload the file to S3
   let file_type = "none";
   let file_url = "none";
   if (file_body && file_name) {
-    const { type, url } = await uploadImageTo_S3(
+    const { type, url } = await uploadFileTo_S3(
       file_body,
       file_name,
       sender_id,

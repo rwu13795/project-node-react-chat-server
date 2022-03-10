@@ -3,7 +3,7 @@ import "dotenv/config";
 import crypto from "crypto";
 
 import { s3Client } from "./s3-client";
-import { chatType } from "../../socket-io/event-listeners/messageToServer-listener";
+import { chatType } from "../../socket-io/event-listeners/__index";
 
 interface Params {
   Bucket: string;
@@ -11,7 +11,7 @@ interface Params {
   Body: string | Buffer;
 }
 
-export default async function uploadImageTo_S3(
+export default async function uploadFileTo_S3(
   file_body: Buffer,
   file_name: string,
   sender_id: string,

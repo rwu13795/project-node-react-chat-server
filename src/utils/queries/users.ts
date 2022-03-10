@@ -42,3 +42,12 @@ export function register_new_user(
     values: [req_email, req_username, hashedPassword],
   };
 }
+
+export function update_user_avatar(user_id: string, avatar_url: string) {
+  return {
+    text: `UPDATE users
+            SET avatar_url = $2
+            WHERE user_id = $1`,
+    values: [user_id, avatar_url],
+  };
+}

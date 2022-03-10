@@ -31,29 +31,24 @@ export function messageToServer_listener(socket: Socket, io: Server) {
   socket.on(
     "message-to-server",
     async ({ messageObject, room_type }: Props) => {
-      // console.log(
-      //   `server received msg from socket ${messageObject.sender_name}
-      //   ----> ${messageObject.msg_body}`
-      // );
-
       console.log(messageObject.file_body?.byteLength);
+      console.log(messageObject);
 
-      // pass message to emitter
-      // switch (room_type) {
-      //   case chatType.private: {
-      //     privateMessage_emitter(socket, messageObject, room_type);
-      //     break;
-      //   }
-      //   case chatType.group: {
-      //     groupMessage_emitter(socket, messageObject, room_type);
-      //     break;
-      //   }
-      //   case chatType.public: {
-      //     break;
-      //   }
-      //   default:
-      //     break;
-      // }
+      switch (room_type) {
+        case chatType.private: {
+          privateMessage_emitter(socket, messageObject, room_type);
+          break;
+        }
+        case chatType.group: {
+          groupMessage_emitter(socket, messageObject, room_type);
+          break;
+        }
+        case chatType.public: {
+          break;
+        }
+        default:
+          break;
+      }
     }
   );
 }
