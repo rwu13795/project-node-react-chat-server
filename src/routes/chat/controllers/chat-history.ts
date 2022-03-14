@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import { asyncWrapper } from "../../../middlewares/__index";
 
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { chatType } from "../../../socket-io/event-listeners/user/message-to-server-listener";
 
 import { db_pool } from "../../../utils/db-connection";

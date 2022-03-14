@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
 import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
 import { get_friends_list } from "../../../utils/queries/friends-pair";
@@ -16,6 +15,7 @@ import {
 import { get_group_invitations } from "../../../utils/queries/group-invitation";
 import { find_existing_user } from "../../../utils/queries/users";
 import { Users } from "../../../utils/interfaces/tables-columns";
+import { asyncWrapper } from "../../../middlewares/async-wrapper";
 
 interface GetUserAuth_res {
   currentUser: CurrentUser_res;
@@ -32,7 +32,7 @@ export const getUserAuthStatus = asyncWrapper(
 
     let require_initialize = initialize === "yes" ? true : false;
 
-    if (!req.session.currentUser) {
+    if (!req.session.currentUser || !req.session.currentUser.isLoggedIn) {
       req.session.currentUser = {
         username: "guest",
         email: "",
@@ -41,10 +41,7 @@ export const getUserAuthStatus = asyncWrapper(
         targetRoomIdentifier: "",
       };
 
-      return res
-        .status(200)
-        .header("Access-Control-Allow-Credentials", "true")
-        .send({ currentUser: req.session.currentUser });
+      return res.status(200).send({ currentUser: req.session.currentUser });
     }
 
     const user_id = req.session.currentUser.user_id;

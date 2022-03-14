@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import { asyncWrapper } from "../../../middlewares/__index";
 
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
-import { chatType } from "../../../socket-io/event-listeners/messageToServer-listener";
+import { chatType } from "../../../socket-io/event-listeners/__index";
+
 import { db_pool } from "../../../utils/db-connection";
 import { clear_group_notification_count } from "../../../utils/queries/notifications-group-chat";
 import { clear_private_notification_count } from "../../../utils/queries/notifications-private-chat";

@@ -22,6 +22,7 @@ import {
   online_listener,
 } from "./event-listeners/__index";
 import { changeAvatar_listener } from "./event-listeners/user/change-avatar-listener";
+import { log_out_listener } from "./event-listeners/user/log-out-listener";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -79,6 +80,7 @@ export default function connectSocketIO(
     blockFriend_listener(socket);
     onlineStatusChange_listener(socket);
     changeAvatar_listener(socket);
+    log_out_listener(socket);
 
     createNewGroup_listener(socket);
     groupInvitationReqest_listener(socket, io);

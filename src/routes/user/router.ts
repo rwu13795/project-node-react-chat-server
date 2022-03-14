@@ -1,7 +1,5 @@
 import express from "express";
-import multer from "multer";
-
-import { requireUserAuth } from "../../middlewares/require-auth";
+import { requireUserAuth } from "../../middlewares/__index";
 
 import {
   createNewGroup,

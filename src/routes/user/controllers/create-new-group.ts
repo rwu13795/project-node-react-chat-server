@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
-import { Bad_Request_Error } from "../../../middlewares/error-handler/bad-request-error";
 import { db_pool } from "../../../utils/db-connection";
 import {
   create_new_group,
@@ -10,6 +8,7 @@ import {
 import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
 import { insert_new_group_member } from "../../../utils/queries/groups";
 import { insert_new_group_msg } from "../../../utils/queries/group-messages";
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
 
 export interface NewGroup {
   group_id: string;

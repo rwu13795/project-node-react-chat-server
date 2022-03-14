@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import { asyncWrapper } from "../../../middlewares/__index";
 
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
 import { db_pool } from "../../../utils/db-connection";
 import { get_members_list } from "../../../utils/queries/groups";
 

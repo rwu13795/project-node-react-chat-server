@@ -6,8 +6,8 @@ import { clear_private_notification_count } from "../../../utils/queries/notific
 
 import { chatType } from "./message-to-server-listener";
 
-export function offline_listener(socket: Socket) {
-  socket.on("disconnect", async () => {
+export function log_out_listener(socket: Socket) {
+  socket.on("log-out", async () => {
     const { user_id, currentTargetRoom } = socket.currentUser;
 
     const friends = await db_pool.query(get_friends_id(user_id));
@@ -16,9 +16,9 @@ export function offline_listener(socket: Socket) {
       return `${chatType.private}_${elem.friend_id}`;
     });
 
-    // let all the friends know that this user is now offline
+    // let all the friends know that this user just logged out
     if (rooms_id.length > 0) {
-      console.log(`let the friend ${rooms_id} this user${user_id} is offline`);
+      console.log(`let the friend ${rooms_id} this user${user_id} logged out`);
       // only emit if the user has at least one friend, otherwise
       // the socket will emit to every one globally if the array is emtpy
       socket.to(rooms_id).emit("offline", user_id);

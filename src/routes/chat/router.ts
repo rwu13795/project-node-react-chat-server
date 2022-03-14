@@ -1,5 +1,5 @@
 import express from "express";
-import { requireUserAuth } from "../../middlewares/require-auth";
+import { requireUserAuth } from "../../middlewares/__index";
 
 import {
   clearNotifications,

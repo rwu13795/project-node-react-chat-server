@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
+import { asyncWrapper } from "../../../middlewares/__index";
 
 import { db_pool } from "../../../utils/db-connection";
 import {
