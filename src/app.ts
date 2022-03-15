@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
+import "dotenv/config";
 
 import createSession from "./middlewares/create-session";
 import { errorHandler } from "./middlewares/error-handler/error-handler";

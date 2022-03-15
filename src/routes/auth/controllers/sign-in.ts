@@ -81,6 +81,8 @@ export const signIn = asyncWrapper(
       groupInvitations: groupInvitaions_result.rows,
     };
 
-    res.status(201).send(response);
+    setTimeout(() => {
+      res.status(201).send(response);
+    }, 3000);
   }
 );
