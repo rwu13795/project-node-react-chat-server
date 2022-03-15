@@ -1,11 +1,13 @@
 import { Socket } from "socket.io";
-import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
 
+import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
 import { db_pool } from "../../utils/db-connection";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { insert_new_group_msg } from "../../utils/queries/group-messages";
-import { update_group_notification_count } from "../../utils/queries/notifications-group-chat";
-import { MessageObject } from "../event-listeners/user/message-to-server-listener";
+import {
+  insert_new_group_msg,
+  update_group_notification_count,
+} from "../../utils/queries";
+import { MessageObject } from "../event-listeners";
 
 export default async function groupMessage_emitter(
   socket: Socket,

@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
-import { db_pool } from "../../../utils/db-connection";
-import { get_friends_id } from "../../../utils/queries/friends-pair";
-import { onlineStatus_enum } from "../../socket-io-connection";
 
-import { chatType } from "./message-to-server-listener";
+import { db_pool } from "../../../utils/db-connection";
+import { get_friends_id } from "../../../utils/queries";
+import { onlineStatus_enum } from "../../socket-io-connection";
+import { chatType } from "..";
 
 export function online_listener(socket: Socket) {
   socket.on("online", async (target_id?: string) => {

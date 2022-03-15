@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
+
 import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
 import { db_pool } from "../../utils/db-connection";
-import { update_private_notification_count } from "../../utils/queries/notifications-private-chat";
 import {
-  insert_new_msg,
+  update_private_notification_count,
   insert_new_msg_users_ref,
-} from "../../utils/queries/private-messages";
-
+  insert_new_msg,
+} from "../../utils/queries";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { MessageObject } from "../event-listeners/user/message-to-server-listener";
+import { MessageObject } from "../event-listeners";
 
 export default async function privateMessage_toClient(
   socket: Socket,

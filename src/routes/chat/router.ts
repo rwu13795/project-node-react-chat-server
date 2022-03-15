@@ -1,11 +1,11 @@
 import express from "express";
-import { requireUserAuth } from "../../middlewares/__index";
 
+import { requireUserAuth } from "../../middlewares";
 import {
   clearNotifications,
   getNotifications,
   chatHitory,
-} from "./controllers/__index";
+} from "./controllers";
 
 const router = express.Router();
 

@@ -3,7 +3,7 @@ import "dotenv/config";
 import crypto from "crypto";
 
 import { s3Client } from "./s3-client";
-import { chatType } from "../../socket-io/event-listeners/__index";
+import { chatType } from "../../socket-io/event-listeners";
 
 interface Params {
   Bucket: string;

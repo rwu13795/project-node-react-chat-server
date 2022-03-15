@@ -1,14 +1,15 @@
 import { Server, Socket } from "socket.io";
+
 import { db_pool } from "../../../utils/db-connection";
 import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
-import { delete_group_invitation } from "../../../utils/queries/group-invitation";
-import { insert_new_group_msg } from "../../../utils/queries/group-messages";
+import { chatType } from "..";
 import {
+  delete_group_invitation,
   get_groups_list,
+  insert_group_notifications,
   insert_new_group_member,
-} from "../../../utils/queries/groups";
-import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { chatType } from "../user/message-to-server-listener";
+  insert_new_group_msg,
+} from "../../../utils/queries";
 
 interface Props {
   group_id: string;

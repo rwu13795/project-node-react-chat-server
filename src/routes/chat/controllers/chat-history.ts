@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import { asyncWrapper } from "../../../middlewares/__index";
 
-import { chatType } from "../../../socket-io/event-listeners/user/message-to-server-listener";
-
+import { asyncWrapper } from "../../../middlewares";
+import { chatType } from "../../../socket-io/event-listeners";
 import { db_pool } from "../../../utils/db-connection";
 import { ChatHistory_res } from "../../../utils/interfaces/response-interfaces";
 import {
   get_group_chat_history,
   get_limited_group_chat_history,
-} from "../../../utils/queries/group-messages";
-import { get_private_chat_history } from "../../../utils/queries/private-messages";
+  get_private_chat_history,
+} from "../../../utils/queries";
 
 export const chatHitory = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

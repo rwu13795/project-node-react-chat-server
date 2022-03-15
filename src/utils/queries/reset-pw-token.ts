@@ -20,3 +20,12 @@ export function check_token(user_id: string, token: string) {
     values: [user_id, token],
   };
 }
+
+export function delete_reset_token(user_id: string) {
+  return {
+    text: `UPDATE reset_password_token
+             SET token = ''
+             WHERE user_id = $1`,
+    values: [user_id],
+  };
+}

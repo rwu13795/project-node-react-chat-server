@@ -51,3 +51,12 @@ export function update_user_avatar(user_id: string, avatar_url: string) {
     values: [user_id, avatar_url],
   };
 }
+
+export function change_password(user_id: string, password: string) {
+  return {
+    text: `UPDATE users
+             SET password = $2
+             WHERE user_id = $1`,
+    values: [user_id, password],
+  };
+}

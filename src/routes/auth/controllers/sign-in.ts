@@ -1,12 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { db_pool } from "../../../utils/db-connection";
-
 import { Password } from "../../../utils/hash-password";
-import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
-import { get_friends_list } from "../../../utils/queries/friends-pair";
-import { get_groups_list } from "../../../utils/queries/groups";
-import { find_existing_user } from "../../../utils/queries/users";
 import {
   AddFriendRequest_res,
   CurrentUser_res,
@@ -15,8 +10,14 @@ import {
   Group_res,
 } from "../../../utils/interfaces/response-interfaces";
 import { Users } from "../../../utils/interfaces/tables-columns";
-import { get_group_invitations } from "../../../utils/queries/group-invitation";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
+import {
+  find_existing_user,
+  get_add_friend_request,
+  get_friends_list,
+  get_groups_list,
+  get_group_invitations,
+} from "../../../utils/queries";
 
 interface SignInBody {
   req_email: string;

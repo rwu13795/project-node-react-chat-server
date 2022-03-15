@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
 import { db_pool } from "../../../utils/db-connection";
-import { get_add_friend_request } from "../../../utils/queries/add-friend-request";
-import { get_friends_list } from "../../../utils/queries/friends-pair";
-import { get_groups_list } from "../../../utils/queries/groups";
-
 import {
   AddFriendRequest_res,
   CurrentUser_res,
@@ -12,10 +8,15 @@ import {
   GroupInvitation_res,
   Group_res,
 } from "../../../utils/interfaces/response-interfaces";
-import { get_group_invitations } from "../../../utils/queries/group-invitation";
-import { find_existing_user } from "../../../utils/queries/users";
 import { Users } from "../../../utils/interfaces/tables-columns";
-import { asyncWrapper } from "../../../middlewares/async-wrapper";
+import { asyncWrapper } from "../../../middlewares";
+import {
+  find_existing_user,
+  get_add_friend_request,
+  get_friends_list,
+  get_groups_list,
+  get_group_invitations,
+} from "../../../utils/queries";
 
 interface GetUserAuth_res {
   currentUser: CurrentUser_res;

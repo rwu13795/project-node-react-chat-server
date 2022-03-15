@@ -1,10 +1,11 @@
 import { Server, Socket } from "socket.io";
+
 import { db_pool } from "../../../utils/db-connection";
 import {
   check_group_member,
   insert_group_invitation,
-} from "../../../utils/queries/group-invitation";
-import { chatType } from "../user/message-to-server-listener";
+} from "../../../utils/queries";
+import { chatType } from "..";
 
 interface Props {
   friend_id: string;

@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { randomBytes } from "crypto";
-import { config } from "dotenv";
 
 import { transporter } from "../router";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
-import { find_existing_user } from "../../../utils/queries/users";
-import { insert_reset_token } from "../../../utils/queries/reset-pw-token";
+import { find_existing_user, insert_reset_token } from "../../../utils/queries";
 
 export const forgotPassword_Request = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

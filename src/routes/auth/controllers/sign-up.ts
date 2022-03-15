@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
 
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
-
 import { Password } from "../../../utils/hash-password";
 import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   find_existing_user_email,
   register_new_user,
-} from "../../../utils/queries/users";
+} from "../../../utils/queries";
 
 interface SignUpBody {
   email: string;

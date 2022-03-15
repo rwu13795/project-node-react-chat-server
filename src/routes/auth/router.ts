@@ -1,10 +1,8 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import nodemailerSendgrid from "nodemailer-sendgrid";
-import { resetPW_body } from "../../middlewares/request-body-validator/reset-pw-body";
 
-import { requestValidator, signUp_body } from "../../middlewares/__index";
-
+import { requestValidator, signUp_body, resetPW_body } from "../../middlewares";
 import {
   checkToken,
   forgotPassword_Request,
@@ -13,7 +11,7 @@ import {
   signIn,
   signOut,
   signUp,
-} from "./controllers/__index";
+} from "./controllers";
 
 export const transporter = nodemailer.createTransport(
   nodemailerSendgrid({

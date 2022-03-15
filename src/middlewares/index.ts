@@ -10,4 +10,5 @@ export * from "./error-handler/not-auth-error";
 export * from "./error-handler/request-body-validation-error";
 
 export * from "./request-body-validator/sign-up-body";
+export * from "./request-body-validator/reset-pw-body";
 export * from "./request-body-validator/validator";

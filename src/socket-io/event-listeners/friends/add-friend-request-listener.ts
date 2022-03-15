@@ -1,10 +1,8 @@
 import { Server, Socket } from "socket.io";
+
+import { chatType } from "..";
 import { db_pool } from "../../../utils/db-connection";
-import {
-  check_add_friend_request,
-  insert_add_friend_request,
-} from "../../../utils/queries/add-friend-request";
-import { chatType } from "../user/message-to-server-listener";
+import { insert_add_friend_request } from "../../../utils/queries";
 
 interface Props {
   sender_id: string;

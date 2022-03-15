@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 
 import { db_pool } from "../../../utils/db-connection";
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import {
   create_new_group,
   group_counts_for_each_user,
-} from "../../../utils/queries/groups";
-import { insert_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { insert_new_group_member } from "../../../utils/queries/groups";
-import { insert_new_group_msg } from "../../../utils/queries/group-messages";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
+  insert_group_notifications,
+  insert_new_group_member,
+  insert_new_group_msg,
+} from "../../../utils/queries";
 
 export interface NewGroup {
   group_id: string;

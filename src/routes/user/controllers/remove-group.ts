@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { asyncWrapper } from "../../../middlewares/__index";
 
+import { asyncWrapper } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
 import {
   delete_group_member,
   mark_group_as_removed,
-} from "../../../utils/queries/groups";
+} from "../../../utils/queries";
 
 interface Body {
   group_id: string;

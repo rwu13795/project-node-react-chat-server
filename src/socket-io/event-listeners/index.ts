@@ -16,3 +16,5 @@ export * from "./user/offline-listener";
 export * from "./user/online-echo-listener";
 export * from "./user/online-listener";
 export * from "./user/online-status-change-listener";
+export * from "./user/change-avatar-listener";
+export * from "./user/log-out-listener";

@@ -1,8 +1,8 @@
 import http from "http";
 import { Server } from "socket.io";
-
 import { setupWorker } from "@socket.io/sticky";
 import { createAdapter } from "@socket.io/cluster-adapter";
+
 import {
   addFriendRequest_listener,
   addFriendResponse_listener,
@@ -20,9 +20,9 @@ import {
   onlineEcho_listener,
   onlineStatusChange_listener,
   online_listener,
-} from "./event-listeners/__index";
-import { changeAvatar_listener } from "./event-listeners/user/change-avatar-listener";
-import { log_out_listener } from "./event-listeners/user/log-out-listener";
+  changeAvatar_listener,
+  log_out_listener,
+} from "./event-listeners";
 
 export interface Socket_currentUser {
   user_id: string;

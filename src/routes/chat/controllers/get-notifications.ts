@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { asyncWrapper } from "../../../middlewares/__index";
 
-import { chatType } from "../../../socket-io/event-listeners/__index";
-
+import { asyncWrapper } from "../../../middlewares";
+import { chatType } from "../../../socket-io/event-listeners";
 import { db_pool } from "../../../utils/db-connection";
-import { get_group_notifications } from "../../../utils/queries/notifications-group-chat";
-import { get_private_notifications } from "../../../utils/queries/notifications-private-chat";
+import {
+  get_group_notifications,
+  get_private_notifications,
+} from "../../../utils/queries";
 
 export const getNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

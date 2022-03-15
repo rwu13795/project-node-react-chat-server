@@ -1,10 +1,12 @@
 import { Socket } from "socket.io";
-import { db_pool } from "../../../utils/db-connection";
-import { get_friends_id } from "../../../utils/queries/friends-pair";
-import { clear_group_notification_count } from "../../../utils/queries/notifications-group-chat";
-import { clear_private_notification_count } from "../../../utils/queries/notifications-private-chat";
 
-import { chatType } from "./message-to-server-listener";
+import { db_pool } from "../../../utils/db-connection";
+import { chatType } from "..";
+import {
+  clear_group_notification_count,
+  clear_private_notification_count,
+  get_friends_id,
+} from "../../../utils/queries";
 
 export function log_out_listener(socket: Socket) {
   socket.on("log-out", async () => {

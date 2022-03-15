@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
-import { chatType } from "../user/message-to-server-listener";
+
+import { chatType } from "..";
 
 interface Props {
   group_id: string;

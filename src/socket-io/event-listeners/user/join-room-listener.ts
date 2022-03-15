@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
-import { chatType } from "./message-to-server-listener";
+
+import { chatType } from "..";
 
 interface Props {
   private_id: string;

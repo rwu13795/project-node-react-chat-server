@@ -1,7 +1,4 @@
 import { Socket } from "socket.io";
-import { onlineStatus_enum } from "../../socket-io-connection";
-
-import { chatType } from "./message-to-server-listener";
 
 export function onlineStatusChange_listener(socket: Socket) {
   socket.on("online-status-change", (status: string) => {
