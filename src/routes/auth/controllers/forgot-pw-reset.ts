@@ -1,28 +1,27 @@
-// import { NextFunction, Request, Response } from "express";
-// import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
+import { NextFunction, Request, Response } from "express";
+import { asyncWrapper, Bad_Request_Error } from "../../../middlewares/__index";
+import { db_pool } from "../../../utils/db-connection";
+import { Password } from "../../../utils/hash-password";
+import { check_token } from "../../../utils/queries/reset-pw-token";
 
-// export const forgotPassword_Reset = asyncWrapper(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { token, userId, new_password } = req.body;
+export const forgotPassword_Reset = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { token, user_id, new_password } = req.body;
 
-//     const userWithValidToken: UserDoc = await User.findOne({
-//       userId,
-//       resetToken: token,
-//       isValidToken: true,
-//       resetTokenExpiration: { $gt: Date.now() },
-//       // the Mongoose will convert the DB timestamp to the local Node server time for comparison
-//     });
+    const result = await db_pool.query(check_token(user_id, token));
 
-//     if (!userWithValidToken) {
-//       return next(new Bad_Request_Error("Reset link expired", "expired-link"));
-//     }
+    if (result.rowCount < 1) {
+      return next(new Bad_Request_Error("Reset link expired", "expired_link"));
+    }
 
-//     userWithValidToken.password = new_password;
-//     // set "isValidToken" to false after user resetting the PW, so that user will not be
-//     // able to use the same token which is not yet expired again
-//     userWithValidToken.isValidToken = false;
-//     await userWithValidToken.save();
+    // const hashedPassword = await Password.toHash(new_password);
 
-//     res.status(201).send();
-//   }
-// );
+    // await db_pool.query(
+    //   register_new_user(email, username, hashedPassword)
+    // );
+
+    console.log("new_password", new_password);
+
+    res.status(201).send("OK");
+  }
+);

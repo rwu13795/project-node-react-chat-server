@@ -40,7 +40,12 @@ export const signIn = asyncWrapper(
     const existingUser = await db_pool.query(find_existing_user(req_email));
 
     if (existingUser.rowCount < 1) {
-      return next(new Bad_Request_Error("This email does not exist", "email"));
+      return next(
+        new Bad_Request_Error(
+          "The email you provided does not exist in our record",
+          "email"
+        )
+      );
     }
     const { username, email, password, user_id, avatar_url } = existingUser
       .rows[0] as Users;

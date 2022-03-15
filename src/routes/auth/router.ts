@@ -1,12 +1,14 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import nodemailerSendgrid from "nodemailer-sendgrid";
+import { resetPW_body } from "../../middlewares/request-body-validator/reset-pw-body";
 
 import { requestValidator, signUp_body } from "../../middlewares/__index";
 
 import {
   checkToken,
   forgotPassword_Request,
+  forgotPassword_Reset,
   getUserAuthStatus,
   signIn,
   signOut,
@@ -32,5 +34,7 @@ router.post("/sign-out", signOut);
 router.post("/forgot-pw-request", forgotPassword_Request);
 
 router.post("/check-token", checkToken);
+
+router.post("/reset-pw", resetPW_body, requestValidator, forgotPassword_Reset);
 
 export { router as authRouter };
