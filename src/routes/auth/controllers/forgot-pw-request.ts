@@ -4,7 +4,10 @@ import { randomBytes } from "crypto";
 import { transporter } from "../router";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
-import { find_existing_user, insert_reset_token } from "../../../utils/queries";
+import {
+  find_existing_user,
+  insert_reset_token,
+} from "../../../utils/queries/__index";
 
 export const forgotPassword_Request = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

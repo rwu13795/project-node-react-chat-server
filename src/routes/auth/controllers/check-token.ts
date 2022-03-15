@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
-import { check_token } from "../../../utils/queries";
+import { check_token } from "../../../utils/queries/__index";
 
 export const checkToken = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

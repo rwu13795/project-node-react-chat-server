@@ -17,7 +17,7 @@ import {
   get_friends_list,
   get_groups_list,
   get_group_invitations,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 interface SignInBody {
   req_email: string;
@@ -37,6 +37,9 @@ export const signIn = asyncWrapper(
     const { req_email, req_password }: SignInBody = req.body;
 
     console.log(req_email, req_password);
+
+    console.log(find_existing_user);
+    console.log(typeof find_existing_user);
 
     const existingUser = await db_pool.query(find_existing_user(req_email));
 

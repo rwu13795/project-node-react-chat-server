@@ -4,7 +4,7 @@ import { db_pool } from "../../../utils/db-connection";
 import {
   check_group_member,
   insert_group_invitation,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 import { chatType } from "..";
 
 interface Props {

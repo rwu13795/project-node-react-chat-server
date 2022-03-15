@@ -6,7 +6,7 @@ import {
   clear_group_notification_count,
   clear_private_notification_count,
   get_friends_id,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {

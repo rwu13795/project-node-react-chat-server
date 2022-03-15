@@ -5,7 +5,7 @@ import { db_pool } from "../../../utils/db-connection";
 import {
   being_blocked_unblocked,
   block_unblock_friend,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 interface Props {
   friend_id: string;

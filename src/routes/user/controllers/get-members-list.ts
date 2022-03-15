@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
-import { get_members_list } from "../../../utils/queries";
+import { get_members_list } from "../../../utils/queries/__index";
 
 export const getMembersList = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

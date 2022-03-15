@@ -7,7 +7,7 @@ import {
   change_password,
   check_token,
   delete_reset_token,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 export const forgotPassword_Reset = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

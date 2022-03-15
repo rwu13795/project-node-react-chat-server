@@ -8,7 +8,7 @@ import {
   insert_group_notifications,
   insert_new_group_member,
   insert_new_group_msg,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 export interface NewGroup {
   group_id: string;

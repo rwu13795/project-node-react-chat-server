@@ -8,7 +8,7 @@ import {
   insert_new_msg_users_ref,
   insert_private_notifications,
   update_add_friend_request,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 interface Props {
   sender_id: string;

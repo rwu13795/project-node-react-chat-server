@@ -8,7 +8,7 @@ import {
   get_group_chat_history,
   get_limited_group_chat_history,
   get_private_chat_history,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 export const chatHitory = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

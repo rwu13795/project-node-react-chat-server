@@ -7,7 +7,7 @@ import {
   group_member_left,
   insert_new_group_msg,
   remove_group_notifications,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 interface Props {
   group_id: string;

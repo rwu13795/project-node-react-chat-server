@@ -16,7 +16,7 @@ import {
   get_friends_list,
   get_groups_list,
   get_group_invitations,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 interface GetUserAuth_res {
   currentUser: CurrentUser_res;

@@ -6,7 +6,7 @@ import {
   update_private_notification_count,
   insert_new_msg_users_ref,
   insert_new_msg,
-} from "../../utils/queries";
+} from "../../utils/queries/__index";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
 import { MessageObject } from "../event-listeners";
 

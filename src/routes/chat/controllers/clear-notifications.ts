@@ -6,7 +6,7 @@ import { db_pool } from "../../../utils/db-connection";
 import {
   clear_group_notification_count,
   clear_private_notification_count,
-} from "../../../utils/queries";
+} from "../../../utils/queries/__index";
 
 export const clearNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
