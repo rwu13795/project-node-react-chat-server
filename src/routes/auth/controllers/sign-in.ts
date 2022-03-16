@@ -36,11 +36,6 @@ export const signIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { req_email, req_password }: SignInBody = req.body;
 
-    console.log(req_email, req_password);
-
-    console.log(find_existing_user);
-    console.log(typeof find_existing_user);
-
     const existingUser = await db_pool.query(find_existing_user(req_email));
 
     if (existingUser.rowCount < 1) {
@@ -53,8 +48,6 @@ export const signIn = asyncWrapper(
     }
     const { username, email, password, user_id, avatar_url } = existingUser
       .rows[0] as Users;
-
-    console.log("avatar_url", avatar_url);
 
     const checkPassword = await Password.compare(password, req_password);
     if (!checkPassword) {

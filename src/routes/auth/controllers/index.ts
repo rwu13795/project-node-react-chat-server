@@ -5,3 +5,5 @@ export * from "./sign-out";
 export * from "./forgot-pw-request";
 export * from "./check-token";
 export * from "./forgot-pw-reset";
+export * from "./change-username";
+export * from "./change-pw";

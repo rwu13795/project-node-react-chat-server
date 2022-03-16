@@ -60,3 +60,12 @@ export function change_password(user_id: string, password: string) {
     values: [user_id, password],
   };
 }
+
+export function change_username(user_id: string, username: string) {
+  return {
+    text: `UPDATE users
+             SET username = $2
+             WHERE user_id = $1`,
+    values: [user_id, username],
+  };
+}
