@@ -4,15 +4,15 @@ import { chatType } from "..";
 
 export function onlineEcho_listener(socket: Socket) {
   socket.on("online-echo", (friend_id: string) => {
-    const currentUserId = socket.currentUser.user_id;
+    const { user_id, onlineStatus } = socket.currentUser;
 
     // let the friend who just logged in know that this socket is also online
     console.log(
-      `let the friend ${friend_id} who is just logged in know that this socket ${currentUserId} is also online`
+      `let the friend ${friend_id} who is just logged in know that this socket ${user_id} is also online`
     );
     socket.to(`${chatType.private}_${friend_id}`).emit("online-echo", {
-      friend_id: currentUserId,
-      status: socket.currentUser.onlineStatus,
+      friend_id: user_id,
+      status: onlineStatus,
     });
   });
 }

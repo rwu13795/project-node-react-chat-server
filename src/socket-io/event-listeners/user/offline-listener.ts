@@ -10,6 +10,8 @@ import {
 
 export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
+    if (!socket.currentUser) return;
+
     const { user_id, currentTargetRoom } = socket.currentUser;
 
     const friends = await db_pool.query(get_friends_id(user_id));

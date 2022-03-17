@@ -4,6 +4,7 @@ export interface CurrentUser_res {
   user_id: string;
   avatar_url?: string;
   isLoggedIn?: boolean;
+  onlineStatus: string;
 }
 export interface Friend_res {
   friend_id: string;

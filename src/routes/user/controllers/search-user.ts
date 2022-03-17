@@ -4,10 +4,14 @@ import { asyncWrapper } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
 import { search_user } from "../../../utils/queries/__index";
 
+interface Req_body {
+  user_id: string;
+  user_email: string;
+}
+
 export const searchUser = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user_id = req.body.user_id as string;
-    const user_email = req.body.user_email as string;
+    const { user_id, user_email } = req.body as Req_body;
 
     const searchUser_result = await db_pool.query(
       search_user(user_id, user_email)

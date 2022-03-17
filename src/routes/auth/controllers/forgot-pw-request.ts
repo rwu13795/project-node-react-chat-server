@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { randomBytes } from "crypto";
 
-import { transporter } from "../router";
+import { transporter } from "../../../utils/SendGrid-transporter";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
 import {
@@ -9,9 +9,15 @@ import {
   insert_reset_token,
 } from "../../../utils/queries/__index";
 
+interface Req_body {
+  email: string;
+}
+
 export const forgotPassword_Request = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await db_pool.query(find_existing_user(req.body.email));
+    const { email } = req.body as Req_body;
+
+    const result = await db_pool.query(find_existing_user(email));
     if (result.rowCount < 1) {
       return next(
         new Bad_Request_Error(

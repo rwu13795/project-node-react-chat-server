@@ -5,9 +5,13 @@ import { db_pool } from "../../../utils/db-connection";
 
 import { change_username } from "../../../utils/queries/__index";
 
+interface Req_body {
+  username: string;
+}
+
 export const changeUsername = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { username } = req.body;
+    const { username } = req.body as Req_body;
     const user_id = req.session.currentUser?.user_id;
 
     if (!user_id) {

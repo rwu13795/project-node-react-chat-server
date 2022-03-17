@@ -9,9 +9,15 @@ import {
   delete_reset_token,
 } from "../../../utils/queries/__index";
 
+interface Req_body {
+  token: string;
+  user_id: string;
+  new_password: string;
+}
+
 export const forgotPassword_Reset = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { token, user_id, new_password } = req.body;
+    const { token, user_id, new_password } = req.body as Req_body;
 
     const result = await db_pool.query(check_token(user_id, token));
 

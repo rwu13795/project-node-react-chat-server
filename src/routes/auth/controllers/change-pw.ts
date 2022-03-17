@@ -9,9 +9,14 @@ import {
   find_existing_user,
 } from "../../../utils/queries/__index";
 
+interface Req_body {
+  old_password: string;
+  new_password: string;
+}
+
 export const changePassword = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { old_password, new_password } = req.body;
+    const { old_password, new_password } = req.body as Req_body;
     const email = req.session.currentUser?.email;
 
     if (!email) {

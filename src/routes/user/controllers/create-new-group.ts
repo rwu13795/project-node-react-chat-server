@@ -10,6 +10,11 @@ import {
   insert_new_group_msg,
 } from "../../../utils/queries/__index";
 
+interface Req_body {
+  group_name: string;
+  creator_user_id: string;
+}
+
 export interface NewGroup {
   group_id: string;
   group_name: string;
@@ -21,8 +26,7 @@ export interface NewGroup {
 
 export const createNewGroup = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const group_name = req.body.group_name as string;
-    const creator_user_id = req.body.creator_user_id as string;
+    const { group_name, creator_user_id } = req.body as Req_body;
 
     // check how many groups this user has created. If more than 5 (for demo),
     // then throw error to the client

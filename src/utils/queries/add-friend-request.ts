@@ -9,6 +9,7 @@ export function insert_add_friend_request(
     values: [target_id, sender_id, message],
   };
 }
+
 export function get_add_friend_request(user_id: string) {
   return {
     text: `SELECT 
@@ -19,26 +20,54 @@ export function get_add_friend_request(user_id: string) {
             FROM users
             INNER JOIN add_friend_request
                ON target_id = $1
-            WHERE user_id = sender_id AND was_responded = $2`,
+            WHERE user_id = sender_id AND rejected = $2`,
     values: [user_id, "no"],
   };
 }
+
+export function reject_add_friend_request(
+  target_id: string,
+  sender_id: string
+) {
+  return {
+    text: `UPDATE add_friend_request
+           SET rejected = $3,
+               rejected_at = CURRENT_TIMESTAMP
+           WHERE target_id = $1 and sender_id = $2`,
+    values: [target_id, sender_id, "yes"],
+  };
+}
+
+export function delete_add_friend_request(
+  target_id: string,
+  sender_id: string
+) {
+  return {
+    text: `DELETE FROM add_friend_request
+           WHERE target_id = $1 AND sender_id = $2 
+                OR target_id = $2 AND sender_id = $1`,
+    values: [target_id, sender_id],
+  };
+}
+
 export function check_add_friend_request(target_id: string, sender_id: string) {
   return {
-    text: `SELECT target_id FROM add_friend_request
-           WHERE target_id = $1 AND sender_id = $2`,
+    text: `SELECT rejected, rejected_at FROM add_friend_request
+           WHERE target_id = $1 and sender_id = $2`,
     values: [target_id, sender_id],
   };
 }
 
 export function update_add_friend_request(
   target_id: string,
-  sender_id: string
+  sender_id: string,
+  message: string
 ) {
   return {
     text: `UPDATE add_friend_request
-           SET was_responded = $3
+           SET rejected = $4,
+               message = $3
            WHERE target_id = $1 and sender_id = $2`,
-    values: [target_id, sender_id, "yes"],
+    values: [target_id, sender_id, message, "no"],
   };
 }

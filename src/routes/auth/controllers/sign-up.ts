@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
+import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 import { db_pool } from "../../../utils/db-connection";
 import { Password } from "../../../utils/hash-password";
 import { Users } from "../../../utils/interfaces/tables-columns";
@@ -9,20 +10,16 @@ import {
   register_new_user,
 } from "../../../utils/queries/__index";
 
-interface SignUpBody {
+interface SignUp_body {
   email: string;
   username: string;
   password: string;
   confirm_password: string;
 }
 
-//////////////////////
-// need a body check in signUp for max 40 char for email and username
-//////////////////////
-
 export const signUp = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, username, password, confirm_password }: SignUpBody =
+    const { email, username, password, confirm_password }: SignUp_body =
       req.body;
 
     if (password !== confirm_password) {
@@ -59,6 +56,7 @@ export const signUp = asyncWrapper(
       user_id: newUser.user_id,
       isLoggedIn: true,
       targetRoomIdentifier: "",
+      onlineStatus: onlineStatus_enum.online,
     };
 
     res.status(201).send(req.session.currentUser);

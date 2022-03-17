@@ -17,6 +17,7 @@ import {
   get_groups_list,
   get_group_invitations,
 } from "../../../utils/queries/__index";
+import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 
 interface GetUserAuth_res {
   currentUser: CurrentUser_res;
@@ -40,12 +41,14 @@ export const getUserAuthStatus = asyncWrapper(
         user_id: "",
         isLoggedIn: false,
         targetRoomIdentifier: "",
+        onlineStatus: onlineStatus_enum.offline,
       };
 
       return res.status(200).send({ currentUser: req.session.currentUser });
     }
 
-    const user_id = req.session.currentUser.user_id;
+    const { user_id, email, onlineStatus } = req.session.currentUser;
+
     const [
       user,
       friends,
@@ -53,7 +56,7 @@ export const getUserAuthStatus = asyncWrapper(
       groups,
       groupInvitations_result,
     ] = await Promise.all([
-      db_pool.query(find_existing_user(req.session.currentUser.email)),
+      db_pool.query(find_existing_user(email)),
       db_pool.query(get_friends_list(user_id)),
       db_pool.query(get_add_friend_request(user_id)),
       db_pool.query(get_groups_list(user_id)),
@@ -67,7 +70,8 @@ export const getUserAuthStatus = asyncWrapper(
 
     // the user might have change username or avatar before a session has expired, update
     // the user info with the latest values
-    const { username, email, avatar_url } = user.rows[0] as Users;
+    const { username, avatar_url } = user.rows[0] as Users;
+
     req.session.currentUser = {
       username,
       email,
@@ -75,6 +79,7 @@ export const getUserAuthStatus = asyncWrapper(
       avatar_url,
       isLoggedIn: true,
       targetRoomIdentifier: "",
+      onlineStatus,
     };
 
     let response: GetUserAuth_res = {

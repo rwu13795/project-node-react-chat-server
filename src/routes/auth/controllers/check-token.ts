@@ -4,9 +4,14 @@ import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/db-connection";
 import { check_token } from "../../../utils/queries/__index";
 
+interface Req_body {
+  token: string;
+  user_id: string;
+}
+
 export const checkToken = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { token, user_id } = req.body;
+    const { token, user_id } = req.body as Req_body;
 
     const result = await db_pool.query(check_token(user_id, token));
 

@@ -33,7 +33,7 @@ export interface Socket_currentUser {
   onlineStatus: string;
 }
 export enum onlineStatus_enum {
-  available = "Available",
+  online = "Online",
   away = "Away",
   busy = "Busy",
   offline = "Offline",

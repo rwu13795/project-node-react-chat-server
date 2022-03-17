@@ -7,14 +7,15 @@ import {
   mark_group_as_removed,
 } from "../../../utils/queries/__index";
 
-interface Body {
+interface Req_body {
   group_id: string;
   user_id: string;
   was_kicked: boolean;
 }
+
 export const removeGroup = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { group_id, user_id, was_kicked } = req.body as Body;
+    const { group_id, user_id, was_kicked } = req.body as Req_body;
 
     if (was_kicked) {
       await db_pool.query(mark_group_as_removed(group_id, user_id));

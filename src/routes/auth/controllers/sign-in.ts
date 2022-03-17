@@ -18,10 +18,12 @@ import {
   get_groups_list,
   get_group_invitations,
 } from "../../../utils/queries/__index";
+import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 
-interface SignInBody {
+interface SignIn_body {
   req_email: string;
   req_password: string;
+  appearOffline: boolean;
 }
 
 interface SignIn_res {
@@ -34,7 +36,7 @@ interface SignIn_res {
 
 export const signIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { req_email, req_password }: SignInBody = req.body;
+    const { req_email, req_password, appearOffline }: SignIn_body = req.body;
 
     const existingUser = await db_pool.query(find_existing_user(req_email));
 
@@ -53,6 +55,12 @@ export const signIn = asyncWrapper(
     if (!checkPassword) {
       return next(new Bad_Request_Error("Password is incorrect", "password"));
     }
+
+    console.log("appearOffline", appearOffline);
+
+    const onlineStatus = appearOffline
+      ? onlineStatus_enum.offline
+      : onlineStatus_enum.online;
 
     const [
       friends_res,
@@ -73,6 +81,7 @@ export const signIn = asyncWrapper(
       avatar_url,
       isLoggedIn: true,
       targetRoomIdentifier: "",
+      onlineStatus,
     };
 
     let response: SignIn_res = {
