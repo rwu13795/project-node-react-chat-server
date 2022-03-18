@@ -1,7 +1,11 @@
 import { Socket } from "socket.io";
 
-export function onlineStatusChange_listener(socket: Socket) {
-  socket.on("online-status-change", (status: string) => {
+interface Props {
+  status: string;
+}
+
+export function changeOnlineStatus_listener(socket: Socket) {
+  socket.on("online-status-change", ({ status }: Props) => {
     const { user_id, friends_room_id } = socket.currentUser;
 
     console.log(`user ${user_id} changed online status to ${status}`);

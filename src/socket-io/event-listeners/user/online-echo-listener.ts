@@ -2,8 +2,12 @@ import { Socket } from "socket.io";
 
 import { chatType } from "..";
 
+interface Props {
+  friend_id: string;
+}
+
 export function onlineEcho_listener(socket: Socket) {
-  socket.on("online-echo", (friend_id: string) => {
+  socket.on("online-echo", ({ friend_id }: Props) => {
     const { user_id, onlineStatus } = socket.currentUser;
 
     // let the friend who just logged in know that this socket is also online

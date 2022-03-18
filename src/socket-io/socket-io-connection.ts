@@ -8,7 +8,7 @@ import {
   addFriendResponse_listener,
   blockFriend_listener,
   createNewGroup_listener,
-  currentTargetRoom_listener,
+  changeTargetRoom_listener,
   groupInvitationReqest_listener,
   groupInvitationResponse_listener,
   joinRoom_listener,
@@ -18,7 +18,7 @@ import {
   messageToServer_listener,
   offline_listener,
   onlineEcho_listener,
-  onlineStatusChange_listener,
+  changeOnlineStatus_listener,
   online_listener,
   changeAvatar_listener,
   log_out_listener,
@@ -71,14 +71,14 @@ export default function connectSocketIO(
 
     online_listener(socket);
 
-    currentTargetRoom_listener(socket);
+    changeTargetRoom_listener(socket);
 
     onlineEcho_listener(socket);
 
     addFriendRequest_listener(socket, io);
     addFriendResponse_listener(socket);
     blockFriend_listener(socket);
-    onlineStatusChange_listener(socket);
+    changeOnlineStatus_listener(socket);
     changeAvatar_listener(socket);
     log_out_listener(socket);
 

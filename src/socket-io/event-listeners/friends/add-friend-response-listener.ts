@@ -62,7 +62,7 @@ export function addFriendResponse_listener(socket: Socket) {
 
       socket
         .to(`${chatType.private}_${sender_id}`)
-        .emit("add-friend-response", target_username);
+        .emit("add-friend-response", { newFriend: target_username });
     }
   );
 }

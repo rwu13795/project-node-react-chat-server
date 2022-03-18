@@ -31,8 +31,8 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
         const { was_kicked, user_left } = result.rows[0];
 
         if (user_left && was_kicked) {
-          let body = `This user was kicked from the group, you cannot invite this 
-                      user for at least a week from the time he/she was kicked.`;
+          let body = `This user was kicked from the group, only the group administrator
+                    could invite this user back to the group.`;
           io.to(`${chatType.private}_${inviter_id}`).emit(
             "check-group-invitation",
             { message: body }
@@ -48,7 +48,8 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
           return;
         }
         // if the (user_left && !was_kicked)
-        // allow to invite back the user who left on his own
+        // the user who left the group on his/her own can be invited back by anyone
+        // as a "new" member following the logic below
       }
 
       try {
@@ -62,7 +63,7 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
           "check-group-invitation",
           {
             message:
-              "You or the other group members have already sent an invitaion to this friend before!",
+              "You or another group member have already sent an invitaion to this friend before!",
           }
         );
         return;

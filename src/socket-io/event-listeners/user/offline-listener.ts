@@ -8,6 +8,8 @@ import {
   get_friends_id,
 } from "../../../utils/queries/__index";
 
+// socket-io can detect if the socket is disconnected
+// the "disconnect" is a build-in listener key word for detecting disconnection
 export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
     if (!socket.currentUser) return;

@@ -32,7 +32,7 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
 
     // emit the leave-group message to the group, let the members
     // who are online know that a member has left
-    // and update the members list in client
+    // and let the client fetch a new memeber list from server
     let messageObject_res: MessageObject_res = {
       sender_id: user_id,
       sender_name: socket.currentUser.username,

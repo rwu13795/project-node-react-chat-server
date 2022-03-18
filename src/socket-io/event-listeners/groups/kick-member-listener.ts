@@ -36,7 +36,7 @@ export function kickMember_listener(socket: Socket, io: Server) {
 
       // emit the leave-group message to the group, let the members
       // who are online know that a member was kicked out of the group
-      // and update the members list in client
+      // and let the client fetch a new memeber list from server
       let messageObject_res: MessageObject_res = {
         sender_id: user_id,
         sender_name: socket.currentUser.username,
@@ -56,7 +56,7 @@ export function kickMember_listener(socket: Socket, io: Server) {
         group_id,
       });
 
-      // let the client-socket of the kicked user leave the room of this group
+      // force the client-socket of the kicked user leave the room of this group
       io.to(`${chatType.private}_${member_user_id}`).emit(
         "kicked-out-of-group",
         { group_id }

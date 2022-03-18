@@ -8,12 +8,11 @@ import {
   insert_new_msg,
 } from "../../utils/queries/__index";
 import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { MessageObject } from "../event-listeners";
+import { chatType, MessageObject } from "../event-listeners";
 
 export default async function privateMessage_toClient(
   socket: Socket,
-  messageObject: MessageObject,
-  room_type: string
+  messageObject: MessageObject
 ) {
   const {
     sender_id,
@@ -31,7 +30,7 @@ export default async function privateMessage_toClient(
   // the server will emit all direct messages which are for this user
   // to the private room. So as long as the user is connected, he can listen
   // to all direct messages sent to him.
-  const targetRoom = `${room_type}_${recipient_id}`;
+  const targetRoom = `${chatType.private}_${recipient_id}`;
 
   // if there is a file in the message, upload it to S3
   // the "type" of a file is different from the extension. For txt file, the type is
@@ -45,7 +44,7 @@ export default async function privateMessage_toClient(
       file_name,
       sender_id,
       recipient_id,
-      room_type
+      chatType.private
     );
     file_type = type;
     file_url = url;
@@ -66,7 +65,10 @@ export default async function privateMessage_toClient(
 
   socket
     .to(targetRoom)
-    .emit("message-to-client", { messageObject: messageObject_res, room_type });
+    .emit("message-to-client", {
+      messageObject: messageObject_res,
+      room_type: chatType.private,
+    });
 
   // save the message to DB and update notification count
   try {
@@ -85,5 +87,5 @@ export default async function privateMessage_toClient(
     console.log(err);
   }
 
-  console.log("sending message to room", `${room_type}_${recipient_id}`);
+  console.log("sending message to room", `${chatType.private}_${recipient_id}`);
 }

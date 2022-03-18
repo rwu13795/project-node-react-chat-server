@@ -7,12 +7,13 @@ import {
   insert_new_group_msg,
   update_group_notification_count,
 } from "../../utils/queries/__index";
-import { MessageObject } from "../event-listeners";
+import { chatType, MessageObject } from "../event-listeners";
+
+interface Props {}
 
 export default async function groupMessage_emitter(
   socket: Socket,
-  messageObject: MessageObject,
-  room_type: string
+  messageObject: MessageObject
 ) {
   const {
     sender_id,
@@ -27,7 +28,7 @@ export default async function groupMessage_emitter(
   } = messageObject;
 
   // the recipient_id will always be the group_id
-  const targetRoom = `${room_type}_${recipient_id}`;
+  const targetRoom = `${chatType.group}_${recipient_id}`;
 
   // // if there is a file in the message, upload it to S3
   let file_type = "none";
@@ -38,7 +39,7 @@ export default async function groupMessage_emitter(
       file_name,
       sender_id,
       recipient_id,
-      room_type
+      chatType.group
     );
     file_type = type;
     file_url = url;
@@ -57,9 +58,10 @@ export default async function groupMessage_emitter(
     file_url,
   };
 
-  socket
-    .to(targetRoom)
-    .emit("message-to-client", { messageObject: messageObject_res, room_type });
+  socket.to(targetRoom).emit("message-to-client", {
+    messageObject: messageObject_res,
+    room_type: chatType.group,
+  });
 
   // save the message to DB and update notification count
   try {

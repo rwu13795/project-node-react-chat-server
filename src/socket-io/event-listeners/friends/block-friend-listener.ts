@@ -18,7 +18,7 @@ export function blockFriend_listener(socket: Socket) {
 
     const currentUserId = socket.currentUser.user_id;
 
-    // let the client of the user who is being blocked/un-blocked know that this user
+    // let the client of the user who is being blocked/un-blocked know that he/she
     // is blocked/un-blocked by one of the friends. let the client update the UI
     socket.to(`${chatType.private}_${friend_id}`).emit("block-friend", {
       blocked_by: currentUserId,

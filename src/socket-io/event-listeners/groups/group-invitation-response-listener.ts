@@ -52,7 +52,7 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
 
         // emit the new-member-joined message to the group, let the members
         // who are online know that there is new member immediately
-        // and update the members list in client
+        // and let the client fetch a new memeber list from server
         let messageObject_res: MessageObject_res = {
           sender_id: invitee_id,
           sender_name: socket.currentUser.username,
@@ -65,8 +65,6 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
           file_name: "none",
           file_url: "none",
         };
-        // also let all the group members who are online in this group to
-        // update their membersList
         socket
           .to(`${chatType.group}_${group_id}`)
           .emit("group-admin-notification", {

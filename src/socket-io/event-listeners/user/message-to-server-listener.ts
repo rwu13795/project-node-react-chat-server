@@ -4,7 +4,6 @@ import groupMessage_emitter from "../../event-emitters/group-msg-emitter";
 import privateMessage_emitter from "../../event-emitters/private-msg-emitter";
 
 export enum chatType {
-  public = "public",
   group = "group",
   private = "private",
 }
@@ -36,14 +35,11 @@ export function messageToServer_listener(socket: Socket, io: Server) {
 
       switch (room_type) {
         case chatType.private: {
-          privateMessage_emitter(socket, messageObject, room_type);
+          privateMessage_emitter(socket, messageObject);
           break;
         }
         case chatType.group: {
-          groupMessage_emitter(socket, messageObject, room_type);
-          break;
-        }
-        case chatType.public: {
+          groupMessage_emitter(socket, messageObject);
           break;
         }
         default:
