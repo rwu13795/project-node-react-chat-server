@@ -20,15 +20,17 @@ interface Body {
   messageObject: MessageObject_for_client;
   room_type: string;
   group_id: string;
+  newAdmin?: string;
 }
 
 export function groupAdminNotification_emitter(
   emitter: Server | Socket,
-  { messageObject, group_id, room_type }: Body
+  { messageObject, room_type, group_id, newAdmin }: Body
 ) {
   emitter.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
     messageObject,
-    group_id,
     room_type,
+    group_id,
+    newAdmin,
   });
 }

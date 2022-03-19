@@ -1,0 +1,7 @@
+
+
+-- delete messages that are 1? 2? years old    [not implemented]
+
+-- delete a friend who is blocked after 1 month     [not implemented]
+
+-- delete disbanded group after 1 month     [not implemented]

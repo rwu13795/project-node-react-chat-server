@@ -13,6 +13,8 @@ export function groupInvitationRequest_emitter(
   invitee_id: string,
   { group_id, group_name, inviter_name, was_responded }: Body
 ) {
+  console.log("groupInvitationRequest_emitter ----------------------");
+
   socket
     .to(`${chatType.private}_${invitee_id}`)
     .emit("group-invitation-request", {

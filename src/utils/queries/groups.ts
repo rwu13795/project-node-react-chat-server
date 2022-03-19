@@ -1,8 +1,8 @@
-export function create_new_group(group_name: string, creator_user_id: string) {
+export function create_new_group(group_name: string, admin_user_id: string) {
   return {
-    text: `INSERT INTO groups(group_name, creator_user_id) 
+    text: `INSERT INTO groups(group_name, admin_user_id) 
             VALUES($1, $2) RETURNING group_id`,
-    values: [group_name, creator_user_id],
+    values: [group_name, admin_user_id],
   };
 }
 
@@ -11,7 +11,7 @@ export function get_groups_list(user_id: string) {
     text: `SELECT 
               groups.group_id, 
               groups.group_name, 
-              groups.creator_user_id, 
+              groups.admin_user_id, 
               users_in_groups.was_kicked,
               users_in_groups.user_left_at,
               users_in_groups.user_left
@@ -28,7 +28,7 @@ export function group_counts_for_each_user(user_id: string) {
   return {
     text: `SELECT group_id
            FROM groups
-           WHERE creator_user_id = $1`,
+           WHERE admin_user_id = $1`,
     values: [user_id],
   };
 }
@@ -90,5 +90,41 @@ export function mark_group_as_removed(group_id: string, user_id: string) {
             SET group_removed = true
             WHERE group_id = $1 AND user_id = $2`,
     values: [group_id, user_id],
+  };
+}
+
+export function get_next_admin(group_id: string) {
+  return {
+    text: `SELECT 
+              users.user_id, 
+              users.username
+          FROM users
+          INNER JOIN users_in_groups
+              ON users_in_groups.group_id = $1
+          WHERE users_in_groups.group_id = $1 
+              AND users.user_id = users_in_groups.user_id
+              AND users_in_groups.user_left = false 
+          ORDER BY users_in_groups.joined_at ASC
+          LIMIT 1`,
+    values: [group_id],
+  };
+}
+
+export function update_group_admin(group_id: string, user_id: string) {
+  return {
+    text: `UPDATE groups
+            SET admin_user_id = $2
+            WHERE group_id = $1`,
+    values: [group_id, user_id],
+  };
+}
+
+export function disband_group(group_id: string) {
+  return {
+    text: `UPDATE FROM groups
+            SET disbanded_at = CURRENT_TIMESTAMP, 
+            WHERE group_id = $1
+            RETURNING disbanded_at`,
+    values: [group_id],
   };
 }

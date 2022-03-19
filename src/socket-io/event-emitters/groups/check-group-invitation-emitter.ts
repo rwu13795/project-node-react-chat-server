@@ -30,6 +30,8 @@ export function check_groupInvitation_emitter(
   send_to_id: string,
   { message, newGroupsList, newGroupId }: Body
 ) {
+  console.log("check_groupInvitation_emitter ----------------------");
+
   io.to(`${chatType.private}_${send_to_id}`).emit("check-group-invitation", {
     message,
     newGroupsList,

@@ -5,7 +5,8 @@ export function update_private_notification_count(
   return {
     name: "update_private_notification_count",
     text: `UPDATE notifications_private_chat
-             SET count = count + 1
+             SET count = count + 1,
+                  last_added_at = CURRENT_TIMESTAMP
              WHERE sender_id = $1 and user_id = $2`,
     values: [sender_id, recipient_id],
   };
@@ -27,7 +28,7 @@ export function clear_private_notification_count(
 export function get_private_notifications(user_id: string) {
   return {
     name: "get_private_notifications",
-    text: `SELECT sender_id, count FROM notifications_private_chat 
+    text: `SELECT sender_id, count, last_added_at FROM notifications_private_chat 
              WHERE user_id = $1`,
     values: [user_id],
   };

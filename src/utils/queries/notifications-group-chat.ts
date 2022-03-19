@@ -5,7 +5,8 @@ export function update_group_notification_count(
   // increment the notifications count for all members except the sender
   return {
     text: `UPDATE notifications_group_chat
-           SET count = count + 1
+           SET count = count + 1,
+                last_added_at = CURRENT_TIMESTAMP
            WHERE group_id = $1 and user_id != $2`,
     values: [group_id, sender_id],
   };
@@ -25,7 +26,7 @@ export function clear_group_notification_count(
 
 export function get_group_notifications(user_id: string) {
   return {
-    text: `SELECT group_id, count FROM notifications_group_chat
+    text: `SELECT group_id, count, last_added_at FROM notifications_group_chat
            WHERE user_id = $1`,
     values: [user_id],
   };
