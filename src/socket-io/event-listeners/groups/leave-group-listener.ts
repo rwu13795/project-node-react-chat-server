@@ -8,14 +8,15 @@ import {
   insert_new_group_msg,
   remove_group_notifications,
 } from "../../../utils/queries/__index";
+import { groupAdminNotification_emitter } from "../../event-emitters";
 
-interface Props {
+interface Body {
   group_id: string;
   user_id: string;
 }
 
 export function leaveGroup_listener(socket: Socket, io: Server) {
-  socket.on("leave-group", async ({ group_id, user_id }: Props) => {
+  socket.on("leave-group", async ({ group_id, user_id }: Body) => {
     console.log(`user ${user_id} has left ${group_id}`);
 
     socket.leave(`${chatType.group}_${group_id}`);
@@ -45,7 +46,8 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
       file_name: "none",
       file_url: "none",
     };
-    io.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
+
+    groupAdminNotification_emitter(io, {
       messageObject: messageObject_res,
       room_type: chatType.group,
       group_id,

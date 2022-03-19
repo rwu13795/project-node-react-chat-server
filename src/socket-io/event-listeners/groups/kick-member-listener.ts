@@ -8,8 +8,12 @@ import {
   insert_new_group_msg,
   remove_group_notifications,
 } from "../../../utils/queries/__index";
+import {
+  groupAdminNotification_emitter,
+  kickedOutOfGroup_emitter,
+} from "../../event-emitters";
 
-interface Props {
+interface Body {
   group_id: string;
   member_user_id: string;
   member_username: string;
@@ -18,7 +22,7 @@ interface Props {
 export function kickMember_listener(socket: Socket, io: Server) {
   socket.on(
     "kick-member",
-    async ({ group_id, member_user_id, member_username }: Props) => {
+    async ({ group_id, member_user_id, member_username }: Body) => {
       const { user_id, username } = socket.currentUser;
       console.log(
         `user ${member_user_id} ${member_username} was kicked by group admin`
@@ -50,17 +54,14 @@ export function kickMember_listener(socket: Socket, io: Server) {
         file_url: "none",
       };
 
-      io.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
+      groupAdminNotification_emitter(io, {
         messageObject: messageObject_res,
         room_type: chatType.group,
         group_id,
       });
 
       // force the client-socket of the kicked user leave the room of this group
-      io.to(`${chatType.private}_${member_user_id}`).emit(
-        "kicked-out-of-group",
-        { group_id }
-      );
+      kickedOutOfGroup_emitter(io, member_user_id, { group_id });
     }
   );
 }

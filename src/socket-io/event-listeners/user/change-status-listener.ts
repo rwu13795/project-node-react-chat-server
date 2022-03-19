@@ -1,11 +1,12 @@
 import { Socket } from "socket.io";
+import { onlineEcho_emitter } from "../../event-emitters";
 
-interface Props {
+interface Body {
   status: string;
 }
 
 export function changeOnlineStatus_listener(socket: Socket) {
-  socket.on("online-status-change", ({ status }: Props) => {
+  socket.on("online-status-change", ({ status }: Body) => {
     const { user_id, friends_room_id } = socket.currentUser;
 
     console.log(`user ${user_id} changed online status to ${status}`);
@@ -14,9 +15,6 @@ export function changeOnlineStatus_listener(socket: Socket) {
     socket.currentUser.onlineStatus = status;
 
     // let all the friends know that the current user change the status
-    socket.to(friends_room_id).emit("online-echo", {
-      friend_id: user_id,
-      status,
-    });
+    onlineEcho_emitter(socket, friends_room_id, { sender_id: user_id, status });
   });
 }

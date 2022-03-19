@@ -1,7 +1,9 @@
 import { Socket, Server } from "socket.io";
 
-import groupMessage_emitter from "../../event-emitters/group-msg-emitter";
-import privateMessage_emitter from "../../event-emitters/private-msg-emitter";
+import {
+  privateMessage_emitter,
+  groupMessage_emitter,
+} from "../../event-emitters";
 
 export enum chatType {
   group = "group",
@@ -21,30 +23,27 @@ export interface MessageObject {
   file_name?: string;
 }
 
-interface Props {
+interface Body {
   messageObject: MessageObject;
   room_type: string;
 }
 
 export function messageToServer_listener(socket: Socket, io: Server) {
-  socket.on(
-    "message-to-server",
-    async ({ messageObject, room_type }: Props) => {
-      console.log(messageObject.file_body?.byteLength);
-      console.log(messageObject);
+  socket.on("message-to-server", async ({ messageObject, room_type }: Body) => {
+    console.log(messageObject.file_body?.byteLength);
+    console.log(messageObject);
 
-      switch (room_type) {
-        case chatType.private: {
-          privateMessage_emitter(socket, messageObject);
-          break;
-        }
-        case chatType.group: {
-          groupMessage_emitter(socket, messageObject);
-          break;
-        }
-        default:
-          break;
+    switch (room_type) {
+      case chatType.private: {
+        privateMessage_emitter(socket, messageObject);
+        break;
       }
+      case chatType.group: {
+        groupMessage_emitter(socket, messageObject);
+        break;
+      }
+      default:
+        break;
     }
-  );
+  });
 }

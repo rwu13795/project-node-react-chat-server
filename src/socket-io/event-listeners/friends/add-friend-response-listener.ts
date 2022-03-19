@@ -1,6 +1,5 @@
 import { Socket } from "socket.io";
 
-import { chatType } from "..";
 import { db_pool } from "../../../utils/db-connection";
 import {
   insert_friends_pair,
@@ -10,8 +9,9 @@ import {
   reject_add_friend_request,
   delete_add_friend_request,
 } from "../../../utils/queries/__index";
+import { addFriendResponse_emitter } from "../../event-emitters";
 
-interface Props {
+interface Body {
   sender_id: string;
   sender_username: string;
   target_id: string;
@@ -28,7 +28,7 @@ export function addFriendResponse_listener(socket: Socket) {
       target_id,
       target_username,
       accept,
-    }: Props) => {
+    }: Body) => {
       if (!accept) {
         console.log(
           `user ${target_username} id-${target_id} rejects sender ${sender_id}`
@@ -60,9 +60,9 @@ export function addFriendResponse_listener(socket: Socket) {
         db_pool.query(delete_add_friend_request(target_id, sender_id)),
       ]);
 
-      socket
-        .to(`${chatType.private}_${sender_id}`)
-        .emit("add-friend-response", { newFriend: target_username });
+      addFriendResponse_emitter(socket, sender_id, {
+        acceptor_name: target_username,
+      });
     }
   );
 }

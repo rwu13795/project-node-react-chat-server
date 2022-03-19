@@ -1,16 +1,16 @@
 import { Socket } from "socket.io";
 
-import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
-import { db_pool } from "../../utils/db-connection";
+import uploadFileTo_S3 from "../../../utils/aws-s3/upload-file";
+import { db_pool } from "../../../utils/db-connection";
 import {
   update_private_notification_count,
   insert_new_msg_users_ref,
   insert_new_msg,
-} from "../../utils/queries/__index";
-import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
-import { chatType, MessageObject } from "../event-listeners";
+} from "../../../utils/queries/__index";
+import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
+import { chatType, MessageObject } from "../../event-listeners";
 
-export default async function privateMessage_toClient(
+export async function privateMessage_emitter(
   socket: Socket,
   messageObject: MessageObject
 ) {
@@ -63,12 +63,10 @@ export default async function privateMessage_toClient(
     file_url,
   };
 
-  socket
-    .to(targetRoom)
-    .emit("message-to-client", {
-      messageObject: messageObject_res,
-      room_type: chatType.private,
-    });
+  socket.to(targetRoom).emit("message-to-client", {
+    messageObject: messageObject_res,
+    room_type: chatType.private,
+  });
 
   // save the message to DB and update notification count
   try {

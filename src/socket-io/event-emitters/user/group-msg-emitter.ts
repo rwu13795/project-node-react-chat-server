@@ -1,17 +1,17 @@
 import { Socket } from "socket.io";
 
-import uploadFileTo_S3 from "../../utils/aws-s3/upload-file";
-import { db_pool } from "../../utils/db-connection";
-import { MessageObject_res } from "../../utils/interfaces/response-interfaces";
+import uploadFileTo_S3 from "../../../utils/aws-s3/upload-file";
+import { db_pool } from "../../../utils/db-connection";
+import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
 import {
   insert_new_group_msg,
   update_group_notification_count,
-} from "../../utils/queries/__index";
-import { chatType, MessageObject } from "../event-listeners";
+} from "../../../utils/queries/__index";
+import { chatType, MessageObject } from "../../event-listeners";
 
 interface Props {}
 
-export default async function groupMessage_emitter(
+export async function groupMessage_emitter(
   socket: Socket,
   messageObject: MessageObject
 ) {

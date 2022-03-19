@@ -7,8 +7,9 @@ import {
   clear_private_notification_count,
   get_friends_id,
 } from "../../../utils/queries/__index";
+import { offline_emitter } from "../../event-emitters";
 
-// socket-io can detect if the socket is disconnected
+// socket-io can detect when socket is disconnected
 // the "disconnect" is a build-in listener key word for detecting disconnection
 export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
@@ -18,16 +19,18 @@ export function offline_listener(socket: Socket) {
 
     const friends = await db_pool.query(get_friends_id(user_id));
 
-    const rooms_id = friends.rows.map((elem) => {
+    const friends_room_id = friends.rows.map((elem) => {
       return `${chatType.private}_${elem.friend_id}`;
     });
 
     // let all the friends know that this user is now offline
-    if (rooms_id.length > 0) {
-      console.log(`let the friend ${rooms_id} this user${user_id} is offline`);
+    if (friends_room_id.length > 0) {
+      console.log(
+        `let the friend ${friends_room_id} this user${user_id} is offline`
+      );
       // only emit if the user has at least one friend, otherwise
       // the socket will emit to every one globally if the array is emtpy
-      socket.to(rooms_id).emit("offline", user_id);
+      offline_emitter(socket, friends_room_id, { sender_id: user_id });
     }
 
     // clear the notification in the room where the user was in when disconnected
