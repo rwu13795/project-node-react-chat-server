@@ -2,12 +2,15 @@ export function update_private_notification_count(
   sender_id: string,
   recipient_id: string
 ) {
+  // both sender and recipient should update the last_added_at time
+  // so that each user will be on top position in each other's list
   return {
     name: "update_private_notification_count",
     text: `UPDATE notifications_private_chat
              SET count = count + 1,
                   last_added_at = CURRENT_TIMESTAMP
-             WHERE sender_id = $1 and user_id = $2`,
+             WHERE sender_id = $1 and user_id = $2
+                OR sender_id = $2 and user_id = $1`,
     values: [sender_id, recipient_id],
   };
 }

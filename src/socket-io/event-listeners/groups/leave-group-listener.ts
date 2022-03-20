@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
 import { chatType } from "..";
 import {

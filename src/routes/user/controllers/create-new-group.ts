@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import {
   create_new_group,

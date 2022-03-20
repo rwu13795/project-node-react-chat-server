@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 
 import uploadFileTo_S3 from "../../../utils/aws-s3/upload-file";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
 import {
   insert_new_group_msg,
@@ -77,7 +77,7 @@ export async function groupMessage_emitter(
           file_url
         )
       ),
-      db_pool.query(update_group_notification_count(recipient_id, sender_id)),
+      db_pool.query(update_group_notification_count(recipient_id)),
     ]);
 
     console.log("insert new msg into table");

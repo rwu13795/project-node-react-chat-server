@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 
 import createInvalidation_cloudFront from "../../../utils/aws-cloudFront/create-invalidation";
 import changeAvatarImage_S3 from "../../../utils/aws-s3/change-avatar";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { update_user_avatar } from "../../../utils/queries/__index";
 
 interface Body {

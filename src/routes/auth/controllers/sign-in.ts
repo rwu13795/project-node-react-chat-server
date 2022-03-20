@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { Password } from "../../../utils/hash-password";
 import {
   AddFriendRequest_res,

@@ -3,7 +3,7 @@ import { randomBytes } from "crypto";
 
 import { transporter } from "../../../utils/SendGrid-transporter";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import {
   find_existing_user,
   insert_reset_token,

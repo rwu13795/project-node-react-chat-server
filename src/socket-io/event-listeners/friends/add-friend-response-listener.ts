@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import {
   insert_friends_pair,
   insert_new_msg,

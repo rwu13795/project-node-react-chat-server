@@ -6,7 +6,7 @@ import { setupPrimary } from "@socket.io/cluster-adapter";
 import "dotenv/config";
 
 import { app } from "./app";
-import { connectToDatabase } from "./utils/db-connection";
+import { connectToDatabase } from "./utils/database/db-connection";
 import connectSocketIO from "./socket-io/socket-io-connection";
 
 const num_processes = os.cpus().length;

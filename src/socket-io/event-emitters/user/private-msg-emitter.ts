@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 
 import uploadFileTo_S3 from "../../../utils/aws-s3/upload-file";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import {
   update_private_notification_count,
   insert_new_msg_users_ref,

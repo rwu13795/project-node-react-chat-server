@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import {
   delete_group_member,
   mark_group_as_removed,

@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import {
   check_group_member,
   insert_group_invitation,

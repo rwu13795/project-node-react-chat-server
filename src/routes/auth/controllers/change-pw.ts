@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { Password } from "../../../utils/hash-password";
 import { Users } from "../../../utils/interfaces/tables-columns";
 import {

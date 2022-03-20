@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 import { get_friends_id } from "../../../utils/queries/__index";
 import { onlineStatus_enum } from "../../socket-io-connection";
 import { chatType } from "..";

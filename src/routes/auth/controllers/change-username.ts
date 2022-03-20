@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
-import { db_pool } from "../../../utils/db-connection";
+import { db_pool } from "../../../utils/database/db-connection";
 
 import { change_username } from "../../../utils/queries/__index";
 
