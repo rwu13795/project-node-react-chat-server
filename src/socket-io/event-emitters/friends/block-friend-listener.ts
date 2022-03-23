@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { chatType } from "../../event-listeners";
 
-interface Body {
+interface Data {
   blocked_by: string;
   block: boolean;
 }
@@ -9,7 +9,7 @@ interface Body {
 export function blockFriend_emitter(
   socket: Socket,
   blocking_target: string,
-  { blocked_by, block }: Body
+  { blocked_by, block }: Data
 ) {
   socket.to(`${chatType.private}_${blocking_target}`).emit("block-friend", {
     blocked_by,

@@ -8,13 +8,13 @@ import {
 } from "../../../utils/queries/__index";
 import { blockFriend_emitter } from "../../event-emitters";
 
-interface Body {
+interface Data {
   friend_id: string;
   block: boolean;
 }
 
 export function blockFriend_listener(socket: Socket) {
-  socket.on("block-friend", async ({ friend_id, block }: Body) => {
+  socket.on("block-friend", async ({ friend_id, block }: Data) => {
     console.log("block-friend", friend_id, block);
 
     const currentUserId = socket.currentUser.user_id;

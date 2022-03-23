@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { chatType } from "../../event-listeners";
 
-interface Body {
+interface Data {
   group_id: string;
   group_name: string;
   inviter_name: string;
@@ -11,7 +11,7 @@ interface Body {
 export function groupInvitationRequest_emitter(
   socket: Socket,
   invitee_id: string,
-  { group_id, group_name, inviter_name, was_responded }: Body
+  { group_id, group_name, inviter_name, was_responded }: Data
 ) {
   console.log("groupInvitationRequest_emitter ----------------------");
 

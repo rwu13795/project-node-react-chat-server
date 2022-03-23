@@ -11,7 +11,7 @@ import {
   groupInvitationRequest_emitter,
 } from "../../event-emitters";
 
-interface Body {
+interface Data {
   friend_id: string;
   group_id: string;
   group_name: string;
@@ -21,7 +21,7 @@ interface Body {
 export function groupInvitationReqest_listener(socket: Socket, io: Server) {
   socket.on(
     "group-invitation-request",
-    async ({ friend_id, group_id, group_name, inviter_name }: Body) => {
+    async ({ friend_id, group_id, group_name, inviter_name }: Data) => {
       const inviter_id = socket.currentUser.user_id;
       console.log(
         `user ${inviter_name} @${inviter_id} invites user ${friend_id} to group ${group_id}`

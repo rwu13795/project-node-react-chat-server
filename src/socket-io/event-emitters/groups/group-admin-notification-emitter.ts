@@ -16,7 +16,7 @@ interface MessageObject_for_client {
   warning?: boolean;
 }
 
-interface Body {
+interface Data {
   messageObject: MessageObject_for_client;
   room_type: string;
   group_id: string;
@@ -25,7 +25,7 @@ interface Body {
 
 export function groupAdminNotification_emitter(
   emitter: Server | Socket,
-  { messageObject, room_type, group_id, newAdmin }: Body
+  { messageObject, room_type, group_id, newAdmin }: Data
 ) {
   emitter.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
     messageObject,

@@ -13,7 +13,7 @@ import {
   kickedOutOfGroup_emitter,
 } from "../../event-emitters";
 
-interface Body {
+interface Data {
   group_id: string;
   member_user_id: string;
   member_username: string;
@@ -22,7 +22,7 @@ interface Body {
 export function kickMember_listener(socket: Socket, io: Server) {
   socket.on(
     "kick-member",
-    async ({ group_id, member_user_id, member_username }: Body) => {
+    async ({ group_id, member_user_id, member_username }: Data) => {
       const { user_id, username } = socket.currentUser;
       console.log(
         `user ${member_user_id} ${member_username} was kicked by group admin`

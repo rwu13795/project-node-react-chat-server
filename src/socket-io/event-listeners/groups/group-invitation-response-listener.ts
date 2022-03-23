@@ -15,13 +15,13 @@ import {
   groupAdminNotification_emitter,
 } from "../../event-emitters";
 
-interface Body {
+interface Data {
   group_id: string;
   accept: boolean;
 }
 
 export function groupInvitationResponse_listener(socket: Socket, io: Server) {
-  socket.on("group-invitation-response", async ({ group_id, accept }: Body) => {
+  socket.on("group-invitation-response", async ({ group_id, accept }: Data) => {
     const invitee_id = socket.currentUser.user_id;
 
     await db_pool.query(delete_group_invitation(group_id, invitee_id));

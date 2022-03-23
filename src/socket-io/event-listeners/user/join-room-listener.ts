@@ -2,13 +2,13 @@ import { Socket } from "socket.io";
 
 import { chatType } from "..";
 
-interface Body {
+interface Data {
   private_id: string;
   group_ids: string[];
 }
 
 export function joinRoom_listener(socket: Socket, id: number | undefined) {
-  socket.on("join-room", ({ private_id, group_ids }: Body) => {
+  socket.on("join-room", ({ private_id, group_ids }: Data) => {
     console.log(
       `socket ${socket.id} has joined ${private_id}, using worker ${id}`
     );

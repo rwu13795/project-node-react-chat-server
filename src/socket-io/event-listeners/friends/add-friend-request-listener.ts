@@ -11,7 +11,7 @@ import {
   check_addFriendRequest_emitter,
 } from "../../event-emitters";
 
-interface Body {
+interface Data {
   sender_id: string;
   sender_username: string;
   sender_email: string;
@@ -28,7 +28,7 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
       sender_email,
       message,
       target_id,
-    }: Body) => {
+    }: Data) => {
       console.log(
         `user ${sender_username} id-${sender_id} sends a request to ${target_id}`
       );

@@ -2,17 +2,16 @@ import { Socket } from "socket.io";
 
 import { db_pool } from "../../../utils/database/db-connection";
 import { get_friends_id } from "../../../utils/queries/__index";
-import { onlineStatus_enum } from "../../socket-io-connection";
 import { chatType } from "..";
 import { online_emitter } from "../../event-emitters";
 
-interface Body {
+interface Data {
   onlineStatus: string;
   target_id?: string;
 }
 
 export function online_listener(socket: Socket) {
-  socket.on("online", async ({ onlineStatus, target_id }: Body) => {
+  socket.on("online", async ({ onlineStatus, target_id }: Data) => {
     const query = socket.handshake.query;
     const user_id = query.user_id as string;
     const username = query.username as string;

@@ -5,13 +5,13 @@ import changeAvatarImage_S3 from "../../../utils/aws-s3/change-avatar";
 import { db_pool } from "../../../utils/database/db-connection";
 import { update_user_avatar } from "../../../utils/queries/__index";
 
-interface Body {
+interface Data {
   buffer: Buffer;
   type: string;
 }
 
 export function changeAvatar_listener(socket: Socket) {
-  socket.on("change-avatar", async ({ buffer, type }: Body) => {
+  socket.on("change-avatar", async ({ buffer, type }: Data) => {
     console.log(buffer);
     console.log(type);
 

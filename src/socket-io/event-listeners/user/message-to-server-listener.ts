@@ -23,13 +23,13 @@ export interface MessageObject {
   file_name?: string;
 }
 
-interface Body {
+interface Data {
   messageObject: MessageObject;
   room_type: string;
 }
 
 export function messageToServer_listener(socket: Socket, io: Server) {
-  socket.on("message-to-server", async ({ messageObject, room_type }: Body) => {
+  socket.on("message-to-server", async ({ messageObject, room_type }: Data) => {
     console.log(messageObject.file_body?.byteLength);
     console.log(messageObject);
 

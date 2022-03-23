@@ -13,7 +13,7 @@ import {
 } from "../../../utils/queries/__index";
 import { groupAdminNotification_emitter } from "../../event-emitters";
 
-interface Body {
+interface Data {
   group_id: string;
   user_id: string;
   admin_user_id: string;
@@ -22,7 +22,7 @@ interface Body {
 export function leaveGroup_listener(socket: Socket, io: Server) {
   socket.on(
     "leave-group",
-    async ({ group_id, user_id, admin_user_id }: Body) => {
+    async ({ group_id, user_id, admin_user_id }: Data) => {
       console.log(`user ${user_id} has left ${group_id}`);
 
       socket.leave(`${chatType.group}_${group_id}`);

@@ -19,7 +19,7 @@ interface Group {
   wasMembersListLoaded: boolean;
 }
 
-interface Body {
+interface Data {
   message: string;
   newGroupsList?: Group[];
   newGroupId?: string;
@@ -28,7 +28,7 @@ interface Body {
 export function check_groupInvitation_emitter(
   io: Server,
   send_to_id: string,
-  { message, newGroupsList, newGroupId }: Body
+  { message, newGroupsList, newGroupId }: Data
 ) {
   console.log("check_groupInvitation_emitter ----------------------");
 

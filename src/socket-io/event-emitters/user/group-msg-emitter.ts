@@ -9,8 +9,6 @@ import {
 } from "../../../utils/queries/__index";
 import { chatType, MessageObject } from "../../event-listeners";
 
-interface Props {}
-
 export async function groupMessage_emitter(
   socket: Socket,
   messageObject: MessageObject

@@ -11,7 +11,7 @@ import {
 } from "../../../utils/queries/__index";
 import { addFriendResponse_emitter } from "../../event-emitters";
 
-interface Body {
+interface Data {
   sender_id: string;
   sender_username: string;
   target_id: string;
@@ -28,7 +28,7 @@ export function addFriendResponse_listener(socket: Socket) {
       target_id,
       target_username,
       accept,
-    }: Body) => {
+    }: Data) => {
       if (!accept) {
         console.log(
           `user ${target_username} id-${target_id} rejects sender ${sender_id}`

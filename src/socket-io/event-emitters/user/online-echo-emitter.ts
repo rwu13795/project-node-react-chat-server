@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-interface Body {
+interface Data {
   sender_id: string;
   status: string;
 }
@@ -8,7 +8,7 @@ interface Body {
 export function onlineEcho_emitter(
   socket: Socket,
   friends_room_id: string[] | string,
-  { sender_id, status }: Body
+  { sender_id, status }: Data
 ) {
   socket.to(friends_room_id).emit("online-echo", {
     sender_id,
