@@ -16,21 +16,16 @@ interface MessageObject_for_client {
   warning?: boolean;
 }
 
-interface Data {
-  messageObject: MessageObject_for_client;
-  room_type: string;
-  group_id: string;
-  newAdmin?: string;
-}
-
 export function groupAdminNotification_emitter(
   emitter: Server | Socket,
-  { messageObject, room_type, group_id, newAdmin }: Data
+  data: {
+    messageObject: MessageObject_for_client;
+    room_type: string;
+    group_id: string;
+    newAdmin?: string;
+  }
 ) {
-  emitter.to(`${chatType.group}_${group_id}`).emit("group-admin-notification", {
-    messageObject,
-    room_type,
-    group_id,
-    newAdmin,
-  });
+  emitter
+    .to(`${chatType.group}_${data.group_id}`)
+    .emit("group-admin-notification", data);
 }

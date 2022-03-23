@@ -19,22 +19,17 @@ interface Group {
   wasMembersListLoaded: boolean;
 }
 
-interface Data {
-  message: string;
-  newGroupsList?: Group[];
-  newGroupId?: string;
-}
-
 export function check_groupInvitation_emitter(
   io: Server,
   send_to_id: string,
-  { message, newGroupsList, newGroupId }: Data
+  data: {
+    message: string;
+    newGroupsList?: Group[];
+    newGroupId?: string;
+  }
 ) {
-  console.log("check_groupInvitation_emitter ----------------------");
-
-  io.to(`${chatType.private}_${send_to_id}`).emit("check-group-invitation", {
-    message,
-    newGroupsList,
-    newGroupId,
-  });
+  io.to(`${chatType.private}_${send_to_id}`).emit(
+    "check-group-invitation",
+    data
+  );
 }
