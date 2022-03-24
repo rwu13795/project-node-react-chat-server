@@ -5,7 +5,6 @@ import {
   check_group_member,
   insert_group_invitation,
 } from "../../../utils/queries/__index";
-import { chatType } from "..";
 import {
   check_groupInvitation_emitter,
   groupInvitationRequest_emitter,

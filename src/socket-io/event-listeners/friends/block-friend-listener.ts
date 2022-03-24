@@ -1,6 +1,5 @@
 import { Socket } from "socket.io";
 
-import { chatType } from "..";
 import { db_pool } from "../../../utils/database/db-connection";
 import {
   being_blocked_unblocked,

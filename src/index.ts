@@ -1,4 +1,4 @@
-import os from "os";
+// import os from "os";
 import cluster from "cluster";
 import http from "http";
 import { setupMaster } from "@socket.io/sticky";
@@ -9,7 +9,10 @@ import { app } from "./app";
 import { connectToDatabase } from "./utils/database/db-connection";
 import connectSocketIO from "./socket-io/socket-io-connection";
 
-const num_processes = os.cpus().length;
+// Heroku limit the number of connection to the DB, I have to use a fixed process number
+// in dev mode to avoid getting error
+// const num_processes = os.cpus().length;
+const num_processes = 4;
 
 if (cluster.isPrimary) {
   console.log(`Master ${process.pid} is running`);

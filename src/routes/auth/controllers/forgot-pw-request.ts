@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { randomBytes } from "crypto";
 
-import { transporter } from "../../../utils/SendGrid-transporter";
+// import { transporter } from "../../../utils/SendGrid-transporter";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/database/db-connection";
 import {
