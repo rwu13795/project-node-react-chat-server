@@ -6,7 +6,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   clear_group_notification_count,
   clear_private_notification_count,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface Req_body {
   target_id: string;

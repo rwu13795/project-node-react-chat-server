@@ -7,7 +7,7 @@ import {
   group_member_left,
   insert_new_group_msg,
   remove_group_notifications,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import {
   groupAdminNotification_emitter,
   kickedOutOfGroup_emitter,

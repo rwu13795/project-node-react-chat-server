@@ -4,7 +4,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   check_group_member,
   insert_group_invitation,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import {
   check_groupInvitation_emitter,
   groupInvitationRequest_emitter,

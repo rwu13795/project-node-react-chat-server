@@ -17,7 +17,7 @@ import {
   get_friends_list,
   get_groups_list,
   get_group_invitations,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 
 interface SignIn_body {

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { asyncWrapper } from "../../../middlewares";
 import { db_pool } from "../../../utils/database/db-connection";
-import { search_user } from "../../../utils/queries/__index";
+import { search_user } from "../../../utils/database/queries/__index";
 
 interface Req_body {
   user_id: string;

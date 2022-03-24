@@ -7,7 +7,7 @@ import {
   change_password,
   check_token,
   delete_reset_token,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface Req_body {
   token: string;

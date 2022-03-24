@@ -10,7 +10,7 @@ import {
   insert_new_group_msg,
   remove_group_notifications,
   update_group_admin,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { groupAdminNotification_emitter } from "../../event-emitters";
 
 interface Data {

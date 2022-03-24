@@ -5,7 +5,7 @@ import {
   check_add_friend_request,
   insert_add_friend_request,
   update_add_friend_request,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import {
   addFriendRequest_emitter,
   check_addFriendRequest_emitter,

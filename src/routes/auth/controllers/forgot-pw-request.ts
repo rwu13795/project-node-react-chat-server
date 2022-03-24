@@ -7,7 +7,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   find_existing_user,
   insert_reset_token,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface Req_body {
   email: string;

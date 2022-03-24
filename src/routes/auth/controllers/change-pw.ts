@@ -7,7 +7,7 @@ import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   change_password,
   find_existing_user,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface Req_body {
   old_password: string;

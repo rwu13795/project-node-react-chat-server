@@ -5,7 +5,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   delete_group_member,
   mark_group_as_removed,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface Req_body {
   group_id: string;

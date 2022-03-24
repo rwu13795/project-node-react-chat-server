@@ -4,7 +4,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   being_blocked_unblocked,
   block_unblock_friend,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { blockFriend_emitter } from "../../event-emitters";
 
 interface Data {

@@ -8,7 +8,7 @@ import {
   insert_private_notifications,
   reject_add_friend_request,
   delete_add_friend_request,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { addFriendResponse_emitter } from "../../event-emitters";
 
 interface Data {

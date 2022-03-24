@@ -8,7 +8,7 @@ import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   find_existing_user_email,
   register_new_user,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 interface SignUp_body {
   email: string;

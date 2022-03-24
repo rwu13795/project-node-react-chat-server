@@ -9,7 +9,7 @@ import {
   insert_group_notifications,
   insert_new_group_member,
   insert_new_group_msg,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import {
   check_groupInvitation_emitter,
   groupAdminNotification_emitter,

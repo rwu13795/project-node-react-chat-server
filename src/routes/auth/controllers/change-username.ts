@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/database/db-connection";
 
-import { change_username } from "../../../utils/queries/__index";
+import { change_username } from "../../../utils/database/queries/__index";
 
 interface Req_body {
   username: string;

@@ -6,7 +6,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   get_group_notifications,
   get_private_notifications,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 
 export const getNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {

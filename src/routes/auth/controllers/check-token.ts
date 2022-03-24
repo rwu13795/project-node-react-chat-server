@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/database/db-connection";
-import { check_token } from "../../../utils/queries/__index";
+import { check_token } from "../../../utils/database/queries/__index";
 
 interface Req_body {
   token: string;

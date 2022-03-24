@@ -6,7 +6,7 @@ import {
   clear_group_notification_count,
   clear_private_notification_count,
   get_friends_id,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { offline_emitter } from "../../event-emitters";
 
 export function log_out_listener(socket: Socket) {

@@ -6,7 +6,7 @@ import { MessageObject_res } from "../../../utils/interfaces/response-interfaces
 import {
   insert_new_group_msg,
   update_group_notification_count,
-} from "../../../utils/queries/__index";
+} from "../../../utils/database/queries/__index";
 import { chatType, MessageObject } from "../../event-listeners";
 
 export async function groupMessage_emitter(
