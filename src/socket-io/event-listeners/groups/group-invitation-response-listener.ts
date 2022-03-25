@@ -13,6 +13,7 @@ import {
 import {
   check_groupInvitation_emitter,
   groupAdminNotification_emitter,
+  joinNewGroup_emitter,
 } from "../../event-emitters";
 
 interface Data {
@@ -40,11 +41,10 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
 
       socket.join(`${chatType.group}_${group_id}`);
       // after the user joined the new group
-      // get the update groupsList, and send it back to the client socket
+      // get the updated groupsList, and send it back to the client socket
       // "check-group-invitation" listener, to let the client update the groupsList
       const result = await db_pool.query(get_groups_list(invitee_id));
-      check_groupInvitation_emitter(io, invitee_id, {
-        message: "User joined group",
+      joinNewGroup_emitter(io, invitee_id, {
         newGroupsList: result.rows,
         newGroupId: group_id,
       });

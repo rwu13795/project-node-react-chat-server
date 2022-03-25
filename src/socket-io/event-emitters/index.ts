@@ -7,6 +7,7 @@ export * from "./groups/check-group-invitation-emitter";
 export * from "./groups/group-invitation-request-emitter";
 export * from "./groups/group-admin-notification-emitter";
 export * from "./groups/kicked-out-of-group-emitter";
+export * from "./groups/join-new-group-emitter";
 
 export * from "./user/group-msg-emitter";
 export * from "./user/private-msg-emitter";
