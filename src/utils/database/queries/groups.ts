@@ -39,7 +39,9 @@ export function insert_new_group_member(group_id: string, invitee_id: string) {
             VALUES($1, $2)
             ON CONFLICT ON CONSTRAINT users_in_groups_pkey
             DO 
-              UPDATE SET user_left = false, user_left_at = NULL`,
+              UPDATE SET user_left = false, 
+                         user_left_at = NULL,
+                         was_kicked = false`,
     values: [group_id, invitee_id],
   };
 }

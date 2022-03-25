@@ -11,6 +11,11 @@ export function addFriendRequest_emitter(
     message: string;
   }
 ) {
+  console.log(
+    "emitting add friend request to",
+    `${chatType.private}_${target_id}`
+  );
+
   socket
     .to(`${chatType.private}_${target_id}`)
     .emit("add-friend-request", data);

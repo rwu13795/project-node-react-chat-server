@@ -31,7 +31,9 @@ export function get_group_notifications(user_id: string) {
 export function insert_group_notifications(group_id: string, user_id: string) {
   return {
     text: `INSERT INTO notifications_group_chat(group_id, user_id, count)
-           VALUES($1, $2, 0)`,
+           VALUES($1, $2, 0)
+           ON CONFLICT 
+              ON CONSTRAINT notifications_group_chat_pkey DO NOTHING`,
     values: [group_id, user_id],
   };
 }

@@ -1,1 +1,8 @@
-CREATE TABLE users
+CREATE TABLE users(
+		user_id SERIAL PRIMARY KEY,
+		email VARCHAR(255) UNIQUE,
+		username VARCHAR(20),
+		password VARCHAR(100),
+		avatar_url VARCHAR(100),
+		joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	);

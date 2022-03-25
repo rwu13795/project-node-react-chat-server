@@ -35,7 +35,6 @@ export function kickMember_listener(socket: Socket, io: Server) {
         db_pool.query(
           insert_new_group_msg(group_id, user_id, msg_body, "admin")
         ),
-        db_pool.query(remove_group_notifications(group_id, user_id)),
       ]);
 
       // emit the leave-group message to the group, let the members

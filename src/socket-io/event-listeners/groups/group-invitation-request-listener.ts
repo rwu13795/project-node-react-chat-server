@@ -15,12 +15,19 @@ interface Data {
   group_id: string;
   group_name: string;
   inviter_name: string;
+  admin_user_id: string;
 }
 
 export function groupInvitationReqest_listener(socket: Socket, io: Server) {
   socket.on(
     "group-invitation-request",
-    async ({ friend_id, group_id, group_name, inviter_name }: Data) => {
+    async ({
+      friend_id,
+      group_id,
+      group_name,
+      inviter_name,
+      admin_user_id,
+    }: Data) => {
       const inviter_id = socket.currentUser.user_id;
       console.log(
         `user ${inviter_name} @${inviter_id} invites user ${friend_id} to group ${group_id}`
@@ -33,9 +40,15 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
       if (result.rowCount > 0) {
         const { was_kicked, user_left } = result.rows[0];
 
-        console.log("result.rowCount > 0", result.rowCount > 0);
+        console.log("inviter_id", inviter_id);
+        console.log("admin_user_id", admin_user_id);
+        console.log(admin_user_id !== inviter_id);
 
-        if (user_left && was_kicked) {
+        if (
+          user_left &&
+          was_kicked &&
+          parseInt(admin_user_id) !== parseInt(inviter_id)
+        ) {
           let message = `This user was kicked from the group, only the group administrator
                     could invite this user back to the group.`;
           check_groupInvitation_emitter(io, inviter_id, { message });

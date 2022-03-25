@@ -63,6 +63,8 @@ export default function connectSocketIO(
   io.adapter(createAdapter());
   setupWorker(io);
 
+  console.log("setting up connectSocketIO");
+
   io.on("connection", (socket) => {
     console.log(`client ${socket.id} is connected to worker: ${id}`);
     joinRoom_listener(socket, id);
