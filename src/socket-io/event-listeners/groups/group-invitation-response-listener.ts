@@ -6,6 +6,8 @@ import { chatType } from "..";
 import {
   delete_group_invitation,
   get_groups_list,
+  get_group_notifications,
+  get_group_one_notification,
   insert_group_notifications,
   insert_new_group_member,
   insert_new_group_msg,
@@ -30,8 +32,8 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
     if (accept) {
       let msg_body = `New member ${socket.currentUser.username} has joined the group!`;
       await Promise.all([
-        db_pool.query(insert_new_group_member(group_id, invitee_id)),
         db_pool.query(insert_group_notifications(group_id, invitee_id)),
+        db_pool.query(insert_new_group_member(group_id, invitee_id)),
         db_pool.query(
           insert_new_group_msg(group_id, invitee_id, msg_body, "admin")
         ),
@@ -43,9 +45,14 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
       // after the user joined the new group
       // get the updated groupsList, and send it back to the client socket
       // "check-group-invitation" listener, to let the client update the groupsList
-      const result = await db_pool.query(get_groups_list(invitee_id));
+      const [noteResult, listResult] = await Promise.all([
+        db_pool.query(get_group_one_notification(group_id, invitee_id)),
+        db_pool.query(get_groups_list(invitee_id)),
+      ]);
+
       joinNewGroup_emitter(io, invitee_id, {
-        newGroupsList: result.rows,
+        note: noteResult.rows[0],
+        newGroupsList: listResult.rows,
         newGroupId: group_id,
       });
 

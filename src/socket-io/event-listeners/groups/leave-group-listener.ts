@@ -10,6 +10,7 @@ import {
   insert_new_group_msg,
   remove_group_notifications,
   update_group_admin,
+  user_left_group_notifications,
 } from "../../../utils/database/queries/__index";
 import { groupAdminNotification_emitter } from "../../event-emitters";
 
@@ -28,10 +29,11 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
       socket.leave(`${chatType.group}_${group_id}`);
 
       // mark the user as left and remove the associated notification
-      await Promise.all([
-        db_pool.query(group_member_left(group_id, user_id, false)),
-        db_pool.query(remove_group_notifications(group_id, user_id)),
-      ]);
+      // await Promise.all([
+      // db_pool.query(group_member_left(group_id, user_id, false)),
+
+      // db_pool.query(remove_group_notifications(group_id, user_id)),
+      // ]);
 
       let msg_body = `Member ${socket.currentUser.username} has left the group...`;
       let newAdmin = undefined;
@@ -40,23 +42,34 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
         // in the group for the longest to be the next Admin
         const result = await db_pool.query(get_next_admin(group_id));
 
+        console.log("get_next_admin", result.rows);
+
         if (result.rowCount < 1) {
           // if all the members have left the group, mark this group as
           // disbanded and delete it after 1 month
           const result = await db_pool.query(disband_group(group_id));
           msg_body = `This group has been disbanded on ${result.rows[0].disbanded_at}`;
         } else {
-          const { user_id, username } = result.rows[0];
+          // since the admin is always the oldest member, the next oldest member
+          // should become the next admin
+          const { user_id, username } = result.rows[1];
           newAdmin = user_id;
+
+          console.log("newAdmin", newAdmin);
           await db_pool.query(update_group_admin(group_id, user_id));
           msg_body = `Administrator ${socket.currentUser.username} has left the group. User ${username} now is the new administrator.`;
         }
       }
 
       // add the "user left" message in the chat board
-      await db_pool.query(
-        insert_new_group_msg(group_id, user_id, msg_body, "admin")
-      );
+      await Promise.all([
+        db_pool.query(user_left_group_notifications(group_id, user_id)),
+        db_pool.query(group_member_left(group_id, user_id, false)),
+        db_pool.query(
+          insert_new_group_msg(group_id, user_id, msg_body, "admin")
+        ),
+        // db_pool.query(remove_group_notifications(group_id, user_id)),
+      ]);
 
       // emit the leave-group message to the group, let the members
       // who are online know that a member has left

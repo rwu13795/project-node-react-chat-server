@@ -19,10 +19,17 @@ interface Group {
   wasMembersListLoaded: boolean;
 }
 
+interface NewGroupNotification {
+  group_id: string;
+  count: number;
+  last_added_at: string;
+}
+
 export function joinNewGroup_emitter(
   io: Server,
   target_id: string,
   data: {
+    note: NewGroupNotification;
     newGroupsList: Group[];
     newGroupId: string;
   }

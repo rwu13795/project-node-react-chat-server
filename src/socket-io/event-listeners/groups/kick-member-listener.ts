@@ -7,6 +7,7 @@ import {
   group_member_left,
   insert_new_group_msg,
   remove_group_notifications,
+  user_left_group_notifications,
 } from "../../../utils/database/queries/__index";
 import {
   groupAdminNotification_emitter,
@@ -31,6 +32,7 @@ export function kickMember_listener(socket: Socket, io: Server) {
       let msg_body = `Member ${member_username} was politely kicked out of the 
                     group by the administrator ${username}!`;
       await Promise.all([
+        db_pool.query(user_left_group_notifications(group_id, user_id)),
         db_pool.query(group_member_left(group_id, member_user_id, true)),
         db_pool.query(
           insert_new_group_msg(group_id, user_id, msg_body, "admin")

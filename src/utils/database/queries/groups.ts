@@ -107,7 +107,7 @@ export function get_next_admin(group_id: string) {
               AND users.user_id = users_in_groups.user_id
               AND users_in_groups.user_left = false 
           ORDER BY users_in_groups.joined_at ASC
-          LIMIT 1`,
+          LIMIT 2`,
     values: [group_id],
   };
 }
