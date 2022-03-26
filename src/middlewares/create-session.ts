@@ -17,6 +17,7 @@ const createSession = session({
   resave: false,
   cookie: { maxAge: 1000 * 60 * 60 }, // 60 mins
   saveUninitialized: false, // NOTE //
+  rolling: true, // Force the session identifier cookie to be set on every response
 });
 
 export default createSession;
