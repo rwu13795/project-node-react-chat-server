@@ -15,6 +15,7 @@ interface Data {
   sender_id: string;
   sender_username: string;
   sender_email: string;
+  sender_avatar: string;
   message: string;
   target_id: string;
 }
@@ -26,6 +27,7 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
       sender_id,
       sender_username,
       sender_email,
+      sender_avatar,
       message,
       target_id,
     }: Data) => {
@@ -49,6 +51,7 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
           sender_id,
           sender_username,
           sender_email,
+          sender_avatar,
           message,
         });
 
@@ -57,7 +60,7 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
         // socket to the room where this socket is in. I have to use the io to emit
         // the message just like the "group chat"
         check_addFriendRequest_emitter(io, sender_id, {
-          message: "The request has been sent!",
+          message: "Request sent!",
         });
       }
       // Current user has sent a request to the same target before
@@ -94,6 +97,7 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
             sender_id,
             sender_username,
             sender_email,
+            sender_avatar,
             message,
           });
 

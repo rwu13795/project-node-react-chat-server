@@ -9,7 +9,7 @@ export function search_user(user_id: string, user_email: string) {
     value = user_id;
   }
   return {
-    text: `SELECT user_id, username FROM users 
+    text: `SELECT user_id, username, avatar_url FROM users 
              WHERE ${text} = $1`,
     values: [value],
   };

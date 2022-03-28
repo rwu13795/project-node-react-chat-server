@@ -36,7 +36,7 @@ export const signUp = asyncWrapper(
     if (existingUser.rowCount > 0) {
       return next(
         new Bad_Request_Error(
-          "This email address is already used by other user",
+          "This email address has already been used by another user",
           "email"
         )
       );
