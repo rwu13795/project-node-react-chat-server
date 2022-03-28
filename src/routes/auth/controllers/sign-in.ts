@@ -77,7 +77,7 @@ export const signIn = asyncWrapper(
     req.session.currentUser = {
       username,
       email,
-      user_id,
+      user_id: user_id.toString(),
       avatar_url,
       isLoggedIn: true,
       targetRoomIdentifier: "",

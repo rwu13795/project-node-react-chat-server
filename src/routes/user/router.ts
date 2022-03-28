@@ -1,6 +1,10 @@
 import express from "express";
 
-import { requireUserAuth } from "../../middlewares";
+import {
+  createNewGroup_Body,
+  requestValidator,
+  requireUserAuth,
+} from "../../middlewares";
 import {
   createNewGroup,
   getMembersList,
@@ -12,7 +16,13 @@ const router = express.Router();
 
 router.post("/search-user", requireUserAuth, searchUser);
 
-router.post("/create-new-group", requireUserAuth, createNewGroup);
+router.post(
+  "/create-new-group",
+  requireUserAuth,
+  createNewGroup_Body,
+  requestValidator,
+  createNewGroup
+);
 
 router.get("/get-members-list", requireUserAuth, getMembersList);
 

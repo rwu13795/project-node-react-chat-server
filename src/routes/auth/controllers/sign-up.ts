@@ -53,7 +53,7 @@ export const signUp = asyncWrapper(
     req.session.currentUser = {
       username,
       email,
-      user_id: newUser.user_id,
+      user_id: newUser.user_id.toString(),
       isLoggedIn: true,
       targetRoomIdentifier: "",
       onlineStatus: onlineStatus_enum.online,

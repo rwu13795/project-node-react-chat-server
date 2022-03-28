@@ -10,4 +10,8 @@ export enum inputNames {
   last_name = "last_name",
   username = "username",
   message = "message",
+
+  // group
+  group_name = "group_name",
+  groups_limit = "groups_limit",
 }

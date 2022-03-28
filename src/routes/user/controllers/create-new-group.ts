@@ -9,6 +9,7 @@ import {
   insert_new_group_member,
   insert_new_group_msg,
 } from "../../../utils/database/queries/__index";
+import { inputNames } from "../../../utils/enums/input-names";
 
 interface Req_body {
   group_name: string;
@@ -34,10 +35,12 @@ export const createNewGroup = asyncWrapper(
       group_counts_for_each_user(admin_user_id)
     );
     if (groupCounts_result.rowCount >= 5) {
+      console.log("create-new-group -------> limit reached !!!");
+
       return next(
         new Bad_Request_Error(
-          "Group limit reached, You cannot create more than 5 groups",
-          "group_counts"
+          "Groups limit reached, you cannot create more than 5 groups",
+          inputNames.groups_limit
         )
       );
     }
