@@ -6,14 +6,12 @@ import { chatType } from "..";
 import {
   delete_group_invitation,
   get_groups_list,
-  get_group_notifications,
   get_group_one_notification,
   insert_group_notifications,
   insert_new_group_member,
   insert_new_group_msg,
 } from "../../../utils/database/queries/__index";
 import {
-  check_groupInvitation_emitter,
   groupAdminNotification_emitter,
   joinNewGroup_emitter,
 } from "../../event-emitters";

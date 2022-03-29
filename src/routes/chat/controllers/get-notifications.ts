@@ -12,6 +12,8 @@ export const getNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const user_id = req.query.user_id as string;
 
+    console.log("In get notifications--- using worker", process.pid);
+
     const [private_notifications, group_notifications] = await Promise.all([
       db_pool.query(get_private_notifications(user_id)),
       db_pool.query(get_group_notifications(user_id)),

@@ -24,15 +24,12 @@ interface GetUserAuth_res {
   friendsList: Friend_res[];
   addFriendRequests: AddFriendRequest_res[];
   groupsList: Group_res[];
-  require_initialize: boolean;
   groupInvitations: GroupInvitation_res[];
 }
 
 export const getUserAuthStatus = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const initialize = req.query.initialize as string;
-
-    let require_initialize = initialize === "yes" ? true : false;
+    console.log("In get auth --- using worker", process.pid);
 
     if (!req.session.currentUser || !req.session.currentUser.isLoggedIn) {
       req.session.currentUser = {
@@ -86,7 +83,6 @@ export const getUserAuthStatus = asyncWrapper(
       currentUser: req.session.currentUser,
       friendsList,
       addFriendRequests,
-      require_initialize,
       groupsList,
       groupInvitations,
     };

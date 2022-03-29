@@ -6,7 +6,6 @@ import { chatType } from "..";
 import {
   group_member_left,
   insert_new_group_msg,
-  remove_group_notifications,
   user_left_group_notifications,
 } from "../../../utils/database/queries/__index";
 import {

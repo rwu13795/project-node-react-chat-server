@@ -6,7 +6,6 @@ import { Database_Connection_Error } from "../../middlewares/error-handler/db-co
 const connectionString = process.env.DATABASE_URL;
 const config = {
   connectionString,
-
   // need to add the property below in order to connect to the postgres DB in Heroku
   /* 
   Note from Heroku

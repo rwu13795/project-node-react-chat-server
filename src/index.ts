@@ -12,7 +12,7 @@ import connectSocketIO from "./socket-io/socket-io-connection";
 // Heroku limit the number of connection to the DB, I have to use a fixed process number
 // in dev mode to avoid getting error
 // const num_processes = os.cpus().length;
-const num_processes = 4;
+const num_processes = 2;
 
 if (cluster.isPrimary) {
   console.log(`Master ${process.pid} is running`);
@@ -50,7 +50,9 @@ if (cluster.isPrimary) {
   thereafter. To listen on a unique port, generate a port number based on the cluster
   worker ID.
    */
-  const server = app.listen(0);
+  const server = app.listen(0, () => {
+    console.log("using worker", process.pid);
+  });
 
   connectSocketIO(server, cluster.worker?.id);
 }
