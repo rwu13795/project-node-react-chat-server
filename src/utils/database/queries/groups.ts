@@ -9,9 +9,9 @@ export function create_new_group(group_name: string, admin_user_id: string) {
 export function get_groups_list(user_id: string) {
   return {
     text: `SELECT 
-              groups.group_id, 
+              groups.group_id::TEXT, 
               groups.group_name, 
-              groups.admin_user_id, 
+              groups.admin_user_id::TEXT, 
               users_in_groups.was_kicked,
               users_in_groups.user_left_at,
               users_in_groups.user_left
@@ -26,7 +26,7 @@ export function get_groups_list(user_id: string) {
 
 export function group_counts_for_each_user(user_id: string) {
   return {
-    text: `SELECT group_id
+    text: `SELECT group_id::TEXT
            FROM groups
            WHERE admin_user_id = $1`,
     values: [user_id],
@@ -72,7 +72,7 @@ export function group_member_left(
 export function get_members_list(group_id: string) {
   return {
     text: `SELECT 
-              users.user_id, 
+              users.user_id::TEXT, 
               users.username,
               users.email, 
               users.avatar_url
@@ -98,7 +98,7 @@ export function mark_group_as_removed(group_id: string, user_id: string) {
 export function get_next_admin(group_id: string) {
   return {
     text: `SELECT 
-              users.user_id, 
+              users.user_id::TEXT, 
               users.username
           FROM users
           INNER JOIN users_in_groups

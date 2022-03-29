@@ -72,8 +72,6 @@ export const getUserAuthStatus = asyncWrapper(
     // the user info with the latest values
     const { username, avatar_url } = user.rows[0] as Users;
 
-    console.log("friendsList", friendsList);
-
     req.session.currentUser = {
       username,
       email,

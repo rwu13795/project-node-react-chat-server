@@ -13,7 +13,7 @@ export function insert_add_friend_request(
 export function get_add_friend_request(user_id: string) {
   return {
     text: `SELECT 
-                user_id as "sender_id",
+                user_id::TEXT as "sender_id",
                 username as "sender_username", 
                 email as "sender_email",
                 message

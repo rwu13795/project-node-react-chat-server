@@ -77,7 +77,7 @@ export const signIn = asyncWrapper(
     req.session.currentUser = {
       username,
       email,
-      user_id: user_id.toString(),
+      user_id,
       avatar_url,
       isLoggedIn: true,
       targetRoomIdentifier: "",
@@ -92,8 +92,6 @@ export const signIn = asyncWrapper(
       groupInvitations: groupInvitaions_result.rows,
     };
 
-    setTimeout(() => {
-      res.status(201).send(response);
-    }, 3000);
+    res.status(201).send(response);
   }
 );

@@ -32,6 +32,8 @@ export async function privateMessage_emitter(
   // to all direct messages sent to him.
   const targetRoom = `${chatType.private}_${recipient_id}`;
 
+  console.log("sender_id", typeof sender_id);
+
   // if there is a file in the message, upload it to S3
   // the "type" of a file is different from the extension. For txt file, the type is
   // 'text/plain'. I have to split(".") the file_name to get the extension type in order to

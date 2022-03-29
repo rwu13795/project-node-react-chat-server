@@ -2,6 +2,7 @@ export * from "./friends/add-friend-request-emitter";
 export * from "./friends/check-add-friend-request-listener";
 export * from "./friends/add-friend-response-listener";
 export * from "./friends/block-friend-listener";
+export * from "./friends/new-friend-add-emitter";
 
 export * from "./groups/check-group-invitation-emitter";
 export * from "./groups/group-invitation-request-emitter";

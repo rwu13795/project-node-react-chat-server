@@ -78,7 +78,7 @@ export default function connectSocketIO(
     onlineEcho_listener(socket);
 
     addFriendRequest_listener(socket, io);
-    addFriendResponse_listener(socket);
+    addFriendResponse_listener(socket, io);
     blockFriend_listener(socket);
     changeOnlineStatus_listener(socket);
     changeAvatar_listener(socket);

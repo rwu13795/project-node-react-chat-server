@@ -22,7 +22,7 @@ export function clear_group_notification_count(
 
 export function get_group_notifications(user_id: string) {
   return {
-    text: `SELECT group_id, count, last_added_at FROM notifications_group_chat
+    text: `SELECT group_id::TEXT, count, last_added_at FROM notifications_group_chat
            WHERE user_id = $1`,
     values: [user_id],
   };
@@ -64,7 +64,7 @@ export function user_left_group_notifications(
 
 export function get_group_one_notification(group_id: string, user_id: string) {
   return {
-    text: `SELECT group_id, count, last_added_at FROM notifications_group_chat
+    text: `SELECT group_id::TEXT, count, last_added_at FROM notifications_group_chat
            WHERE group_id = $1 and user_id = $2`,
     values: [group_id, user_id],
   };

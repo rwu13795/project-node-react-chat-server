@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 import { db_pool } from "../../../utils/database/db-connection";
 import {
@@ -9,7 +9,10 @@ import {
   reject_add_friend_request,
   delete_add_friend_request,
 } from "../../../utils/database/queries/__index";
-import { addFriendResponse_emitter } from "../../event-emitters";
+import {
+  addFriendResponse_emitter,
+  newFriendAdded_emitter,
+} from "../../event-emitters";
 
 interface Data {
   sender_id: string;
@@ -19,7 +22,7 @@ interface Data {
   accept: boolean;
 }
 
-export function addFriendResponse_listener(socket: Socket) {
+export function addFriendResponse_listener(socket: Socket, io: Server) {
   socket.on(
     "add-friend-response",
     async ({
@@ -63,6 +66,10 @@ export function addFriendResponse_listener(socket: Socket) {
       addFriendResponse_emitter(socket, sender_id, {
         acceptor_name: target_username,
       });
+
+      // let the user who accepted the add-friend-request know that the
+      // DB is updated.
+      newFriendAdded_emitter(io, target_id);
     }
   );
 }

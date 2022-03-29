@@ -13,7 +13,7 @@ export function insert_group_invitation(
 export function get_group_invitations(invitee_id: string) {
   return {
     text: `SELECT 
-                group_invitation.group_id,
+                group_invitation.group_id::TEXT,
                 group_invitation.was_responded,
                 users.username as "inviter_name",
                 groups.group_name 

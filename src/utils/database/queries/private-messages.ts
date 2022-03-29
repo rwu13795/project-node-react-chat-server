@@ -7,8 +7,8 @@ export function get_private_chat_history(
   return {
     // name: "get_private_chat_history",
     text: `SELECT 
-                  user_private_messages_ref.sender_id,
-                  user_private_messages_ref.recipient_id,
+                  user_private_messages_ref.sender_id::TEXT,
+                  user_private_messages_ref.recipient_id::TEXT,
                   private_messages.msg_body,
                   private_messages.msg_type,
                   private_messages.created_at,

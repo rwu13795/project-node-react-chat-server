@@ -31,8 +31,8 @@ export function get_group_chat_history(
 ) {
   return {
     text: `SELECT 
-                group_id AS recipient_id,
-                user_id AS sender_id,
+                group_id::TEXT AS recipient_id,
+                user_id::TEXT AS sender_id,
                 msg_body,
                 msg_type,
                 created_at,
@@ -58,8 +58,8 @@ export function get_limited_group_chat_history(
   // then convert the seconds back to timestamp for comparison
   return {
     text: `SELECT 
-                group_id AS recipient_id,
-                user_id AS sender_id,
+                group_id::TEXT AS recipient_id,
+                user_id::TEXT AS sender_id,
                 msg_body,
                 msg_type,
                 created_at,

@@ -31,7 +31,7 @@ export function clear_private_notification_count(
 export function get_private_notifications(user_id: string) {
   return {
     name: "get_private_notifications",
-    text: `SELECT sender_id, count, last_added_at FROM notifications_private_chat 
+    text: `SELECT sender_id::TEXT, count, last_added_at FROM notifications_private_chat 
              WHERE user_id = $1`,
     values: [user_id],
   };

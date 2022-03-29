@@ -1,7 +1,7 @@
 export function get_friends_id(user_id: string) {
   return {
     name: "get_friends_id",
-    text: `SELECT users.user_id as "friend_id" FROM users 
+    text: `SELECT users.user_id::TEXT as "friend_id" FROM users 
              INNER JOIN friends_pair
                 ON friends_pair.friend_id = $1
                     AND friends_pair.user_id = users.user_id`,
@@ -12,7 +12,7 @@ export function get_friends_list(user_id: string) {
   return {
     name: "get_friends_list",
     text: `SELECT 
-                  users.user_id as "friend_id", 
+                  users.user_id::TEXT as "friend_id", 
                   users.username as "friend_username", 
                   users.email as "friend_email",
                   users.avatar_url,

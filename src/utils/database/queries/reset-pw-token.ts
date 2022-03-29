@@ -12,7 +12,7 @@ export function insert_reset_token(user_id: string, token: string) {
 
 export function check_token(user_id: string, token: string) {
   return {
-    text: `SELECT * FROM reset_password_token
+    text: `SELECT user_id::TEXT, token, token_expiration FROM reset_password_token
               WHERE user_id = $1 
                 AND token = $2
                 AND token_expiration > CURRENT_TIMESTAMP
