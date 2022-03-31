@@ -30,6 +30,6 @@ export const signUp_body = [
     .withMessage("The passwords do not match"),
   body(inputNames.username)
     .trim()
-    .isLength({ min: 1, max: 20 })
-    .withMessage("Your username must be between 1 and 20 characters in length"),
+    .isLength({ min: 1, max: 40 })
+    .withMessage("Your username must be between 1 and 40 characters in length"),
 ];

@@ -9,7 +9,7 @@ const createSession = session({
   store: new pgSession({
     // Insert connect-pg-simple options here
     pool: db_pool, // Connection pool
-    tableName: "user_sessions", // Use another table-name than the default "session" one
+    tableName: "user_sessions",
     createTableIfMissing: true,
   }),
   // Insert express-session options here
