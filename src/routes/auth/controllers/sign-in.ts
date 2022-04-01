@@ -26,7 +26,7 @@ interface SignIn_body {
   appearOffline: boolean;
 }
 
-interface SignIn_res {
+export interface SignIn_res {
   currentUser: CurrentUser_res;
   friendsList: Friend_res[];
   addFriendRequests: AddFriendRequest_res[];
@@ -55,8 +55,6 @@ export const signIn = asyncWrapper(
     if (!checkPassword) {
       return next(new Bad_Request_Error("Password is incorrect", "password"));
     }
-
-    console.log("appearOffline", appearOffline);
 
     const onlineStatus = appearOffline
       ? onlineStatus_enum.offline

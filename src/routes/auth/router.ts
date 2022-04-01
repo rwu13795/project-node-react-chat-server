@@ -15,6 +15,7 @@ import {
   forgotPassword_Request,
   forgotPassword_Reset,
   getUserAuthStatus,
+  googleSignIn,
   signIn,
   signOut,
   signUp,
@@ -25,6 +26,8 @@ const router = express.Router();
 router.get("/user-auth-status", getUserAuthStatus);
 
 router.post("/sign-in", signIn);
+
+router.post("/google-sign-in", googleSignIn);
 
 router.post("/sign-up", signUp_body, requestValidator, signUp);
 

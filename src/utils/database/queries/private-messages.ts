@@ -1,3 +1,5 @@
+import { msgType } from "../../enums/message-type";
+
 export function get_private_chat_history(
   id_1: string,
   id_2: string,
@@ -28,7 +30,7 @@ export function get_private_chat_history(
 
 export function insert_new_msg(
   msg_body: string,
-  msg_type: string,
+  msg_type: msgType,
   file_name: string = "none",
   file_type: string = "none",
   file_url: string = "none"

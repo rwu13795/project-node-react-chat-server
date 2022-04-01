@@ -15,7 +15,7 @@ const createSession = session({
   // Insert express-session options here
   secret: "my-secret",
   resave: false,
-  cookie: { maxAge: 1000 * 60 * 60 }, // 60 mins
+  cookie: { maxAge: 1000 * 60 * 60, sameSite: true }, // 60 mins
   saveUninitialized: false, // NOTE //
   rolling: true, // Force the session identifier cookie to be set on every response
 });

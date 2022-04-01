@@ -1,4 +1,5 @@
 import { Socket, Server } from "socket.io";
+import { msgType } from "../../../utils/enums/message-type";
 
 import {
   privateMessage_emitter,
@@ -16,7 +17,7 @@ export interface MessageObject {
   recipient_id: string;
   recipient_name: string;
   msg_body: string;
-  msg_type: string;
+  msg_type: msgType;
   created_at: string;
   file_body?: Buffer;
   file_type?: string;

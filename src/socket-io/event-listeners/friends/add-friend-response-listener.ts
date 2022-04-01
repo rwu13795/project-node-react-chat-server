@@ -9,6 +9,7 @@ import {
   reject_add_friend_request,
   delete_add_friend_request,
 } from "../../../utils/database/queries/__index";
+import { msgType } from "../../../utils/enums/message-type";
 import {
   addFriendResponse_emitter,
   newFriendAdded_emitter,
@@ -51,7 +52,7 @@ export function addFriendResponse_listener(socket: Socket, io: Server) {
         We can start chatting now!`;
 
       const [msg_id_result] = await Promise.all([
-        db_pool.query(insert_new_msg(body, "admin")),
+        db_pool.query(insert_new_msg(body, msgType.admin)),
         db_pool.query(insert_friends_pair(target_id, sender_id)),
       ]);
 

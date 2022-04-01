@@ -34,12 +34,13 @@ export function find_existing_user_email(req_email: string) {
 export function register_new_user(
   req_email: string,
   req_username: string,
-  hashedPassword: string
+  hashedPassword: string,
+  avatar_url: string = ""
 ) {
   return {
     name: "register_new_user",
-    text: `INSERT INTO users(email, username, password) VALUES($1, $2, $3) RETURNING *`,
-    values: [req_email, req_username, hashedPassword],
+    text: `INSERT INTO users(email, username, password, avatar_url) VALUES($1, $2, $3, $4) RETURNING *`,
+    values: [req_email, req_username, hashedPassword, avatar_url],
   };
 }
 

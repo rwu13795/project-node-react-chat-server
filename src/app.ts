@@ -20,6 +20,7 @@ declare module "express-session" {
       targetRoomIdentifier: string;
       onlineStatus: string;
       avatar_url?: string;
+      loggedInWithGoogle?: boolean;
     };
   }
 }

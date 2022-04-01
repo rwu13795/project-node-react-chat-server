@@ -1,8 +1,10 @@
+import { msgType } from "../../enums/message-type";
+
 export function insert_new_group_msg(
   group_id: string,
   user_id: string,
   msg_body: string,
-  msg_type: string,
+  msg_type: msgType,
   file_name: string = "none",
   file_type: string = "none",
   file_url: string = "none"
