@@ -25,7 +25,7 @@ export const chatHitory = asyncWrapper(
 
     const page = parseInt(req.query.page as string) || 1;
 
-    const MSG_PER_PAGE = 10;
+    const MSG_PER_PAGE = 20;
     const offset = (page - 1) * MSG_PER_PAGE;
 
     let chatHistory: ChatHistory_res[] = [];

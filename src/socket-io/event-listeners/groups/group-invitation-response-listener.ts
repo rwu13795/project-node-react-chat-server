@@ -15,6 +15,7 @@ import {
   groupAdminNotification_emitter,
   joinNewGroup_emitter,
 } from "../../event-emitters";
+import { msgType } from "../../../utils/enums/message-type";
 
 interface Data {
   group_id: string;
@@ -33,13 +34,12 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
         db_pool.query(insert_group_notifications(group_id, invitee_id)),
         db_pool.query(insert_new_group_member(group_id, invitee_id)),
         db_pool.query(
-          insert_new_group_msg(group_id, invitee_id, msg_body, "admin")
+          insert_new_group_msg(group_id, invitee_id, msg_body, msgType.admin)
         ),
       ]);
 
       console.log(`user  @${invitee_id} ACCEPTED to join group ${group_id}`);
 
-      socket.join(`${chatType.group}_${group_id}`);
       // after the user joined the new group
       // get the updated groupsList, and send it back to the client socket
       // "check-group-invitation" listener, to let the client update the groupsList
@@ -53,6 +53,7 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
         newGroupsList: listResult.rows,
         newGroupId: group_id,
       });
+      socket.join(`${chatType.group}_${group_id}`);
 
       // emit the new-member-joined message to the group, let the members
       // who are online know that there is new member immediately

@@ -15,7 +15,7 @@ export function get_group_invitations(invitee_id: string) {
     text: `SELECT 
                 group_invitation.group_id::TEXT,
                 group_invitation.was_responded,
-                users.username as "inviter_name",
+                users.user_id::TEXT as "inviter_id",
                 groups.group_name 
            FROM group_invitation
            INNER JOIN users

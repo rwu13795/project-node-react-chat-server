@@ -14,23 +14,16 @@ interface Data {
   friend_id: string;
   group_id: string;
   group_name: string;
-  inviter_name: string;
   admin_user_id: string;
 }
 
 export function groupInvitationReqest_listener(socket: Socket, io: Server) {
   socket.on(
     "group-invitation-request",
-    async ({
-      friend_id,
-      group_id,
-      group_name,
-      inviter_name,
-      admin_user_id,
-    }: Data) => {
+    async ({ friend_id, group_id, group_name, admin_user_id }: Data) => {
       const inviter_id = socket.currentUser.user_id;
       console.log(
-        `user ${inviter_name} @${inviter_id} invites user ${friend_id} to group ${group_id}`
+        `user  @${inviter_id} invites user ${friend_id} to group ${group_id}`
       );
 
       // check if the friend is already in the group
@@ -82,7 +75,7 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
       groupInvitationRequest_emitter(socket, friend_id, {
         group_id,
         group_name,
-        inviter_name,
+        inviter_id,
         was_responded: false,
       });
       // tell the sender about the result. Since the current socket is the sender's

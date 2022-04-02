@@ -7,7 +7,7 @@ export function groupInvitationRequest_emitter(
   data: {
     group_id: string;
     group_name: string;
-    inviter_name: string;
+    inviter_id: string;
     was_responded: boolean;
   }
 ) {
