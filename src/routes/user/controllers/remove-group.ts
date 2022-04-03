@@ -5,6 +5,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import {
   delete_group_member,
   mark_group_as_removed,
+  remove_group_notifications,
 } from "../../../utils/database/queries/__index";
 
 interface Req_body {
@@ -24,7 +25,10 @@ export const removeGroup = asyncWrapper(
       // user won't get this group in groupList and remained as "kicked" in the record
       await db_pool.query(mark_group_as_removed(group_id, user_id));
     } else {
-      await db_pool.query(delete_group_member(group_id, user_id));
+      await Promise.all([
+        db_pool.query(delete_group_member(group_id, user_id)),
+        db_pool.query(remove_group_notifications(group_id, user_id)),
+      ]);
     }
 
     res.status(201).send("OK");

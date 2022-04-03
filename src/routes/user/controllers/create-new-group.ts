@@ -10,6 +10,7 @@ import {
   insert_new_group_msg,
 } from "../../../utils/database/queries/__index";
 import { inputNames } from "../../../utils/enums/input-names";
+import { msgType } from "../../../utils/enums/message-type";
 
 interface Req_body {
   group_name: string;
@@ -57,7 +58,7 @@ export const createNewGroup = asyncWrapper(
       db_pool.query(insert_new_group_member(group_id, admin_user_id)),
       db_pool.query(insert_group_notifications(group_id, admin_user_id)),
       db_pool.query(
-        insert_new_group_msg(group_id, admin_user_id, msg_body, "admin")
+        insert_new_group_msg(group_id, admin_user_id, msg_body, msgType.admin)
       ),
     ]);
 

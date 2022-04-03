@@ -1,7 +1,7 @@
 export function create_new_group(group_name: string, admin_user_id: string) {
   return {
     text: `INSERT INTO groups(group_name, admin_user_id) 
-            VALUES($1, $2) RETURNING group_id`,
+            VALUES($1, $2) RETURNING group_id::TEXT`,
     values: [group_name, admin_user_id],
   };
 }
@@ -123,8 +123,8 @@ export function update_group_admin(group_id: string, user_id: string) {
 
 export function disband_group(group_id: string) {
   return {
-    text: `UPDATE FROM groups
-            SET disbanded_at = CURRENT_TIMESTAMP, 
+    text: `UPDATE groups
+            SET disbanded_at = CURRENT_TIMESTAMP
             WHERE group_id = $1
             RETURNING disbanded_at`,
     values: [group_id],

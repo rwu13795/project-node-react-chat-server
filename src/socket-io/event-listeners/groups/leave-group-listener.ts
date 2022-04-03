@@ -8,10 +8,12 @@ import {
   get_next_admin,
   group_member_left,
   insert_new_group_msg,
+  remove_group_notifications,
   update_group_admin,
   user_left_group_notifications,
 } from "../../../utils/database/queries/__index";
 import { groupAdminNotification_emitter } from "../../event-emitters";
+import { msgType } from "../../../utils/enums/message-type";
 
 interface Data {
   group_id: string;
@@ -28,11 +30,11 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
       socket.leave(`${chatType.group}_${group_id}`);
 
       // mark the user as left and remove the associated notification
-      // await Promise.all([
-      // db_pool.query(group_member_left(group_id, user_id, false)),
+      await Promise.all([
+        db_pool.query(group_member_left(group_id, user_id, false)),
 
-      // db_pool.query(remove_group_notifications(group_id, user_id)),
-      // ]);
+        // db_pool.query(remove_group_notifications(group_id, user_id)),
+      ]);
 
       let msg_body = `Member ${socket.currentUser.username} has left the group...`;
       let newAdmin = undefined;
@@ -41,31 +43,37 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
         // in the group for the longest to be the next Admin
         const result = await db_pool.query(get_next_admin(group_id));
 
-        console.log("get_next_admin", result.rows);
+        console.log("next admin result", result.rows);
+        console.log("Admin left -------->", admin_user_id === user_id);
 
         if (result.rowCount < 1) {
           // if all the members have left the group, mark this group as
           // disbanded and delete it after 1 month
-          const result = await db_pool.query(disband_group(group_id));
-          msg_body = `This group has been disbanded on ${result.rows[0].disbanded_at}`;
+          const result_disband = await db_pool.query(disband_group(group_id));
+          msg_body = `This group has been disbanded on ${result_disband.rows[0].disbanded_at}`;
+
+          console.log("group disbanded ----------------------");
         } else {
           // since the admin is always the oldest member, the next oldest member
-          // should become the next admin
-          const { user_id, username } = result.rows[1];
+          // should become the next admin. The query selects only the oldest memeber
+          // who has not left, this user will be the new admin
+          const { user_id, username } = result.rows[0];
           newAdmin = user_id;
 
-          console.log("newAdmin", newAdmin);
+          console.log("next - Admin", newAdmin);
           await db_pool.query(update_group_admin(group_id, user_id));
           msg_body = `Administrator ${socket.currentUser.username} has left the group. User ${username} now is the new administrator.`;
         }
       }
 
       // add the "user left" message in the chat board
+      // set user_left as true in notification table, new notifications won't
+      // update the counts for user who has left
       await Promise.all([
         db_pool.query(user_left_group_notifications(group_id, user_id)),
         db_pool.query(group_member_left(group_id, user_id, false)),
         db_pool.query(
-          insert_new_group_msg(group_id, user_id, msg_body, "admin")
+          insert_new_group_msg(group_id, user_id, msg_body, msgType.admin)
         ),
         // db_pool.query(remove_group_notifications(group_id, user_id)),
       ]);
@@ -79,7 +87,7 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
         recipient_id: group_id,
         recipient_name: "",
         msg_body,
-        msg_type: "admin",
+        msg_type: msgType.admin,
         created_at: new Date().toDateString(),
         file_type: "none",
         file_name: "none",
