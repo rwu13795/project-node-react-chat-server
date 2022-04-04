@@ -19,7 +19,7 @@ import {
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 
-interface GetUserAuth_res {
+interface Response_body {
   currentUser: CurrentUser_res;
   friendsList: Friend_res[];
   addFriendRequests: AddFriendRequest_res[];
@@ -79,7 +79,7 @@ export const getUserAuthStatus = asyncWrapper(
       onlineStatus,
     };
 
-    let response: GetUserAuth_res = {
+    let response: Response_body = {
       currentUser: req.session.currentUser,
       friendsList,
       addFriendRequests,

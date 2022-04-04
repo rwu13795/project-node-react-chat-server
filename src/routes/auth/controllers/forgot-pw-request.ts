@@ -9,13 +9,13 @@ import {
   insert_reset_token,
 } from "../../../utils/database/queries/__index";
 
-interface Req_body {
+interface Request_body {
   email: string;
 }
 
 export const forgotPassword_Request = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email } = req.body as Req_body;
+    const { email } = req.body as Request_body;
 
     const result = await db_pool.query(find_existing_user(email));
     if (result.rowCount < 1) {

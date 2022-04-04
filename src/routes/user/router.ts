@@ -1,11 +1,13 @@
 import express from "express";
 
 import {
+  changeGroupName_Body,
   createNewGroup_Body,
   requestValidator,
   requireUserAuth,
 } from "../../middlewares";
 import {
+  changeGroupName,
   createNewGroup,
   getMembersList,
   removeGroup,
@@ -27,5 +29,13 @@ router.post(
 router.get("/get-members-list", requireUserAuth, getMembersList);
 
 router.post("/remove-group", requireUserAuth, removeGroup);
+
+router.post(
+  "/change-group-name",
+  requireUserAuth,
+  changeGroupName_Body,
+  requestValidator,
+  changeGroupName
+);
 
 export { router as userRouter };

@@ -21,21 +21,21 @@ import {
 import { msgType } from "../../../utils/enums/message-type";
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
 
-interface SignUp_body {
+interface Request_body {
   email: string;
   username: string;
   password: string;
   confirm_password: string;
 }
 
-export interface SignUp_res {
+export interface Response_body_signUp {
   currentUser: CurrentUser_res;
   friendsList: Friend_res[];
 }
 
 export const signUp = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, username, password, confirm_password }: SignUp_body =
+    const { email, username, password, confirm_password }: Request_body =
       req.body;
 
     if (password !== confirm_password) {
@@ -77,7 +77,7 @@ export const signUp = asyncWrapper(
       targetRoomIdentifier: "",
       onlineStatus: onlineStatus_enum.online,
     };
-    let response: SignUp_res = {
+    let response: Response_body_signUp = {
       friendsList,
       currentUser: req.session.currentUser,
     };

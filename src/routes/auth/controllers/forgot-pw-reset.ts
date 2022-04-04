@@ -9,7 +9,7 @@ import {
   delete_reset_token,
 } from "../../../utils/database/queries/__index";
 
-interface Req_body {
+interface Request_body {
   token: string;
   user_id: string;
   new_password: string;
@@ -17,7 +17,7 @@ interface Req_body {
 
 export const forgotPassword_Reset = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { token, user_id, new_password } = req.body as Req_body;
+    const { token, user_id, new_password } = req.body as Request_body;
 
     const result = await db_pool.query(check_token(user_id, token));
 

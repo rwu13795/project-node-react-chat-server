@@ -12,12 +12,12 @@ import {
 import { inputNames } from "../../../utils/enums/input-names";
 import { msgType } from "../../../utils/enums/message-type";
 
-interface Req_body {
+interface Request_body {
   group_name: string;
   admin_user_id: string;
 }
 
-export interface NewGroup {
+export interface Response_body {
   group_id: string;
   group_name: string;
   admin_user_id: string;
@@ -28,7 +28,7 @@ export interface NewGroup {
 
 export const createNewGroup = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { group_name, admin_user_id } = req.body as Req_body;
+    const { group_name, admin_user_id } = req.body as Request_body;
 
     // check how many groups this user has created. If more than 5 (for demo),
     // then throw error to the client
@@ -62,7 +62,7 @@ export const createNewGroup = asyncWrapper(
       ),
     ]);
 
-    let newGroup: NewGroup = {
+    let newGroup: Response_body = {
       group_id,
       group_name,
       admin_user_id,

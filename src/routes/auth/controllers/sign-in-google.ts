@@ -16,23 +16,22 @@ import {
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 import { googleAuthClient } from "../../../utils/goolge/auth-client";
-import { SignIn_res } from "./sign-in";
-
-import { SignUp_res } from "./sign-up";
+import { Response_body_signIn } from "./sign-in";
+import { Response_body_signUp } from "./sign-up";
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
 
-interface Req_body {
+interface Request_body {
   appearOffline: boolean;
   token: string;
 }
 
-interface GoogleNewUser_res extends SignUp_res {
+interface GoogleNewUser_res extends Response_body_signUp {
   isNewUser: boolean;
 }
 
 export const googleSignIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { token, appearOffline }: Req_body = req.body;
+    const { token, appearOffline }: Request_body = req.body;
 
     // verify the user with the google auth
     const ticket = await googleAuthClient.verifyIdToken({
@@ -89,7 +88,7 @@ export const googleSignIn = asyncWrapper(
         loggedInWithGoogle: true,
       };
 
-      let response: SignIn_res = {
+      let response: Response_body_signIn = {
         friendsList: friends_res.rows,
         addFriendRequests: addFriendRequests_res.rows,
         currentUser: req.session.currentUser,

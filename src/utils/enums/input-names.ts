@@ -14,4 +14,5 @@ export enum inputNames {
   // group
   group_name = "group_name",
   groups_limit = "groups_limit",
+  new_group_name = "new_group_name",
 }

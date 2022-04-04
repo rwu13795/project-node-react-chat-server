@@ -8,7 +8,7 @@ import {
   remove_group_notifications,
 } from "../../../utils/database/queries/__index";
 
-interface Req_body {
+interface Request_body {
   group_id: string;
   user_id: string;
   was_kicked: boolean;
@@ -16,7 +16,7 @@ interface Req_body {
 
 export const removeGroup = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { group_id, user_id, was_kicked } = req.body as Req_body;
+    const { group_id, user_id, was_kicked } = req.body as Request_body;
 
     if (was_kicked) {
       // if the user was kicked, DO NOT delete this user from users_in_groups,

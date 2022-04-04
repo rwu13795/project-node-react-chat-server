@@ -130,3 +130,12 @@ export function disband_group(group_id: string) {
     values: [group_id],
   };
 }
+
+export function change_group_name(group_id: string, new_group_name: string) {
+  return {
+    text: `UPDATE groups
+            SET group_name = $2
+            WHERE group_id = $1`,
+    values: [group_id, new_group_name],
+  };
+}

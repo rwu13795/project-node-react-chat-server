@@ -8,7 +8,7 @@ import {
   clear_private_notification_count,
 } from "../../../utils/database/queries/__index";
 
-interface Req_body {
+interface Request_body {
   target_id: string;
   user_id: string;
   type: string;
@@ -16,7 +16,7 @@ interface Req_body {
 
 export const clearNotifications = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { target_id, user_id, type } = req.body as Req_body;
+    const { target_id, user_id, type } = req.body as Request_body;
 
     if (type === chatType.private) {
       await db_pool.query(clear_private_notification_count(target_id, user_id));

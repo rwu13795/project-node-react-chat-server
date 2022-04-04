@@ -20,13 +20,13 @@ import {
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 
-interface SignIn_body {
+interface Request_body {
   req_email: string;
   req_password: string;
   appearOffline: boolean;
 }
 
-export interface SignIn_res {
+export interface Response_body_signIn {
   currentUser: CurrentUser_res;
   friendsList: Friend_res[];
   addFriendRequests: AddFriendRequest_res[];
@@ -36,7 +36,7 @@ export interface SignIn_res {
 
 export const signIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { req_email, req_password, appearOffline }: SignIn_body = req.body;
+    const { req_email, req_password, appearOffline }: Request_body = req.body;
 
     const existingUser = await db_pool.query(find_existing_user(req_email));
 
@@ -82,7 +82,7 @@ export const signIn = asyncWrapper(
       onlineStatus,
     };
 
-    let response: SignIn_res = {
+    let response: Response_body_signIn = {
       friendsList: friends_res.rows,
       addFriendRequests: addFriendRequests_res.rows,
       currentUser: req.session.currentUser,
