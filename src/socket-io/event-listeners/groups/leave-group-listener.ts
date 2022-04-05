@@ -4,6 +4,7 @@ import { db_pool } from "../../../utils/database/db-connection";
 import { MessageObject_res } from "../../../utils/interfaces/response-interfaces";
 import { chatType } from "..";
 import {
+  delete_all_group_invitations,
   disband_group,
   get_next_admin,
   group_member_left,
@@ -48,8 +49,12 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
 
         if (result.rowCount < 1) {
           // if all the members have left the group, mark this group as
-          // disbanded and delete it after 1 month
-          const result_disband = await db_pool.query(disband_group(group_id));
+          // disbanded and delete all outstanding group-invitations
+          // once the last member has removed this group, delete this group from table
+          const [result_disband] = await Promise.all([
+            db_pool.query(disband_group(group_id)),
+            db_pool.query(delete_all_group_invitations(group_id)),
+          ]);
           msg_body = `This group has been disbanded on ${result_disband.rows[0].disbanded_at}`;
 
           console.log("group disbanded ----------------------");

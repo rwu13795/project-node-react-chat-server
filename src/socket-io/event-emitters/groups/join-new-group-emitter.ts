@@ -32,6 +32,7 @@ export function joinNewGroup_emitter(
     note: NewGroupNotification;
     newGroupsList: Group[];
     newGroupId: string;
+    failed?: boolean;
   }
 ) {
   io.to(`${chatType.private}_${target_id}`).emit("join-new-group", data);

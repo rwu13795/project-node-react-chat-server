@@ -39,7 +39,16 @@ export function check_group_member(user_id: string, group_id: string) {
 export function delete_group_invitation(group_id: string, invitee_id: string) {
   return {
     text: `DELETE FROM group_invitation
-             WHERE group_id = $1 and invitee_id = $2`,
+             WHERE group_id = $1 and invitee_id = $2
+             RETURNING *`,
     values: [group_id, invitee_id],
+  };
+}
+
+export function delete_all_group_invitations(group_id: string) {
+  return {
+    text: `DELETE FROM group_invitation
+             WHERE group_id = $1`,
+    values: [group_id],
   };
 }

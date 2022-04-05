@@ -48,7 +48,7 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
           return;
         }
         if (!user_left && !was_kicked) {
-          let message = "Your friend is already in this group!";
+          let message = "Your friend is already in this group.";
           check_groupInvitation_emitter(io, inviter_id, { message });
           return;
 
@@ -67,7 +67,7 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
         console.log("added new invitation");
       } catch (err) {
         let message =
-          "You or another group member have already sent an invitaion to this friend before!";
+          "You or another group member have already sent an invitaion to this friend before.";
         check_groupInvitation_emitter(io, inviter_id, { message });
         return;
       }
@@ -82,7 +82,7 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
       // socket, and socket CANNOT receive message which is sent by the same
       // socket to the room where this socket is in. I have to use the io to emit
       // the message just like the "group chat"
-      let message = "The request has been sent!";
+      let message = "Invitation sent!";
       check_groupInvitation_emitter(io, inviter_id, { message });
     }
   );

@@ -46,11 +46,19 @@ export function insert_new_group_member(group_id: string, invitee_id: string) {
   };
 }
 
-export function delete_group_member(group_id: string, user_id: string) {
+export function remove_group_member(group_id: string, user_id: string) {
   return {
     text: `DELETE FROM users_in_groups
             WHERE group_id = $1 AND user_id = $2`,
     values: [group_id, user_id],
+  };
+}
+
+export function delete_group(group_id: string) {
+  return {
+    text: `DELETE FROM groups
+            WHERE group_id = $1`,
+    values: [group_id],
   };
 }
 

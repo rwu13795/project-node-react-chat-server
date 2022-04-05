@@ -26,7 +26,22 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
   socket.on("group-invitation-response", async ({ group_id, accept }: Data) => {
     const invitee_id = socket.currentUser.user_id;
 
-    await db_pool.query(delete_group_invitation(group_id, invitee_id));
+    const result = await db_pool.query(
+      delete_group_invitation(group_id, invitee_id)
+    );
+    // the returning value after deleting a row is the deleted row
+    // if the deleted row is empty, that means the group has been marked as disbanded
+    // before this user accept the invitation. So don't let this user join the disbanded
+    // group. If the user is online, let him know the group is disbanded
+    if (result.rowCount === 0) {
+      joinNewGroup_emitter(io, invitee_id, {
+        note: {} as any,
+        newGroupsList: [] as any,
+        newGroupId: group_id,
+        failed: true,
+      });
+      return;
+    }
 
     if (accept) {
       let msg_body = `New member ${socket.currentUser.username} has joined the group!`;
