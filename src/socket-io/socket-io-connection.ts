@@ -51,9 +51,9 @@ export default function connectSocketIO(
 ) {
   const io = new Server(server, {
     // the max buffer size that can be transmitted in a single message
-    // (5e6 = 5MB)  if the size is above the maximun, the socket will be disconnected
+    // (5e6 = 6MB)  if the size is above the maximun, the socket will be disconnected
     // if the client is trying to send such file
-    maxHttpBufferSize: 5e6,
+    maxHttpBufferSize: 6e6,
     cors: {
       origin: true,
       methods: ["GET", "POST"],
