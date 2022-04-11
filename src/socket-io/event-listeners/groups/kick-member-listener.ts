@@ -12,6 +12,7 @@ import {
   groupAdminNotification_emitter,
   kickedOutOfGroup_emitter,
 } from "../../event-emitters";
+import { msgType } from "../../../utils/enums/message-type";
 
 interface Data {
   group_id: string;
@@ -28,13 +29,13 @@ export function kickMember_listener(socket: Socket, io: Server) {
         `user ${member_user_id} ${member_username} was kicked by group admin`
       );
 
-      let msg_body = `Member ${member_username} was politely kicked out of the 
-                    group by the administrator ${username}!`;
+      let msg_body = `Member "${member_username}" was politely kicked out of the 
+                    group by the administrator "${username}"!`;
       await Promise.all([
         db_pool.query(user_left_group_notifications(group_id, user_id)),
         db_pool.query(group_member_left(group_id, member_user_id, true)),
         db_pool.query(
-          insert_new_group_msg(group_id, user_id, msg_body, "admin")
+          insert_new_group_msg(group_id, user_id, msg_body, msgType.admin)
         ),
       ]);
 

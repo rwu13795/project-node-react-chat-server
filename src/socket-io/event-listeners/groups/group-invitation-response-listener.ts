@@ -44,7 +44,7 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
     }
 
     if (accept) {
-      let msg_body = `New member ${socket.currentUser.username} has joined the group!`;
+      let msg_body = `New member "${socket.currentUser.username}" has joined the group!`;
       await Promise.all([
         db_pool.query(insert_group_notifications(group_id, invitee_id)),
         db_pool.query(insert_new_group_member(group_id, invitee_id)),

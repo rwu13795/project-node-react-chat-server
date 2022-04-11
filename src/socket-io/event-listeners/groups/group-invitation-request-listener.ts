@@ -22,9 +22,6 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
     "group-invitation-request",
     async ({ friend_id, group_id, group_name, admin_user_id }: Data) => {
       const inviter_id = socket.currentUser.user_id;
-      console.log(
-        `user  @${inviter_id} invites user ${friend_id} to group ${group_id}`
-      );
 
       // check if the friend is already in the group
       const result = await db_pool.query(

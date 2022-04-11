@@ -37,7 +37,7 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
         // db_pool.query(remove_group_notifications(group_id, user_id)),
       ]);
 
-      let msg_body = `Member ${socket.currentUser.username} has left the group...`;
+      let msg_body = `Member "${socket.currentUser.username}" has left the group...`;
       let newAdmin = undefined;
       if (admin_user_id === user_id) {
         // if the user who left is the admin, promote the user who has been
@@ -67,7 +67,7 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
 
           console.log("next - Admin", newAdmin);
           await db_pool.query(update_group_admin(group_id, user_id));
-          msg_body = `Administrator ${socket.currentUser.username} has left the group. User ${username} now is the new administrator.`;
+          msg_body = `Administrator "${socket.currentUser.username}" has left the group. Member "${username}" now is the new administrator.`;
         }
       }
 

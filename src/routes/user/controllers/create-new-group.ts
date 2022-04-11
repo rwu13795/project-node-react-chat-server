@@ -53,7 +53,7 @@ export const createNewGroup = asyncWrapper(
     const group_id = createNewGroup_result.rows[0].group_id;
 
     // add the creator as member and create a notification_group_chat row
-    let msg_body = `${req.session.currentUser?.username} has created the a group "${group_name}"`;
+    let msg_body = `User "${req.session.currentUser?.username}" has created the group "${group_name}"`;
     await Promise.all([
       db_pool.query(insert_new_group_member(group_id, admin_user_id)),
       db_pool.query(insert_group_notifications(group_id, admin_user_id)),

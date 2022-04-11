@@ -48,7 +48,7 @@ export function addFriendResponse_listener(socket: Socket, io: Server) {
       );
       // add friend_pair, add message to private_chat and notifiction,
       // to let the user who sent the request know that the request was accepted.
-      const body = `Notification: ${target_username} has accepted the befriend request from ${sender_username}! 
+      const body = `"${target_username}" has accepted the friend request from "${sender_username}".
         We can start chatting now!`;
 
       const [msg_id_result] = await Promise.all([
