@@ -41,6 +41,6 @@ export function offline_listener(socket: Socket) {
       await db_pool.query(clear_group_notification_count(target_id, user_id));
     }
 
-    socket.disconnect(true);
+    // socket.disconnect(true);
   });
 }

@@ -23,6 +23,9 @@ import {
   changeAvatar_listener,
   log_out_listener,
 } from "./event-listeners";
+import { db_pool } from "../utils/database/db-connection";
+import { update_socket_id } from "../utils/database/queries/socket_id";
+import { disconnectSameUser_emitter } from "./event-emitters";
 
 export interface Socket_currentUser {
   user_id: string;
@@ -60,13 +63,15 @@ export default function connectSocketIO(
     },
   });
 
+  // setup adapter for node clusters
   io.adapter(createAdapter());
   setupWorker(io);
 
   console.log("setting up connectSocketIO");
 
-  io.on("connection", (socket) => {
-    console.log(`client ${socket.id} is connected to worker: ${id}`);
+  io.on("connection", async (socket) => {
+    disconnectSameUser_emitter(io, socket);
+
     joinRoom_listener(socket, id);
 
     messageToServer_listener(socket, io);

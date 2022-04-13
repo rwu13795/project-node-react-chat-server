@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { randomBytes } from "crypto";
 
-// import { transporter } from "../../../utils/SendGrid-transporter";
+import { transporter } from "../../../utils/SendGrid-transporter";
 import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
 import { db_pool } from "../../../utils/database/db-connection";
 import {
@@ -33,20 +33,20 @@ export const forgotPassword_Request = asyncWrapper(
     // store the token into DB
     await db_pool.query(insert_reset_token(existingUser.user_id, token));
 
-    // transporter.sendMail({
-    //   from: "rwu13795.work@gmail.com",
-    //   to: existingUser.email,
-    //   subject: "Reachat - Link to reset your password",
-    //   html: `<p>You requested a password reset</P>
-    //     <p>
-    //         Click this
-    //         <a href="${process.env.CLIENT_HOST_URL}/auth/reset-password?token=${token}&user_id=${existingUser.user_id}">
-    //             <strong>link</strong>
-    //         </a>
-    //         to set a new password
-    //     </P>
-    //     <p>This link will expire in 5 minutes</P>`,
-    // });
+    transporter.sendMail({
+      from: "rwu13795.work@gmail.com",
+      to: existingUser.email,
+      subject: "Reachat - Link to reset your password",
+      html: `<p>We have to verify your request for the password reset</P>
+        <p>
+            Please open this
+            <a href="${process.env.CLIENT_HOST_URL}/auth/reset-password?token=${token}&user_id=${existingUser.user_id}">
+                <strong>link</strong>
+            </a>
+            and follow the instruction to set a new password
+        </P>
+        <p>This link will expire in 5 minutes</P>`,
+    });
 
     console.log(token);
 

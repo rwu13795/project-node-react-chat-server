@@ -8,3 +8,4 @@ export * from "./notifications-private-chat";
 export * from "./private-messages";
 export * from "./reset-pw-token";
 export * from "./users";
+export * from "./socket_id";
