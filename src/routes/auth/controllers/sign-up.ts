@@ -8,6 +8,7 @@ import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   find_existing_user_email,
   get_friends_list,
+  initialize_socket_id,
   insert_friends_pair,
   insert_new_msg,
   insert_new_msg_users_ref,
@@ -66,6 +67,8 @@ export const signUp = asyncWrapper(
 
     const newUser = result.rows[0] as Users;
 
+    await db_pool.query(initialize_socket_id(newUser.user_id));
+
     // add the new user as my friend (rwu13795@gmail.com) automatically
     const friendsList: Friend_res[] = await addNewUserAsFriend(newUser.user_id);
 
@@ -81,15 +84,6 @@ export const signUp = asyncWrapper(
       friendsList,
       currentUser: req.session.currentUser,
     };
-
-    // req.session.currentUser = {
-    //   username,
-    //   email,
-    //   user_id: newUser.user_id,
-    //   isLoggedIn: true,
-    //   targetRoomIdentifier: "",
-
-    // };
 
     res.status(201).send(response);
   }

@@ -12,6 +12,7 @@ import {
   get_friends_list,
   get_groups_list,
   get_group_invitations,
+  initialize_socket_id,
   register_new_user,
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
@@ -111,6 +112,8 @@ export const googleSignIn = asyncWrapper(
         register_new_user(req_email, name, hashedPassword, picture)
       );
       const newUser = result.rows[0] as Users;
+
+      await db_pool.query(initialize_socket_id(newUser.user_id));
 
       // add the new user as my friend (rwu13795@gmail.com) automatically
       const friendsList: Friend_res[] = await addNewUserAsFriend(

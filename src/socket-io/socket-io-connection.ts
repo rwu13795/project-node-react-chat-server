@@ -70,6 +70,8 @@ export default function connectSocketIO(
   console.log("setting up connectSocketIO");
 
   io.on("connection", async (socket) => {
+    console.log("user connected to socket", socket.id);
+
     disconnectSameUser_emitter(io, socket);
 
     joinRoom_listener(socket, id);
