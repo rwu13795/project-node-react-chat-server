@@ -67,7 +67,7 @@ export function leaveGroup_listener(socket: Socket, io: Server) {
 
           console.log("next - Admin", newAdmin);
           await db_pool.query(update_group_admin(group_id, user_id));
-          msg_body = `Administrator "${socket.currentUser.username}" has left the group. Member "${username}" now is the new administrator.`;
+          msg_body = `Administrator "${socket.currentUser.username}" has left the group. Member "${username}" is the new administrator now.`;
         }
       }
 
