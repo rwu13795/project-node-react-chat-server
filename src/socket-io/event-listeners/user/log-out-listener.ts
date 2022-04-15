@@ -1,14 +1,5 @@
 import { Socket } from "socket.io";
 
-import { db_pool } from "../../../utils/database/db-connection";
-import { chatType } from "..";
-import {
-  clear_group_notification_count,
-  clear_private_notification_count,
-  get_friends_id,
-} from "../../../utils/database/queries/__index";
-import { offline_emitter } from "../../event-emitters";
-
 export function log_out_listener(socket: Socket) {
   socket.on("log-out", async () => {
     // const { user_id, currentTargetRoom } = socket.currentUser;

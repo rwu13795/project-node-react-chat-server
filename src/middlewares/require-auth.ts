@@ -8,6 +8,8 @@ export const requireUserAuth = (
 ) => {
   if (!req.session.currentUser || !req.session.currentUser.isLoggedIn) {
     throw new Not_Authorized_Error();
+  } else {
+    // update the cloudFront signed cookies maxAge here
   }
   next();
 };

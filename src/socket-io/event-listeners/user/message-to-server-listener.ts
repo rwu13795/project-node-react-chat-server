@@ -31,9 +31,6 @@ interface Data {
 
 export function messageToServer_listener(socket: Socket, io: Server) {
   socket.on("message-to-server", async ({ messageObject, room_type }: Data) => {
-    console.log(messageObject.file_body?.byteLength);
-    console.log(messageObject);
-
     switch (room_type) {
       case chatType.private: {
         privateMessage_emitter(socket, messageObject);

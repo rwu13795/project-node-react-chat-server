@@ -48,8 +48,6 @@ export const forgotPassword_Request = asyncWrapper(
         <p>This link will expire in 5 minutes</P>`,
     });
 
-    console.log(token);
-
     res.status(201).send("OK");
   }
 );

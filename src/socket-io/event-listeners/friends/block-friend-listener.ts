@@ -14,8 +14,6 @@ interface Data {
 
 export function blockFriend_listener(socket: Socket) {
   socket.on("block-friend", async ({ friend_id, block }: Data) => {
-    console.log("block-friend", friend_id, block);
-
     const currentUserId = socket.currentUser.user_id;
 
     // let the client of the user who is being blocked/un-blocked know that he/she

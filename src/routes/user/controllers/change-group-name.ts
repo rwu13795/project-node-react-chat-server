@@ -15,8 +15,6 @@ export const changeGroupName = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { new_group_name, group_id } = req.body as Request_body;
 
-    console.log("changing group name", new_group_name, group_id);
-
     await db_pool.query(change_group_name(group_id, new_group_name));
 
     const res_body: Response_body = { new_group_name, group_id };

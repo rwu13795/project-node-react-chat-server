@@ -53,8 +53,6 @@ export function groupInvitationResponse_listener(socket: Socket, io: Server) {
         ),
       ]);
 
-      console.log(`user  @${invitee_id} ACCEPTED to join group ${group_id}`);
-
       // after the user joined the new group
       // get the updated groupsList, and send it back to the client socket
       // "check-group-invitation" listener, to let the client update the groupsList

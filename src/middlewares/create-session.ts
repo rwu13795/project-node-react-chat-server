@@ -5,6 +5,9 @@ import { db_pool } from "../utils/database/db-connection";
 
 const pgSession = connectPgSimple(session);
 
+if (process.env.NODE_ENV !== "production") {
+}
+
 const createSession = session({
   store: new pgSession({
     // Insert connect-pg-simple options here

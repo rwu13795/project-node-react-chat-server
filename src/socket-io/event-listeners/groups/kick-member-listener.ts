@@ -25,9 +25,6 @@ export function kickMember_listener(socket: Socket, io: Server) {
     "kick-member",
     async ({ group_id, member_user_id, member_username }: Data) => {
       const { user_id, username } = socket.currentUser;
-      console.log(
-        `user ${member_user_id} ${member_username} was kicked by group admin`
-      );
 
       let msg_body = `Member "${member_username}" was politely kicked out of the 
                     group by the administrator "${username}"!`;

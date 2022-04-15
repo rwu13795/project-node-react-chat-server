@@ -54,5 +54,5 @@ if (cluster.isPrimary) {
     console.log("using worker", process.pid);
   });
 
-  connectSocketIO(server, cluster.worker?.id);
+  connectSocketIO(server);
 }

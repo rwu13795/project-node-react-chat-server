@@ -34,22 +34,16 @@ export function addFriendResponse_listener(socket: Socket, io: Server) {
       accept,
     }: Data) => {
       if (!accept) {
-        console.log(
-          `user ${target_username} id-${target_id} rejects sender ${sender_id}`
-        );
         // mark the add_friend_request as rejected. A new request could only be
         // sent after a week
         await db_pool.query(reject_add_friend_request(target_id, sender_id));
         return;
       }
 
-      console.log(
-        `user ${target_username} id-${target_id} ACCEPTs sender ${sender_id}`
-      );
       // add friend_pair, add message to private_chat and notifiction,
       // to let the user who sent the request know that the request was accepted.
       const body = `"${target_username}" has accepted the friend request from "${sender_username}".
-        We can start chatting now!`;
+        You can start chatting now!`;
 
       const [msg_id_result] = await Promise.all([
         db_pool.query(insert_new_msg(body, msgType.admin)),

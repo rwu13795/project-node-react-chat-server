@@ -10,8 +10,6 @@ export const getMembersList = asyncWrapper(
 
     const members_result = await db_pool.query(get_members_list(group_id));
 
-    console.log("getting member list after entering a room");
-
     res.status(200).send(members_result.rows);
   }
 );

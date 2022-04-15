@@ -48,10 +48,9 @@ export default async function uploadFileTo_S3(
       console.log(err);
     }
   } else {
-    const folder = chat_type === chatType.group ? "groups" : "public";
     const params: Params = {
       Bucket: process.env.S3_BUCKET_NAME!,
-      Key: `${folder}/${recipient_id}/${url}`,
+      Key: `groups/${recipient_id}/${url}`,
       Body: file_body,
     };
     try {

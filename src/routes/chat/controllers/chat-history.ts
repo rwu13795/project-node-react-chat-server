@@ -21,8 +21,6 @@ export const chatHitory = asyncWrapper(
     // date_limit for the group member
     const date_limit = req.query.date_limit as string;
 
-    // console.log("date_limit", date_limit);
-
     const page = parseInt(req.query.page as string) || 1;
 
     const MSG_PER_PAGE = 20;

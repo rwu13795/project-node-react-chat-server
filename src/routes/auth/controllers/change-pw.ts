@@ -46,8 +46,6 @@ export const changePassword = asyncWrapper(
 
     await db_pool.query(change_password(user_id, hashedPassword));
 
-    console.log("pw changed");
-
     res.status(201).send("OK");
   }
 );

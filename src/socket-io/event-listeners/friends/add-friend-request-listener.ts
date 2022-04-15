@@ -31,10 +31,6 @@ export function addFriendRequest_listener(socket: Socket, io: Server) {
       message,
       target_id,
     }: Data) => {
-      console.log(
-        `user ${sender_username} id-${sender_id} sends a request to ${target_id}`
-      );
-
       const checkResult = await db_pool.query(
         check_add_friend_request(target_id, sender_id)
       );

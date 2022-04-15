@@ -29,8 +29,6 @@ interface Response_body {
 
 export const getUserAuthStatus = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("In get auth --- using worker", process.pid);
-
     if (!req.session.currentUser || !req.session.currentUser.isLoggedIn) {
       req.session.currentUser = {
         username: "guest",

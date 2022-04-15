@@ -23,8 +23,6 @@ export const checkToken = asyncWrapper(
     const expirationInMS =
       new Date(validToken.token_expiration).getTime() - Date.now();
 
-    console.log(expirationInMS);
-
     res.status(200).send({
       isValid: true,
       expirationInMS,

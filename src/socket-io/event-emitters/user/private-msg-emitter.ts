@@ -32,8 +32,6 @@ export async function privateMessage_emitter(
   // to all direct messages sent to him.
   const targetRoom = `${chatType.private}_${recipient_id}`;
 
-  console.log("sender_id", typeof sender_id);
-
   // if there is a file in the message, upload it to S3
   // the "type" of a file is different from the extension. For txt file, the type is
   // 'text/plain'. I have to split(".") the file_name to get the extension type in order to
@@ -81,11 +79,7 @@ export async function privateMessage_emitter(
       db_pool.query(insert_new_msg_users_ref(sender_id, recipient_id, msg_id)),
       db_pool.query(update_private_notification_count(sender_id, recipient_id)),
     ]);
-
-    console.log("insert new msg into table");
   } catch (err) {
     console.log(err);
   }
-
-  console.log("sending message to room", `${chatType.private}_${recipient_id}`);
 }

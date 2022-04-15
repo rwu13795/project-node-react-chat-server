@@ -23,8 +23,6 @@ import {
   changeAvatar_listener,
   log_out_listener,
 } from "./event-listeners";
-import { db_pool } from "../utils/database/db-connection";
-import { update_socket_id } from "../utils/database/queries/socket_id";
 import { disconnectSameUser_emitter } from "./event-emitters";
 
 export interface Socket_currentUser {
@@ -48,10 +46,7 @@ declare module "socket.io" {
   }
 }
 
-export default function connectSocketIO(
-  server: http.Server,
-  id: number | undefined
-) {
+export default function connectSocketIO(server: http.Server) {
   const io = new Server(server, {
     // the max buffer size that can be transmitted in a single message
     // (5e6 = 6MB)  if the size is above the maximun, the socket will be disconnected
@@ -67,14 +62,10 @@ export default function connectSocketIO(
   io.adapter(createAdapter());
   setupWorker(io);
 
-  console.log("setting up connectSocketIO");
-
   io.on("connection", async (socket) => {
-    console.log("user connected to socket", socket.id);
-
     disconnectSameUser_emitter(io, socket);
 
-    joinRoom_listener(socket, id);
+    joinRoom_listener(socket);
 
     messageToServer_listener(socket, io);
 

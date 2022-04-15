@@ -7,19 +7,14 @@ import { Password } from "../../../utils/hash-password";
 import { Users } from "../../../utils/interfaces/tables-columns";
 import {
   find_existing_user_email,
-  get_friends_list,
   initialize_socket_id,
-  insert_friends_pair,
-  insert_new_msg,
-  insert_new_msg_users_ref,
-  insert_private_notifications,
   register_new_user,
 } from "../../../utils/database/queries/__index";
 import {
   CurrentUser_res,
   Friend_res,
 } from "../../../utils/interfaces/response-interfaces";
-import { msgType } from "../../../utils/enums/message-type";
+
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
 
 interface Request_body {
@@ -66,16 +61,19 @@ export const signUp = asyncWrapper(
     );
 
     const newUser = result.rows[0] as Users;
+    // the returning userId is a integer since it is from " returning * ", the user_id
+    // is not converted to string when returning
+    const new_user_id = newUser.user_id.toString();
 
-    await db_pool.query(initialize_socket_id(newUser.user_id));
+    await db_pool.query(initialize_socket_id(new_user_id));
 
     // add the new user as my friend (rwu13795@gmail.com) automatically
-    const friendsList: Friend_res[] = await addNewUserAsFriend(newUser.user_id);
+    const friendsList: Friend_res[] = await addNewUserAsFriend(new_user_id);
 
     req.session.currentUser = {
       username,
       email,
-      user_id: newUser.user_id,
+      user_id: new_user_id,
       isLoggedIn: true,
       targetRoomIdentifier: "",
       onlineStatus: onlineStatus_enum.online,

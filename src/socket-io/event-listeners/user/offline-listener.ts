@@ -25,9 +25,6 @@ export function offline_listener(socket: Socket) {
 
     // let all the friends know that this user is now offline
     if (friends_room_id.length > 0) {
-      console.log(
-        `let the friend ${friends_room_id} this user${user_id} is offline`
-      );
       // only emit if the user has at least one friend, otherwise
       // the socket will emit to every one globally if the array is emtpy
       offline_emitter(socket, friends_room_id, { sender_id: user_id });
@@ -40,7 +37,5 @@ export function offline_listener(socket: Socket) {
     } else {
       await db_pool.query(clear_group_notification_count(target_id, user_id));
     }
-
-    // socket.disconnect(true);
   });
 }

@@ -14,8 +14,6 @@ export const changeOnlineStatus = asyncWrapper(
       req.session.currentUser.onlineStatus = status;
     }
 
-    console.log(req.session.currentUser?.onlineStatus);
-
     res.status(201).send("OK");
   }
 );

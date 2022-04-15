@@ -12,10 +12,6 @@ export function onlineEcho_listener(socket: Socket) {
     const { user_id, onlineStatus } = socket.currentUser;
 
     // let the friend who just logged in know that this socket is also online
-    console.log(
-      `let the friend ${friend_id} who is just logged in know that this socket ${user_id} is also online`
-    );
-
     const friend_room_id = `${chatType.private}_${friend_id}`;
     onlineEcho_emitter(socket, friend_room_id, {
       sender_id: user_id,

@@ -111,19 +111,19 @@ export const googleSignIn = asyncWrapper(
       const result = await db_pool.query(
         register_new_user(req_email, name, hashedPassword, picture)
       );
-      const newUser = result.rows[0] as Users;
 
-      await db_pool.query(initialize_socket_id(newUser.user_id));
+      const newUser = result.rows[0] as Users;
+      const new_user_id = newUser.user_id.toString();
+
+      await db_pool.query(initialize_socket_id(new_user_id));
 
       // add the new user as my friend (rwu13795@gmail.com) automatically
-      const friendsList: Friend_res[] = await addNewUserAsFriend(
-        newUser.user_id
-      );
+      const friendsList: Friend_res[] = await addNewUserAsFriend(new_user_id);
 
       req.session.currentUser = {
         username: name,
         email: req_email,
-        user_id: newUser.user_id,
+        user_id: new_user_id,
         avatar_url: picture,
         isLoggedIn: true,
         targetRoomIdentifier: "",

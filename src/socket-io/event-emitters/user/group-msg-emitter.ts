@@ -77,11 +77,7 @@ export async function groupMessage_emitter(
       ),
       db_pool.query(update_group_notification_count(recipient_id)),
     ]);
-
-    console.log("insert new msg into table");
   } catch (err) {
     console.log(err);
   }
-
-  console.log("sending message to room", targetRoom);
 }

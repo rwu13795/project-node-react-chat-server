@@ -36,8 +36,6 @@ export const createNewGroup = asyncWrapper(
       group_counts_for_each_user(admin_user_id)
     );
     if (groupCounts_result.rowCount >= 5) {
-      console.log("create-new-group -------> limit reached !!!");
-
       return next(
         new Bad_Request_Error(
           "Groups limit reached, you cannot create more than 5 groups",

@@ -17,35 +17,25 @@ export function online_listener(socket: Socket) {
 
     let friends_id: string[] = [];
     let friends_room_id: string[] = [];
-    if (socket.currentUser) {
-      friends_id = socket.currentUser.friends_id;
-      friends_room_id = socket.currentUser.friends_room_id;
 
-      console.log("In online listener NO socket--- using worker", process.pid);
-    } else {
-      console.log("In online listener--- using worker", process.pid);
-      const friends = await db_pool.query(get_friends_id(user_id));
-      // map the friends id into a the socket custom object
-      for (let friend of friends.rows) {
-        friends_id.push(friend.friend_id);
-        friends_room_id.push(`${chatType.private}_${friend.friend_id}`);
-      }
-
-      // save the current user info in the socket custom property
-      socket.currentUser = {
-        user_id,
-        username,
-        friends_id,
-        friends_room_id,
-        currentTargetRoom: "",
-        onlineStatus,
-      };
+    const friends = await db_pool.query(get_friends_id(user_id));
+    // map the friends id into a the socket custom object
+    for (let friend of friends.rows) {
+      friends_id.push(friend.friend_id);
+      friends_room_id.push(`${chatType.private}_${friend.friend_id}`);
     }
 
+    // save the current user info in the socket custom property
+    socket.currentUser = {
+      user_id,
+      username,
+      friends_id,
+      friends_room_id,
+      currentTargetRoom: "",
+      onlineStatus,
+    };
+
     // let all the friends of this user know that this user is online
-    console.log(
-      `online_emitter let user ${friends_room_id} know ${user_id} is online`
-    );
     // emit message to multiple rooms (the private room of each friends)
     if (friends_room_id.length > 0) {
       // only emit if the user has at least one friend, otherwise

@@ -14,7 +14,6 @@ export const signUp_body = [
   body(inputNames.password)
     .custom((value, { req }) => {
       if (value.trim() !== req.body.confirm_password.trim()) {
-        console.log("pw", value, "cpw", req.body.confirm_password);
         return false;
       }
       return true;

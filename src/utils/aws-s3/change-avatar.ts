@@ -17,8 +17,6 @@ export default async function changeAvatarImage_S3(
   const url = `user_${user_id}_avatar.${file_type}`;
   const key = `public/avatars/user_${user_id}/${url}`;
 
-  console.log("url", url);
-
   const params: Params = {
     Bucket: process.env.S3_BUCKET_NAME!,
     Key: key,
@@ -29,8 +27,6 @@ export default async function changeAvatarImage_S3(
   } catch (err) {
     console.log(err);
   }
-
-  console.log("avatar changed !!!!");
 
   return process.env.CLOUD_FRONT_URL + `/${key}`;
 }

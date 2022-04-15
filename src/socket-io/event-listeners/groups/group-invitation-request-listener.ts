@@ -30,10 +30,6 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
       if (result.rowCount > 0) {
         const { was_kicked, user_left } = result.rows[0];
 
-        console.log("inviter_id", inviter_id);
-        console.log("admin_user_id", admin_user_id);
-        console.log(admin_user_id !== inviter_id);
-
         if (
           user_left &&
           was_kicked &&
@@ -60,8 +56,6 @@ export function groupInvitationReqest_listener(socket: Socket, io: Server) {
         await db_pool.query(
           insert_group_invitation(group_id, inviter_id, friend_id)
         );
-
-        console.log("added new invitation");
       } catch (err) {
         let message =
           "You or another group member have already sent an invitaion to this friend before.";
