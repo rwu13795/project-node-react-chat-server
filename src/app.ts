@@ -34,7 +34,7 @@ app.use(
     credentials: true,
     origin: [
       "http://localhost:3000",
-      "https://project-node-react-chat-client.herokuapp.com/",
+      "https://project-node-react-chat-client.herokuapp.com",
     ],
   })
 );
