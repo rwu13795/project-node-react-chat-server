@@ -1,11 +1,17 @@
-import session from "express-session";
+import session, { CookieOptions } from "express-session";
 import connectPgSimple from "connect-pg-simple";
 
 import { db_pool } from "../utils/database/db-connection";
 
 const pgSession = connectPgSimple(session);
 
-if (process.env.NODE_ENV !== "production") {
+let cookieOptions: CookieOptions = { maxAge: 1000 * 60 * 60 * 1 }; // 1-hour
+if (process.env.NODE_ENV === "production") {
+  cookieOptions.path = "/";
+  cookieOptions.secure = true; // must use the "secure" when serve the data over https
+  cookieOptions.sameSite = true;
+  cookieOptions.httpOnly = true;
+  cookieOptions.domain = ".project-node-react-chat-client.herokuapp.com"; // all the subdomain will set the cookies
 }
 
 const createSession = session({
@@ -17,9 +23,10 @@ const createSession = session({
   }),
   // Insert express-session options here
   secret: "my-secret",
+  proxy: true,
   resave: false,
-  cookie: { maxAge: 1000 * 60 * 60, sameSite: true }, // 60 mins
   saveUninitialized: false, // NOTE //
+  cookie: cookieOptions, // 60 mins
   rolling: true, // Force the session identifier cookie to be set on every response
 });
 
