@@ -52,12 +52,12 @@ export default function connectSocketIO(server: http.Server) {
     // (5e6 = 6MB)  if the size is above the maximun, the socket will be disconnected
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
-    cors: {
-      origin: ["http://localhost:3000", "https://www.reachat.live"],
-      methods: ["GET", "POST"],
-      // must set credential as true here and in the client io connection option
-      // credentials: true,
-    },
+    // cors: {
+    //   origin: ["http://localhost:3000", "https://www.reachat.live"],
+    //   methods: ["GET", "POST"],
+    //   // must set credential as true here and in the client io connection option
+    //   // credentials: true,
+    // },
     allowRequest: (req, cb) => {
       let isAllowed: boolean = false;
       if (
