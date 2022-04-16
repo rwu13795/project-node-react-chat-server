@@ -28,12 +28,12 @@ declare module "express-session" {
 const app = express();
 
 app.use(express.json());
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 app.use(
   cors({
     credentials: true,
     origin: ["http://localhost:3000", "https://www.reachat.live"],
-    preflightContinue: true,
+    preflightContinue: false,
   })
 );
 

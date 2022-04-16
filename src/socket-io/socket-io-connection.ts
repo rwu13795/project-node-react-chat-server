@@ -54,11 +54,16 @@ export default function connectSocketIO(server: http.Server) {
     maxHttpBufferSize: 6e6,
     cors: {
       origin: "*",
-      methods: ["GET", "POST"],
+      // methods: ["GET", "POST"],
       // must set credential as true here and in the client io connection option
       // credentials: true,
+      preflightContinue: false,
     },
     allowRequest: (req, cb) => {
+      console.log(
+        "req.headers.origin  ------------------------>",
+        req.headers.origin
+      );
       let isAllowed: boolean = false;
       if (
         req.headers.origin === "https://www.reachat.live" ||
