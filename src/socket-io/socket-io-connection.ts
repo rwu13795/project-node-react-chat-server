@@ -53,11 +53,10 @@ export default function connectSocketIO(server: http.Server) {
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
     cors: {
-      origin: "https://www.reachat.live",
+      origin: "*",
       methods: ["GET", "POST"],
     },
   });
-  // "http://localhost:3000"
 
   // setup adapter for node clusters
   io.adapter(createAdapter());
