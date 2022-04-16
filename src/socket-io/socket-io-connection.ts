@@ -55,6 +55,7 @@ export default function connectSocketIO(server: http.Server) {
     cors: {
       origin: "https://www.reachat.live/*",
       methods: ["GET", "POST"],
+      credentials: true,
     },
   });
 
