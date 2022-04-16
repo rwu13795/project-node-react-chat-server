@@ -53,13 +53,20 @@ export default function connectSocketIO(server: http.Server) {
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
     cors: {
-      origin: ["https://www.reachat.live", "http://localhost:3000"],
-      // methods: ["GET", "POST"],
+      origin: "*",
+      methods: ["GET", "POST"],
       // must set credential as true here and in the client io connection option
       // credentials: true,
     },
     allowRequest: (req, cb) => {
-      const isAllowed = req.headers.origin === "https://www.reachat.live";
+      let isAllowed: boolean = false;
+      if (
+        req.headers.origin === "https://www.reachat.live" ||
+        req.headers.origin === "http://localhost:3000"
+      ) {
+        isAllowed = true;
+      }
+      console.log("isAllowed ------------------------>", isAllowed);
       cb(null, isAllowed);
     },
   });
