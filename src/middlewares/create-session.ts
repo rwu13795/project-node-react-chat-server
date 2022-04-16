@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
   cookieOptions.secure = true; // must use the "secure" when serve the data over https
   cookieOptions.sameSite = true;
   cookieOptions.httpOnly = true;
-  cookieOptions.domain = ".project-node-react-chat-client.herokuapp.com"; // all the subdomain will set the cookies
+  cookieOptions.domain = ".reachat.live"; // the cookies can be set in all the subdomain
 }
 
 const createSession = session({
