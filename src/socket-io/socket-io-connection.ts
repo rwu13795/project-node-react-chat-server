@@ -53,7 +53,7 @@ export default function connectSocketIO(server: http.Server) {
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
     cors: {
-      origin: "*",
+      origin: ["http://localhost:3000", "https://www.reachat.live"],
       methods: ["GET", "POST"],
       // must set credential as true here and in the client io connection option
       // credentials: true,
