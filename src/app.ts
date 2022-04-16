@@ -32,10 +32,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: [
-      "http://localhost:3000",
-      "https://project-node-react-chat-client.herokuapp.com",
-    ],
+    origin: ["http://localhost:3000", "https://www.reachat.live"],
   })
 );
 
