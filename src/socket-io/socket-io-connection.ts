@@ -52,10 +52,10 @@ export default function connectSocketIO(server: http.Server) {
     // (5e6 = 6MB)  if the size is above the maximun, the socket will be disconnected
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"],
-    },
+    // cors: {
+    //   origin: "*",
+    //   methods: ["GET", "POST"],
+    // },
   });
 
   // setup adapter for node clusters
