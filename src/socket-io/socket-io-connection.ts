@@ -1,7 +1,5 @@
 import http from "http";
 import { Server } from "socket.io";
-import { setupWorker } from "@socket.io/sticky";
-import { createAdapter } from "@socket.io/cluster-adapter";
 
 import {
   addFriendRequest_listener,
@@ -55,15 +53,11 @@ export default function connectSocketIO(server: http.Server) {
     cors: {
       origin: ["http://localhost:3000", "https://www.reachat.live"],
       methods: ["GET", "POST"],
-      // must set credential as true here and in the client io connection option
-      // credentials: true,
-      // preflightContinue: false,
     },
+    // I tried to use the option below to fix the cors error, but to no avail.
+    // but it can override the cors and allow the socket to be connected in normal circumstance
+    // keep it for future reference
     allowRequest: (req, cb) => {
-      console.log(
-        "req.headers.origin  ------------------------>",
-        req.headers.origin
-      );
       let isAllowed: boolean = false;
       if (
         req.headers.origin === "https://www.reachat.live" ||
@@ -71,16 +65,9 @@ export default function connectSocketIO(server: http.Server) {
       ) {
         isAllowed = true;
       }
-      console.log("isAllowed ------------------------>", isAllowed);
       cb(null, isAllowed);
     },
   });
-
-  //  ["http://localhost:3000", "https://www.reachat.live"]
-
-  // setup adapter for node clusters
-  // io.adapter(createAdapter());
-  // setupWorker(io);
 
   io.on("connection", async (socket) => {
     disconnectSameUser_emitter(io, socket);
@@ -111,15 +98,4 @@ export default function connectSocketIO(server: http.Server) {
 
     offline_listener(socket);
   });
-
-  // process.on("message", function (message, connection: any) {
-  //   if (message !== "sticky-session:connection") {
-  //     return;
-  //   }
-  //   // Emulate a connection event on the server by emitting the
-  //   // event with the connection the master sent us.
-  //   server.emit("connection", connection);
-
-  //   connection.resume();
-  // });
 }
