@@ -53,11 +53,11 @@ export default function connectSocketIO(server: http.Server) {
     // if the client is trying to send such file
     maxHttpBufferSize: 6e6,
     cors: {
-      origin: "*",
-      // methods: ["GET", "POST"],
+      origin: ["http://localhost:3000", "https://www.reachat.live"],
+      methods: ["GET", "POST"],
       // must set credential as true here and in the client io connection option
       // credentials: true,
-      preflightContinue: false,
+      // preflightContinue: false,
     },
     allowRequest: (req, cb) => {
       console.log(
@@ -79,8 +79,8 @@ export default function connectSocketIO(server: http.Server) {
   //  ["http://localhost:3000", "https://www.reachat.live"]
 
   // setup adapter for node clusters
-  io.adapter(createAdapter());
-  setupWorker(io);
+  // io.adapter(createAdapter());
+  // setupWorker(io);
 
   io.on("connection", async (socket) => {
     disconnectSameUser_emitter(io, socket);
@@ -112,14 +112,14 @@ export default function connectSocketIO(server: http.Server) {
     offline_listener(socket);
   });
 
-  process.on("message", function (message, connection: any) {
-    if (message !== "sticky-session:connection") {
-      return;
-    }
-    // Emulate a connection event on the server by emitting the
-    // event with the connection the master sent us.
-    server.emit("connection", connection);
+  // process.on("message", function (message, connection: any) {
+  //   if (message !== "sticky-session:connection") {
+  //     return;
+  //   }
+  //   // Emulate a connection event on the server by emitting the
+  //   // event with the connection the master sent us.
+  //   server.emit("connection", connection);
 
-    connection.resume();
-  });
+  //   connection.resume();
+  // });
 }
