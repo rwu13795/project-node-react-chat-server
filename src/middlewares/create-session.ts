@@ -26,7 +26,7 @@ const createSession = session({
   proxy: true,
   resave: false,
   saveUninitialized: false, // NOTE //
-  cookie: cookieOptions, // 60 mins
+  cookie: cookieOptions,
   rolling: true, // Force the session identifier cookie to be set on every response
 });
 

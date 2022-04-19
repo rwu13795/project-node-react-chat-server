@@ -80,7 +80,7 @@ function createPolicy(resourceFolder: string) {
         Condition: {
           DateLessThan: {
             "AWS:EpochTime":
-              Math.floor(new Date().getTime() / 1000) + 60 * 1 * 1,
+              Math.floor(new Date().getTime() / 1000) + 60 * 60 * 1, // 1 hour
             // Current Time in UTC + time in seconds, (60 * 60 * 24 = 24 hours)
           },
         },
