@@ -9,7 +9,7 @@ import {
 import { msgType } from "../../../../utils/enums/message-type";
 
 export async function addNewUserAsFriend(new_user_id: string) {
-  const body_1 = `Dear friend, Thank you for visiting my web site! My name is Ray Wu, 
+  const body_1 = `Dear friend, thank you for visiting my web site! My name is Ray Wu, 
   and I am a senior student majoring in computer science in Brooklyn College CUNY.`;
   const body_2 = `If you have any question regarding this project, please don't hesitate to ask. 
   You could leave a message here or send an email to my email address - rwu13795@gmail.com. 

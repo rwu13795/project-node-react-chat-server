@@ -16,6 +16,7 @@ import {
 } from "../../../utils/interfaces/response-interfaces";
 
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
+import createPrivateFolder_S3 from "../../../utils/aws-s3/create-private-folder";
 
 interface Request_body {
   email: string;
@@ -65,7 +66,10 @@ export const signUp = asyncWrapper(
     // is not converted to string when returning
     const new_user_id = newUser.user_id.toString();
 
-    await db_pool.query(initialize_socket_id(new_user_id));
+    await Promise.all([
+      db_pool.query(initialize_socket_id(new_user_id)),
+      createPrivateFolder_S3(new_user_id),
+    ]);
 
     // add the new user as my friend (rwu13795@gmail.com) automatically
     const friendsList: Friend_res[] = await addNewUserAsFriend(new_user_id);

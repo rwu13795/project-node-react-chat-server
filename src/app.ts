@@ -9,6 +9,7 @@ import { errorHandler } from "./middlewares/error-handler/error-handler";
 import { authRouter } from "./routes/auth/router";
 import { chatRouter } from "./routes/chat/router";
 import { userRouter } from "./routes/user/router";
+import { cloudFront_signedCookies } from "./middlewares";
 
 declare module "express-session" {
   interface SessionData {
@@ -37,6 +38,7 @@ app.use(
 );
 
 app.use(createSession);
+app.use(cloudFront_signedCookies);
 app.use(helmet());
 app.use(compression());
 

@@ -1,6 +1,7 @@
 export * from "./async-wrapper";
 export * from "./create-session";
 export * from "./require-auth";
+export * from "./cloudFront-signedCookies";
 
 export * from "./error-handler/bad-request-error";
 export * from "./error-handler/custom-error";

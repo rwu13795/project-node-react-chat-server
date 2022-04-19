@@ -20,6 +20,7 @@ import { googleAuthClient } from "../../../utils/goolge/auth-client";
 import { Response_body_signIn } from "./sign-in";
 import { Response_body_signUp } from "./sign-up";
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
+import createPrivateFolder_S3 from "../../../utils/aws-s3/create-private-folder";
 
 interface Request_body {
   appearOffline: boolean;
@@ -115,7 +116,10 @@ export const googleSignIn = asyncWrapper(
       const newUser = result.rows[0] as Users;
       const new_user_id = newUser.user_id.toString();
 
-      await db_pool.query(initialize_socket_id(new_user_id));
+      await Promise.all([
+        db_pool.query(initialize_socket_id(new_user_id)),
+        createPrivateFolder_S3(new_user_id),
+      ]);
 
       // add the new user as my friend (rwu13795@gmail.com) automatically
       const friendsList: Friend_res[] = await addNewUserAsFriend(new_user_id);

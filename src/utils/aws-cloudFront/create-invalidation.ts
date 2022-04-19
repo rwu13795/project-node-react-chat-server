@@ -9,7 +9,6 @@ export default async function createInvalidation_cloudFront(user_id: string) {
         Date.now().toString() /* required String (unique string)*/,
       Paths: {
         Quantity: 1 /* required Integer*/,
-
         Items: [`/public/avatars/user_${user_id}/*`],
       },
     },
