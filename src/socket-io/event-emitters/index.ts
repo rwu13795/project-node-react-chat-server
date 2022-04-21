@@ -16,3 +16,5 @@ export * from "./user/online-echo-emitter";
 export * from "./user/offline-emitter";
 export * from "./user/online-emitter";
 export * from "./user/disconnect-same-user-emitter";
+export * from "./user/change-username-emitter";
+export * from "./user/change-avatar-emitter";

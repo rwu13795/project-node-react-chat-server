@@ -18,3 +18,4 @@ export * from "./user/online-listener";
 export * from "./user/change-status-listener";
 export * from "./user/change-avatar-listener";
 export * from "./user/log-out-listener";
+export * from "./user/change-username-listener";

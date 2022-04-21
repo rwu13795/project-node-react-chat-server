@@ -20,6 +20,7 @@ import {
   online_listener,
   changeAvatar_listener,
   log_out_listener,
+  changeUsername_listener,
 } from "./event-listeners";
 import { disconnectSameUser_emitter } from "./event-emitters";
 
@@ -88,6 +89,7 @@ export default function connectSocketIO(server: http.Server) {
     changeOnlineStatus_listener(socket);
     changeAvatar_listener(socket);
     log_out_listener(socket);
+    changeUsername_listener(socket);
 
     createNewGroup_listener(socket);
     groupInvitationReqest_listener(socket, io);

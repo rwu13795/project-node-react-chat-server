@@ -14,10 +14,10 @@ export default async function createInvalidation_cloudFront(user_id: string) {
     },
   };
 
-  cloudFront.createInvalidation(params, function (err, data) {
+  cloudFront.createInvalidation(params, (err, data) => {
     if (err) console.log(err, err.stack);
     // an error occurred
-    else console.log(data); // successful response
+    else console.log("createInvalidation successful response --->", data); // successful response
   });
 }
 
