@@ -16,6 +16,7 @@ export function get_friends_list(user_id: string) {
                   users.username as "friend_username", 
                   users.email as "friend_email",
                   users.avatar_url,
+                  friends_pair.friend_display_name,
                   friends_pair.user_blocked_friend,
                   friends_pair.user_blocked_friend_at,
                   friends_pair.friend_blocked_user,
@@ -60,5 +61,18 @@ export function being_blocked_unblocked(
                friend_blocked_user_at = CURRENT_TIMESTAMP
            WHERE user_id = $2 and friend_id = $1`,
     values: [user_id, user_id_blocked, block],
+  };
+}
+
+export function set_friend_display_name(
+  user_id: string,
+  friend_id: string,
+  friend_display_name: string
+) {
+  return {
+    text: `UPDATE friends_pair
+           SET friend_display_name = $3
+           WHERE user_id = $1 and friend_id = $2`,
+    values: [user_id, friend_id, friend_display_name],
   };
 }

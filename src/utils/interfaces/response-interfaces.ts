@@ -15,6 +15,7 @@ export interface Friend_res {
   user_blocked_friend_at: string;
   friend_blocked_user: boolean;
   friend_blocked_user_at: string;
+  friend_display_name?: string;
 }
 export interface AddFriendRequest_res {
   sender_id: string;

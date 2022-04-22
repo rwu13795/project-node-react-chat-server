@@ -12,6 +12,7 @@ import {
   getMembersList,
   removeGroup,
   searchUser,
+  setFriendDisplayName,
 } from "./controllers";
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.post(
   requestValidator,
   createNewGroup
 );
+
+router.post("/set-friend-display-name", requireUserAuth, setFriendDisplayName);
 
 router.get("/get-members-list", requireUserAuth, getMembersList);
 
