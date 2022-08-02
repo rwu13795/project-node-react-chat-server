@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
+import {
+  asyncWrapper,
+  Bad_Request_Error,
+  cloudFront_signedCookies,
+} from "../../../middlewares";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
 import { db_pool } from "../../../utils/database/db-connection";
 import { Password } from "../../../utils/hash-password";
@@ -17,23 +21,32 @@ import {
 
 import { addNewUserAsFriend } from "./helpers/add-new-user-as-friend";
 import createPrivateFolder_S3 from "../../../utils/aws-s3/create-private-folder";
+import { CurrentUser } from "../../../utils/interfaces/CurrentUser";
+import { signJWT } from "./helpers/signJWT";
 
 interface Request_body {
   email: string;
   username: string;
   password: string;
   confirm_password: string;
+  isMobile?: boolean;
 }
 
 export interface Response_body_signUp {
   currentUser: CurrentUser_res;
   friendsList: Friend_res[];
+  token?: string;
 }
 
 export const signUp = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, username, password, confirm_password }: Request_body =
-      req.body;
+    const {
+      email,
+      username,
+      password,
+      confirm_password,
+      isMobile,
+    }: Request_body = req.body;
 
     if (password !== confirm_password) {
       return next(
@@ -74,18 +87,28 @@ export const signUp = asyncWrapper(
     // add the new user as my friend (rwu13795@gmail.com) automatically
     const friendsList: Friend_res[] = await addNewUserAsFriend(new_user_id);
 
-    req.session.currentUser = {
+    const currentUser: CurrentUser = {
       username,
       email,
       user_id: new_user_id,
       isLoggedIn: true,
-      targetRoomIdentifier: "",
       onlineStatus: onlineStatus_enum.online,
     };
+    req.session.currentUser = currentUser;
+
+    // pack the currentUser info into the JWT
+    let token: string | undefined;
+    if (isMobile === true) {
+      token = signJWT({ user_id: new_user_id, email, username });
+    }
+
     let response: Response_body_signUp = {
       friendsList,
       currentUser: req.session.currentUser,
+      token,
     };
+
+    await cloudFront_signedCookies(req, res, next);
 
     res.status(201).send(response);
   }

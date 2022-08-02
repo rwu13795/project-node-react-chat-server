@@ -28,11 +28,11 @@ export const cloudFront_signedCookies = async (
     policy: policy_groups,
   });
 
-  // only set the "CloudFront-Key-Pair-Id" once since, it is the same for the all cookies
+  // only set the "CloudFront-Key-Pair-Id" once since, it is the same for all the cookies
   res.cookie("CloudFront-Key-Pair-Id", cookie_user["CloudFront-Key-Pair-Id"], {
     domain: "reachat.live",
     httpOnly: true,
-    // the root path of the CLOUD_FRONT_UR
+    // the root path of the CLOUD_FRONT_URL
     path: "/",
   });
 

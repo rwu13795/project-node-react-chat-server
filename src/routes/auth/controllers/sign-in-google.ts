@@ -5,7 +5,11 @@ import { db_pool } from "../../../utils/database/db-connection";
 import { Password } from "../../../utils/hash-password";
 import { Friend_res } from "../../../utils/interfaces/response-interfaces";
 import { Users } from "../../../utils/interfaces/tables-columns";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
+import {
+  asyncWrapper,
+  Bad_Request_Error,
+  cloudFront_signedCookies,
+} from "../../../middlewares";
 import {
   find_existing_user,
   get_add_friend_request,
@@ -35,7 +39,8 @@ export const googleSignIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const { token, appearOffline }: Request_body = req.body;
 
-    // verify the user with the google auth
+    // verify the user JWT sent from the client with the google auth
+    // and extract the user's info
     const ticket = await googleAuthClient.verifyIdToken({
       idToken: token,
       audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -85,7 +90,6 @@ export const googleSignIn = asyncWrapper(
         user_id,
         avatar_url,
         isLoggedIn: true,
-        targetRoomIdentifier: "",
         onlineStatus,
         loggedInWithGoogle: true,
       };
@@ -130,7 +134,6 @@ export const googleSignIn = asyncWrapper(
         user_id: new_user_id,
         avatar_url: picture,
         isLoggedIn: true,
-        targetRoomIdentifier: "",
         onlineStatus,
         loggedInWithGoogle: true,
       };
@@ -139,6 +142,8 @@ export const googleSignIn = asyncWrapper(
         currentUser: req.session.currentUser,
         isNewUser: true,
       };
+
+      await cloudFront_signedCookies(req, res, next);
 
       res.status(201).send(response);
     }

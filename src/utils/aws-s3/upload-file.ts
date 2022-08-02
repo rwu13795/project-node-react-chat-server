@@ -29,8 +29,6 @@ export default async function uploadFileTo_S3(
       // The name of the object. For example, 'sample_upload.txt'. And the folder name will any
       // path in front of the file name, (testing_folder/xxxxx.txt)
       Key: `users/${sender_id}/${url}`, // add the key dynamically for different images
-      // The content of the object. For example, a string 'Hello world!" for txt file.
-      // for image, put in the file-buffer created by the "multer"
       Body: file_body, // add the file-buffer dynamically for different images
     };
     const params_user_2: Params = {

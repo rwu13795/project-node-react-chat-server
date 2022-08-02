@@ -18,6 +18,9 @@ import {
   get_group_invitations,
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
+import { CurrentUser } from "../../../utils/interfaces/CurrentUser";
+import { signJWT } from "./helpers/signJWT";
+import { verifyJWT } from "./helpers/verifyJWT";
 
 interface Response_body {
   currentUser: CurrentUser_res;
@@ -25,12 +28,17 @@ interface Response_body {
   addFriendRequests: AddFriendRequest_res[];
   groupsList: Group_res[];
   groupInvitations: GroupInvitation_res[];
+  newToken: string;
 }
 
-export const getUserAuthStatus = asyncWrapper(
+export const getUserAuthStatus_mobile = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.session.currentUser || !req.session.currentUser.isLoggedIn) {
-      req.session.currentUser = {
+    const token = req.query.token as string;
+
+    const payload = verifyJWT(token);
+
+    if (!payload) {
+      let currentUser: CurrentUser = {
         username: "guest",
         email: "",
         user_id: "",
@@ -38,10 +46,17 @@ export const getUserAuthStatus = asyncWrapper(
         onlineStatus: onlineStatus_enum.offline,
       };
 
-      return res.status(200).send({ currentUser: req.session.currentUser });
+      return res.status(200).send({ currentUser });
     }
 
-    const { user_id, email, onlineStatus } = req.session.currentUser;
+    const { user_id, email } = payload.data;
+
+    // refresh the token
+    const newToken = signJWT({
+      user_id,
+      email,
+      username: payload.data.username,
+    });
 
     const [
       user,
@@ -66,21 +81,22 @@ export const getUserAuthStatus = asyncWrapper(
     // the user info with the latest values
     const { username, avatar_url } = user.rows[0] as Users;
 
-    req.session.currentUser = {
+    let currentUser: CurrentUser = {
       username,
       email,
       user_id,
       avatar_url,
       isLoggedIn: true,
-      onlineStatus,
+      onlineStatus: onlineStatus_enum.online,
     };
 
     let response: Response_body = {
-      currentUser: req.session.currentUser,
+      currentUser,
       friendsList,
       addFriendRequests,
       groupsList,
       groupInvitations,
+      newToken,
     };
 
     await cloudFront_signedCookies(req, res, next);

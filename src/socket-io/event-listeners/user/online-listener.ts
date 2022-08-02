@@ -11,6 +11,8 @@ interface Data {
 
 export function online_listener(socket: Socket) {
   socket.on("online", async ({ onlineStatus }: Data) => {
+    console.log("------------> in online listener", onlineStatus);
+
     const query = socket.handshake.query;
     const user_id = query.user_id as string;
     const username = query.username as string;

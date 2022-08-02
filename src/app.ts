@@ -9,36 +9,33 @@ import { errorHandler } from "./middlewares/error-handler/error-handler";
 import { authRouter } from "./routes/auth/router";
 import { chatRouter } from "./routes/chat/router";
 import { userRouter } from "./routes/user/router";
-import { cloudFront_signedCookies } from "./middlewares";
+import { CurrentUser } from "./utils/interfaces/CurrentUser";
+// import { cloudFront_signedCookies } from "./middlewares";
 
 declare module "express-session" {
   interface SessionData {
-    currentUser: {
-      username: string;
-      email: string;
-      user_id: string;
-      isLoggedIn: boolean;
-      targetRoomIdentifier: string;
-      onlineStatus: string;
-      avatar_url?: string;
-      loggedInWithGoogle?: boolean;
-    };
+    currentUser: CurrentUser;
   }
 }
 
 const app = express();
 
 app.use(express.json());
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000", "https://www.reachat.live"],
+    origin: [
+      "http://localhost:3000", // react
+      "https://www.reachat.live",
+      "http://localhost:19006", // react-native web
+      // "http://localhost:19000", // android
+    ],
   })
 );
 
 app.use(createSession);
-app.use(cloudFront_signedCookies);
+// app.use(cloudFront_signedCookies);
 app.use(helmet());
 app.use(compression());
 

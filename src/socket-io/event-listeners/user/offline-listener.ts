@@ -13,6 +13,8 @@ import { offline_emitter } from "../../event-emitters";
 // the "disconnect" is a build-in listener key word for detecting disconnection
 export function offline_listener(socket: Socket) {
   socket.on("disconnect", async () => {
+    console.log("socket disconnect!");
+
     if (!socket.currentUser) return;
 
     const { user_id, currentTargetRoom } = socket.currentUser;

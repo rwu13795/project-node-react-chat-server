@@ -60,17 +60,25 @@ export default function connectSocketIO(server: http.Server) {
     // keep it for future reference
     allowRequest: (req, cb) => {
       let isAllowed: boolean = false;
+
+      console.log("req.headers", req.headers.reachat);
+
       if (
         req.headers.origin === "https://www.reachat.live" ||
-        req.headers.origin === "http://localhost:3000"
+        req.headers.origin === "http://localhost:3000" ||
+        req.headers.reachat === "TOP-SECRET"
       ) {
         isAllowed = true;
       }
+
+      console.log("isAllowed", isAllowed);
       cb(null, isAllowed);
     },
   });
 
   io.on("connection", async (socket) => {
+    console.log("socket connected");
+
     disconnectSameUser_emitter(io, socket);
 
     joinRoom_listener(socket);

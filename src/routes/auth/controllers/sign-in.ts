@@ -10,7 +10,11 @@ import {
   Group_res,
 } from "../../../utils/interfaces/response-interfaces";
 import { Users } from "../../../utils/interfaces/tables-columns";
-import { asyncWrapper, Bad_Request_Error } from "../../../middlewares";
+import {
+  asyncWrapper,
+  Bad_Request_Error,
+  cloudFront_signedCookies,
+} from "../../../middlewares";
 import {
   find_existing_user,
   get_add_friend_request,
@@ -19,11 +23,14 @@ import {
   get_group_invitations,
 } from "../../../utils/database/queries/__index";
 import { onlineStatus_enum } from "../../../socket-io/socket-io-connection";
+import { CurrentUser } from "../../../utils/interfaces/CurrentUser";
+import { signJWT } from "./helpers/signJWT";
 
 interface Request_body {
   req_email: string;
   req_password: string;
   appearOffline: boolean;
+  isMobile?: boolean;
 }
 
 export interface Response_body_signIn {
@@ -32,11 +39,15 @@ export interface Response_body_signIn {
   addFriendRequests: AddFriendRequest_res[];
   groupsList: Group_res[];
   groupInvitations: GroupInvitation_res[];
+  token?: string;
 }
 
 export const signIn = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { req_email, req_password, appearOffline }: Request_body = req.body;
+    const { req_email, req_password, appearOffline, isMobile }: Request_body =
+      req.body;
+
+    console.log(req_email);
 
     const existingUser = await db_pool.query(find_existing_user(req_email));
 
@@ -72,23 +83,32 @@ export const signIn = asyncWrapper(
       db_pool.query(get_group_invitations(user_id)),
     ]);
 
-    req.session.currentUser = {
+    const currentUser: CurrentUser = {
       username,
       email,
       user_id,
       avatar_url,
       isLoggedIn: true,
-      targetRoomIdentifier: "",
       onlineStatus,
     };
+    req.session.currentUser = currentUser;
+
+    // pack the currentUser info into the JWT
+    let token: string | undefined;
+    if (isMobile === true) {
+      token = signJWT({ user_id, email, username });
+    }
 
     let response: Response_body_signIn = {
       friendsList: friends_res.rows,
       addFriendRequests: addFriendRequests_res.rows,
-      currentUser: req.session.currentUser,
+      currentUser,
       groupsList: groups_res.rows,
       groupInvitations: groupInvitaions_result.rows,
+      token,
     };
+
+    await cloudFront_signedCookies(req, res, next);
 
     res.status(201).send(response);
   }
